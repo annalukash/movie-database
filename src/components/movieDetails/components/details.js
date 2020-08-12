@@ -89,8 +89,14 @@ const TagLine = styled.div`
     font-family: Arial;
 `;
 
-const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, video}) => {
-    const {poster_path, title, release_date, genres, runtime, vote_average, tagline, overview} = details;
+const CreatorNameWrapper = styled.div`
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+`;
+
+const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, video, history}) => {
+    const {poster_path, title, release_date, genres, runtime, vote_average, tagline, overview, name, first_air_date, episode_run_time, created_by} = details;
 
     const genreItem = genres.map((genre, index) => {
         return(
@@ -98,7 +104,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
         )
     })
 
-    let duration = moment.duration(runtime, "minutes").format("h : m o");
+    let duration = moment.duration(runtime || episode_run_time[0], "minutes").format("h : m o");
 
     const trailerButton = () => {
         return(
@@ -113,19 +119,21 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
 
     const modal = modalWindow ? <ModalWindow video={video} onCloseModal={onCloseModal}/> : null;
     const showTrailer = video?.results.length === 0 ? null : trailerButton();
+    const src = !poster_path ? '../assets/poster.png' : ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path);
+    const creator = history.location.pathname.includes('tv') ? <TvCreator creator={created_by} history={history}/> : null;
 
     return(
         <>
             {modal}
             <Col className='col-4'>
-                <ImgWrapper src={'https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path} alt="poster"/>
+                <ImgWrapper src={src} alt={title || name}/>
             </Col>
             <Col className='col-8 text-left px-0'>
-                <Title>{title} <Year>({moment(release_date).format('YYYY')})</Year>
+                <Title>{title || name} <Year>({moment(release_date || first_air_date).format('YYYY')})</Year>
                 </Title>
                 <DetailsList>
                     <Row>
-                        <Col className="col-auto px-0 pl-3">{moment(release_date).format('DD/MM/YYYY')} (US)</Col>
+                        <Col className="col-auto px-0 pl-3">{moment(release_date || first_air_date).format('DD/MM/YYYY')} (US)</Col>
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
                         <Col className="col-auto px-0">{genreItem}</Col>
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
@@ -161,9 +169,25 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
                         </Col>
                         <Col>{overview}</Col>
                     </Row>
+                    {creator}
                 </DetailsList>  
             </Col>
         </>
+    )
+}
+
+const TvCreator = ({creator, history}) => {
+    return (
+        <Row className='flex-column py-2'>
+            <Col>
+                <CreatorNameWrapper
+                    onClick={() => history.push(`/person/${creator[0].id}`)}
+                >
+                    {creator[0].name}
+                </CreatorNameWrapper>
+                <div>Создатель</div>
+            </Col>
+        </Row>
     )
 }
 

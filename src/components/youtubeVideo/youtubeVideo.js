@@ -7,6 +7,7 @@ const Trailer = ({video}) => {
 
     return (
         <iframe
+            title='g'
             width="1075"
             height="667"
             src={"https://www.youtube.com/embed/" + resultItem.key}

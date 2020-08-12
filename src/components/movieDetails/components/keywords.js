@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Col } from 'react-bootstrap';
+import { useHistory } from "react-router-dom";
 
 const KeywordsWrapper = styled.div`
     margin: 30px 0;
@@ -21,23 +22,27 @@ const KeywordItemWrapper = styled.div`
     cursor: pointer;
 `;
 
-const Keywords = ({keyword}) => {
+const Keywords = ({keyword, url}) => {
 
-    const {keywords} = keyword;
+    const history = useHistory();
+  
+        const keywordsItem = keyword.map((keyword, index) => {
+            return(
+                <KeywordItemWrapper key={index} onClick={() => {
+                    history.push(`/${url}/${keyword.id}`)
+                }}>
+                    {keyword.name}
+                </KeywordItemWrapper>
+            )
+        })
 
-    const keywordsItem = keywords.map((keyword, index) => {
-        return(
-            <KeywordItemWrapper key={index}>
-                {keyword.name}
-            </KeywordItemWrapper>
-        )
-    })
+    const keywordItem = keywordsItem.length === 0 ? 'Ключевые слова не добавлены.' : keywordsItem;
 
     return (
         <KeywordsWrapper>
             <Col className="font-weight-bold">Ключевые слова</Col>
             <Col>
-                {keywordsItem}
+                {keywordItem}
             </Col>
         </KeywordsWrapper>
     )

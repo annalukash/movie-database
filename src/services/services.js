@@ -50,4 +50,41 @@ export default class MoviesServices {
         const response = await this.getResource(`/movie/${movieId}/videos?`);
         return response;
     }
+
+    getMovieByKeyword = async (keywordId, page) => {
+        const response = await this.getResource(`/keyword/${keywordId}/movies?page=${page}&`);
+        return response;
+    }
+
+    getKeywordName = async (keywordId) => {
+        const response = await this.getResource(`/keyword/${keywordId}?`);
+        return response;
+    }
+
+    getPersonBiography = async (personId) => {
+        const biography = await this.getResource(`/person/${personId}?`);
+        const combinedMoviesTv = await this.getResource(`/person/${personId}/combined_credits?`);   
+        return {biography, combinedMoviesTv};
+
+    }
+
+    getTVDetails = async (tvId) => {
+        const response = await this.getResource(`/tv/${tvId}?`);
+        return response;
+    }
+
+    getTVCasts = async (tvId) => {
+        const response = await this.getResource(`/tv/${tvId}/credits?`);
+        return response;
+    }
+
+    getTVKeywords = async (tvId) => {
+        const response = await this.getResource(`/tv/${tvId}/keywords?`);
+        return response;
+    }
+
+    getTVVideos = async (tvId) => {
+        const response = await this.getResource(`/tv/${tvId}/videos?`);
+        return response;
+    }
 }

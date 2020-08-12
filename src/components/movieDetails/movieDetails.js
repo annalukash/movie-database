@@ -36,24 +36,34 @@ export default class MovieDetails extends Component {
             video: null
         }
         this.moviesServices = new MoviesServices();
-
-        setTimeout(() => console.log(this.state.cast), 2000)
     }
-
+    
     componentDidMount() {
-        const {movieId} = this.props;
+        const {movieId, history} = this.props;
+        const {pathname} = history.location;
 
-        this.getMovieDetails(movieId)
-
-        this.getCast(movieId)
-
-        this.getKeywords(movieId)
-
-        this.getVideos(movieId)
+        if (pathname.includes('tv')) {
+            this.getTvDetails(movieId); 
+            this.getTVCast(movieId);
+            this.getTVKeywords(movieId);
+            this.getTVVideos(movieId);
+        } else {
+            this.getMovieDetails(movieId);
+            this.getCast(movieId);
+            this.getKeywords(movieId);
+            this.getVideos(movieId);
+        }  
     }
 
     getMovieDetails = (movieId) => {
         this.moviesServices.getMovieDetails(movieId)
+            .then((response) => {
+                this.onLoadingDetails(response)
+            })
+    }
+
+    getTvDetails = (tvId) => {
+        this.moviesServices.getTVDetails(tvId)
             .then((response) => {
                 this.onLoadingDetails(response)
             })
@@ -66,15 +76,36 @@ export default class MovieDetails extends Component {
             })
     }
 
+    getTVCast = (tvId) => {
+        this.moviesServices.getTVCasts(tvId)
+            .then((response) => {
+                this.onLoadingCast(response)
+            })
+    }
+
     getKeywords = (movieId) => {
         this.moviesServices.getKeywords(movieId)
             .then((response) => {
-                this.onLoadingKeywords(response)
+                this.onLoadingKeywords(response.keywords)
+            })
+    }
+
+    getTVKeywords = (tvId) => {
+        this.moviesServices.getTVKeywords(tvId)
+            .then((response) => {
+                this.onLoadingKeywords(response.results)
             })
     }
 
     getVideos = (movieId) => {
         this.moviesServices.getVideos(movieId)
+            .then((response) => {
+                this.onVideoLoading(response)
+            })
+    }
+
+    getTVVideos = (tvId) => {
+        this.moviesServices.getTVVideos(tvId)
             .then((response) => {
                 this.onVideoLoading(response)
             })
@@ -121,12 +152,12 @@ export default class MovieDetails extends Component {
 
     render() {
         const {details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video} = this.state;
-        const {movieId} = this.props;
+        const {movieId, keywordId, history} = this.props;
 
-        const spinnerDetails = loading ? <Spinner/> : <Details details={details} movieId={movieId} video={video} onOpenModal={this.onOpenModal} modalWindow={modalWindow} onCloseModal={this.onCloseModal}/>;
-        const spinnerOriginal = loading ? <Spinner/> : <OriginalDetails details={details}/>;
-        const spinnerCast = loadingCast ? <Spinner/> : <Cast casts={casts}/>;
-        const spinnerKeywords = loadingKeywords ? <Spinner/> : <Keywords keyword={keywords}/>
+        const spinnerDetails = loading ? <Spinner/> : <Details details={details} movieId={movieId} video={video} history={history} onOpenModal={this.onOpenModal} modalWindow={modalWindow} onCloseModal={this.onCloseModal}/>;
+        const spinnerOriginal = loading ? <Spinner/> : <OriginalDetails details={details} history={history}/>;
+        const spinnerCast = loadingCast ? <Spinner/> : <Cast casts={casts} id={movieId} history={history}/>;
+        const spinnerKeywords = loadingKeywords ? <Spinner/> : <Keywords keyword={keywords} history={this.props.history} keywordId={keywordId} url={'keywords'}/>
 
         return(
             <>
@@ -139,9 +170,11 @@ export default class MovieDetails extends Component {
                         </Container> 
                     </ContainerWrapper> 
                 </BackgroundWrapper> 
-                <Container className="mt-4">
+                <Container className="mt-4 mb-5">
                     <Row>
-                        <Col className="col-8">{spinnerCast}</Col>
+                        <Col className="col-8">
+                            {spinnerCast}
+                        </Col>
                         <Col className="col-4">
                             <Row>{spinnerOriginal}</Row>
                             <Row className="flex-column">{spinnerKeywords}</Row>
