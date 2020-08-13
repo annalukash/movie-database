@@ -52,6 +52,7 @@ export default class TopRatedPage extends Component {
 
     render() {
         const {movies, loading, loadingMore, small} = this.state;
+        const {history} = this.props;
         
         return(
             <MovieList
@@ -59,8 +60,8 @@ export default class TopRatedPage extends Component {
                 loading={loading}
                 loadingMore={loadingMore}
                 small={small}
-                history={this.props.history}
-                url={'top-rated'}
+                history={history}
+                url={history.location.pathname}
                 getMovies = {this.loadMovies}
             />
         )

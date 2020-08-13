@@ -18,6 +18,12 @@ const LinkWrapper = styled.div`
     }
 `;
 
+const NavCollapseWrapper = styled.div`
+    &.dropdown-menu {
+        min-width: 11rem;
+    }
+`;
+
 
 
 const Header = () => {
@@ -29,24 +35,57 @@ const Header = () => {
                 </LogoWrapper>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <NavDropdown title="Фильмы" id="basic-nav-dropdown">
-                        <LinkWrapper>
-                            <Link to='/popular/'>Популярные</Link>
-                        </LinkWrapper>
-                        <LinkWrapper>
-                            <Link to='/playing-now/'>Смотрят сейчас</Link>
-                        </LinkWrapper>
-                        <LinkWrapper>
-                            <Link to='/upcoming/'>Ожидаемые</Link>
-                        </LinkWrapper>
-                        <LinkWrapper>
-                            <Link to='/top-rated/'>Лучшие</Link>
-                        </LinkWrapper>
-                    </NavDropdown>
-                </Nav>
-            </Navbar.Collapse>
+            <NavCollapseWrapper>
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                        <NavDropdown title="Фильмы" id="basic-nav-dropdown">
+                            <LinkWrapper>
+                                <Link to='/movie/popular/'>Популярные</Link>
+                            </LinkWrapper>
+                            <LinkWrapper>
+                                <Link to='/movie/playing-now/'>Смотрят сейчас</Link>
+                            </LinkWrapper>
+                            <LinkWrapper>
+                                <Link to='/movie/upcoming/'>Ожидаемые</Link>
+                            </LinkWrapper>
+                            <LinkWrapper>
+                                <Link to='/movie/top-rated/'>Лучшие</Link>
+                            </LinkWrapper>
+                        </NavDropdown>
+                    </Nav>
+                </Navbar.Collapse>
+            </NavCollapseWrapper>
+            <NavCollapseWrapper>
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                        <NavDropdown title="Сериалы" id="basic-nav-dropdown">
+                            <LinkWrapper>
+                                <Link to='/tv/popular/'>Популярные</Link>
+                            </LinkWrapper>
+                            <LinkWrapper>
+                                <Link to='/tv/airing_today/'>В эфире сегодня</Link>
+                            </LinkWrapper>
+                            <LinkWrapper>
+                                <Link to='/tv/on_the_air/'>По телевидению</Link>
+                            </LinkWrapper>
+                            <LinkWrapper>
+                                <Link to='/tv/top-rated/'>Лучшие</Link>
+                            </LinkWrapper>
+                        </NavDropdown>
+                    </Nav>
+                </Navbar.Collapse>
+            </NavCollapseWrapper>
+            <NavCollapseWrapper>
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                        <NavDropdown title="Люди" id="basic-nav-dropdown">
+                            <LinkWrapper>
+                                <Link to='/person/popular/'>Популярные люди</Link>
+                            </LinkWrapper>
+                        </NavDropdown>
+                    </Nav>
+                </Navbar.Collapse>
+            </NavCollapseWrapper>
         </Navbar> 
     )
 }

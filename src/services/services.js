@@ -87,4 +87,24 @@ export default class MoviesServices {
         const response = await this.getResource(`/tv/${tvId}/videos?`);
         return response;
     }
+
+    getTVPopular = async (page) => {
+        const response = await this.getResource(`/tv/popular?page=${page}&`);
+        return response;
+    }
+
+    getTVAiringToday = async (page) => {
+        const response = await this.getResource(`/tv/airing_today?page=${page}&`);
+        return response;
+    }
+
+    getTVTopRated = async (page) => {
+        const response = await this.getResource(`/tv/top_rated?page=${page}&`);
+        return response;
+    }
+
+    getTVOnTheAir = async (page) => {
+        const response = await this.getResource(`/tv/on_the_air?page=${page}&`);
+        return response;
+    }
 }

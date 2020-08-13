@@ -63,23 +63,23 @@ export default class MovieList extends Component {
         const {movies, loading, loadingMore, small, url, getMovies, history} = this.props;
         
         const movieItems = movies.map((item, index) => {
-            const {title, poster_path, release_date, vote_average, id} = item;
-
+            const {title, poster_path, release_date, vote_average, id, name, first_air_date} = item;
+            const src = item.poster_path ? ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path) : '../../assets/poster.png';
 
             return(
                 <Col key={index} className="col-3 d-flex justify-content-center mb-4">
                     <PosterWrapper
                         onClick={() => {
-                            history.push(`/${url}/${id}`)
+                            history.push(`${url}${id}`)
                         }}
                     >
-                    <Poster src={'https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path} alt="poster"/> 
+                    <Poster src={src} alt={item.title || item.name}/> 
                     <MovieDetailsWrapper>
                         <TitleWrapper>
-                            {title}
+                            {title || name}
                         </TitleWrapper>
                         <ReleaseWrapper>
-                            {moment(release_date).format('DD.MM.YYYY')}
+                            {moment(release_date || first_air_date).format('DD.MM.YYYY')}
                         </ReleaseWrapper>
                         <Rate 
                             vote={vote_average}

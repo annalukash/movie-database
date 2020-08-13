@@ -17,7 +17,7 @@ export default class PopularPage extends Component {
     }
     
     componentWillMount() {
-       this.loadMovies();
+        this.loadMovies();  
     }
 
     onLoading = (response) => {
@@ -52,15 +52,16 @@ export default class PopularPage extends Component {
 
     render() {
         const {movies, loading, loadingMore, small} = this.state;
-        
+        const {history} = this.props;
+
         return(
             <MovieList
                 movies={movies}
                 loading={loading}
                 loadingMore={loadingMore}
                 small={small}
-                history={this.props.history}
-                url={'popular'}
+                history={history}
+                url={history.location.pathname}
                 getMovies = {this.loadMovies}
             />
         )

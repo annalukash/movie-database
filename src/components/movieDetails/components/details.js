@@ -103,8 +103,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
             <span key={index}>{genre.name + `${index !== (genres.length - 1) ? ',' : ' '}`} </span>
         )
     })
-
-    let duration = moment.duration(runtime || episode_run_time[0], "minutes").format("h : m o");
+    let duration = (runtime || episode_run_time) ? moment.duration(runtime || episode_run_time[0], "minutes").format("h : m o").replace(':', 'h').replace('o', 'm') : null;
 
     const trailerButton = () => {
         return(
@@ -119,7 +118,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
 
     const modal = modalWindow ? <ModalWindow video={video} onCloseModal={onCloseModal}/> : null;
     const showTrailer = video?.results.length === 0 ? null : trailerButton();
-    const src = !poster_path ? '../assets/poster.png' : ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path);
+    const src = !poster_path ? '../../assets/poster.png' : ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path);
     const creator = history.location.pathname.includes('tv') ? <TvCreator creator={created_by} history={history}/> : null;
 
     return(
@@ -137,7 +136,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
                         <Col className="col-auto px-0">{genreItem}</Col>
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
-                        <Col className="col-auto px-0">{duration.replace(':', 'h').replace('o', 'm')}</Col>
+                        <Col className="col-auto px-0">{duration}</Col>
                     </Row>  
                     <Row className="font-weight-bold py-3">
                         <Col className="col-auto d-flex">
@@ -177,18 +176,22 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
 }
 
 const TvCreator = ({creator, history}) => {
-    return (
-        <Row className='flex-column py-2'>
-            <Col>
-                <CreatorNameWrapper
-                    onClick={() => history.push(`/person/${creator[0].id}`)}
-                >
-                    {creator[0].name}
-                </CreatorNameWrapper>
-                <div>Создатель</div>
-            </Col>
-        </Row>
-    )
+    if (creator.length) {
+        return (
+            <Row className='flex-column py-2'>
+                <Col>
+                    <CreatorNameWrapper
+                        onClick={() => history.push(`/person/${creator[0].id}`)}
+                    >
+                        {creator[0].name}
+                    </CreatorNameWrapper>
+                    <div>Создатель</div>
+                </Col>
+            </Row>
+        )
+    } else {
+        return null
+    }
 }
 
 export default Details;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Col } from 'react-bootstrap';
 import moment from 'moment';
@@ -30,7 +30,14 @@ const BioWrapper = styled.div`
 
 const BioContent = styled.div`
     font-size: 16px;
-    font-weight: 400;    
+    font-weight: 400;  
+    height: ${props => (props.mainHeight && props.childRef > 200) ? '200px' : 'auto' };
+    overflow: hidden;  
+    transition: height 200ms;
+
+    &.open {
+        height: ${props => props.childRef + 'px'};
+    }
 `;
 
 const PersonalInfo = styled.div`
@@ -66,15 +73,25 @@ const MovieListContent = styled.div`
     border: 1px solid rgb(227, 227, 227);
 `;
 
+const ReadMoreButton = styled.button`
+    display: ${props => (props.mainHeight && props.childRef > 200) ? 'block' : 'none'};
+`;
 
-const PersonDetails = ({person, cast, crew, moviePreview, onOpenPreview, onClosePreview}) => {
-    const src = !person.profile_path ? '../../assets/avatar.png' : ('https://image.tmdb.org/t/p/w300_and_h450_bestv2' + person.profile_path);
-    const getBio = () => {
-        if (!person.biography) {
-            return {__html: `У нас нет биографии для ${person.name}`};
-        }
-        return {__html: `${person.biography}`};
+
+const PersonDetails = ({person, cast, crew}) => {
+    const [isOpen, setOpen] = useState(false);
+    const [elementHeight, setElementHeight] = useState(0);
+    
+    const onOpen = () => {
+        setOpen(!isOpen)
     }
+
+    const getElementHeight = (element) => {
+        setElementHeight(element?.clientHeight)
+    }
+    const classNames = isOpen ? 'open' : '';
+    const src = !person.profile_path ? '../../assets/avatar.png' : ('https://image.tmdb.org/t/p/w300_and_h450_bestv2' + person.profile_path);
+    const biography = !person.biography ? `У нас нет биографии для ${person.name}` : <div ref={element => getElementHeight(element)}>{person.biography}</div>;
     const gender = person.gender === 1 ? 'Женский' : 'Мужской';
     const alsoKnow = person.also_known_as.map((item, index) => {
         return (
@@ -115,7 +132,16 @@ const PersonDetails = ({person, cast, crew, moviePreview, onOpenPreview, onClose
                 <DescriptionWrapper>
                     <TitleWrapper>{person.name}</TitleWrapper>
                     <BioWrapper>Биография
-                        <BioContent dangerouslySetInnerHTML={getBio()}></BioContent>
+                        <BioContent 
+                            className={classNames}
+                            childRef={elementHeight}
+                            mainHeight={person.biography}
+                        >{biography}</BioContent>
+                        <ReadMoreButton
+                            childRef={elementHeight}
+                            mainHeight={person.biography}
+                            onClick={onOpen}
+                        >Read more</ReadMoreButton>
                     </BioWrapper>   
                 </DescriptionWrapper>
                 {acting}
