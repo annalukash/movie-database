@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Row, Col, Container } from 'react-bootstrap';
 import Spinner from '../../spinner/spinner';
@@ -58,56 +58,54 @@ const LoadMoreButton = styled.button`
     }
 `;
 
-export default class MovieList extends Component {
-    render() {
-        const {movies, loading, loadingMore, small, url, getMovies, history} = this.props;
-        
-        const movieItems = movies.map((item, index) => {
-            const {title, poster_path, release_date, vote_average, id, name, first_air_date} = item;
-            const src = item.poster_path ? ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path) : '../../assets/poster.png';
-
-            return(
-                <Col key={index} className="col-3 d-flex justify-content-center mb-4">
-                    <PosterWrapper
-                        onClick={() => {
-                            history.push(`${url}${id}`)
-                        }}
-                    >
-                    <Poster src={src} alt={item.title || item.name}/> 
-                    <MovieDetailsWrapper>
-                        <TitleWrapper>
-                            {title || name}
-                        </TitleWrapper>
-                        <ReleaseWrapper>
-                            {moment(release_date || first_air_date).format('DD.MM.YYYY')}
-                        </ReleaseWrapper>
-                        <Rate 
-                            vote={vote_average}
-                            small={small}
-                        />
-                        
-                    </MovieDetailsWrapper>                   
-                    </PosterWrapper>
-                </Col>
-            )
-        })
-
-        const spinnerDetails = loading ? <Spinner/> : movieItems;
-        const loadSpinner = loadingMore ? <LoadMoreSpinner/> : 'Загрузить еще';
+const MovieList = ({movies, loading, loadingMore, small, url, getMovies, history}) => {
+    const movieItems = movies.map((item, index) => {
+        const {title, poster_path, release_date, vote_average, id, name, first_air_date} = item;
+        const src = poster_path ? ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path) : '../../assets/poster.png';
 
         return(
-            <Container className="mt-5">
-                <Row className="justify-content-center mx-auto text-center w-100">
-                    {spinnerDetails}
-                </Row>
-                <Row className="justify-content-center mx-auto text-center w-100">
-                    <Col>
-                    <LoadMoreButton
-                        onClick={() => getMovies()}
-                    >{loadSpinner}</LoadMoreButton>
-                    </Col>
-                </Row>
-            </Container>
+            <Col key={index} className="col-3 d-flex justify-content-center mb-4">
+                <PosterWrapper
+                    onClick={() => {
+                        history.push(`${url}${id}`)
+                    }}
+                >
+                <Poster src={src} alt={title || name}/> 
+                <MovieDetailsWrapper>
+                    <TitleWrapper>
+                        {title || name}
+                    </TitleWrapper>
+                    <ReleaseWrapper>
+                        {moment(release_date || first_air_date).format('DD.MM.YYYY')}
+                    </ReleaseWrapper>
+                    <Rate 
+                        vote={vote_average}
+                        small={small}
+                    />
+                    
+                </MovieDetailsWrapper>                   
+                </PosterWrapper>
+            </Col>
         )
-    }
+    })
+
+    const spinnerDetails = loading ? <Spinner/> : movieItems;
+    const loadSpinner = loadingMore ? <LoadMoreSpinner/> : 'Загрузить еще';
+
+    return(
+        <Container className="mt-5">
+            <Row className="justify-content-center mx-auto text-center w-100">
+                {spinnerDetails}
+            </Row>
+            <Row className="justify-content-center mx-auto text-center w-100">
+                <Col>
+                <LoadMoreButton
+                    onClick={() => getMovies()}
+                >{loadSpinner}</LoadMoreButton>
+                </Col>
+            </Row>
+        </Container>
+    )   
 }
+
+export default MovieList;

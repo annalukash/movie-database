@@ -80,7 +80,7 @@ const Header = () => {
                     <Nav className="mr-auto">
                         <NavDropdown title="Люди" id="basic-nav-dropdown">
                             <LinkWrapper>
-                                <Link to='/person/popular/'>Популярные люди</Link>
+                                <Link to='/person/'>Популярные люди</Link>
                             </LinkWrapper>
                         </NavDropdown>
                     </Nav>

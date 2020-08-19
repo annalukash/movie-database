@@ -185,3 +185,5 @@ export default class MovieDetails extends Component {
         )
     }
 }
+
+export {BackgroundWrapper, ContainerWrapper}

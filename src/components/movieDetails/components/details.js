@@ -98,11 +98,9 @@ const CreatorNameWrapper = styled.div`
 const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, video, history}) => {
     const {poster_path, title, release_date, genres, runtime, vote_average, tagline, overview, name, first_air_date, episode_run_time, created_by} = details;
 
-    const genreItem = genres.map((genre, index) => {
-        return(
-            <span key={index}>{genre.name + `${index !== (genres.length - 1) ? ',' : ' '}`} </span>
-        )
-    })
+    const genreItem = genres.map(genre => genre.name);
+    const genreToString = genreItem.join(', ');
+
     let duration = (runtime || episode_run_time) ? moment.duration(runtime || episode_run_time[0], "minutes").format("h : m o").replace(':', 'h').replace('o', 'm') : null;
 
     const trailerButton = () => {
@@ -134,7 +132,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
                     <Row>
                         <Col className="col-auto px-0 pl-3">{moment(release_date || first_air_date).format('DD/MM/YYYY')} (US)</Col>
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
-                        <Col className="col-auto px-0">{genreItem}</Col>
+                        <Col className="col-auto px-0">{genreToString}</Col>
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
                         <Col className="col-auto px-0">{duration}</Col>
                     </Row>  
@@ -195,3 +193,4 @@ const TvCreator = ({creator, history}) => {
 }
 
 export default Details;
+export {ImgWrapper, Title, DetailsList, Vote, Overview};

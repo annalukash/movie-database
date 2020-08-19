@@ -16,9 +16,9 @@ export default class MoviesServices {
         return response;
     }
 
-    getMovieDetails = async (movieId) => {
+    getMovieDetails = async (movieId) => { 
         const response = await this.getResource(`/movie/${movieId}?`);
-        return response;
+        return response;   
     }
 
     getNowPlaying = async (page) => {
@@ -105,6 +105,21 @@ export default class MoviesServices {
 
     getTVOnTheAir = async (page) => {
         const response = await this.getResource(`/tv/on_the_air?page=${page}&`);
+        return response;
+    }
+
+    getPopularPerson = async (page) => {
+        const response = await this.getResource(`/person/popular?page=${page}&`);
+        return response;
+    }
+
+    getCollection = async (collectionId) => {
+        const response = await this.getResource(`/collection/${collectionId}?`);
+        return response;
+    }
+
+    getGenreList = async () => {
+        const response = await this.getResource(`/genre/movie/list?`);
         return response;
     }
 }

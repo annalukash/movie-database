@@ -8,6 +8,8 @@ import MoviesByKeyword from '../movieDetails/moviesByKeyword';
 import FullCast from '../movieDetails/fullCasts';
 import PersonBiography from '../movieDetails/personBiography';
 import {TVPopularPage, OnTheAirPage, TVTopRatedPage, AiringTodayPage} from '../TVPages';
+import PersonPage from '../personPage/personPage';
+import CollectionPage from '../collectionPage/collectionPage';
 
 
 export default class App extends Component {
@@ -18,6 +20,11 @@ export default class App extends Component {
                 <Header></Header>
                 <ScrollToTop>
                     <Switch>
+                        <Route exact path='/person' render={
+                            ({history}) => {
+                                return <PersonPage history={history}/>
+                            }
+                        }/>
                         <Route exact path='/movie/popular' render={
                             ({history}) => {
                                 return <PopularPage history={history}/>
@@ -36,6 +43,12 @@ export default class App extends Component {
                         <Route exact path='/movie/top-rated' render={
                             ({history}) => {
                                 return <TopRatedPage history={history}/>
+                            }
+                        }/>
+                        <Route exact path="/collection/:id" render={
+                            ({match, history}) => {
+                                const {id} = match.params;
+                                return <CollectionPage collectionId = {id} history={history}/>
                             }
                         }/>
                         <Route exact path="/movie/popular/:id" render={
@@ -106,6 +119,7 @@ export default class App extends Component {
                                 return <MovieDetails movieId = {id} history={history}/>
                             }
                         }/>
+                        
                         <Route exact path="/movie/:id/casts" render={
                             ({match, history}) => {
                                 const {id} = match.params;

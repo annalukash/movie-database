@@ -4,8 +4,8 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 
 const RateWrapper = styled.div`
-    width: ${props => props.small ? '44px' : '60px'};
-    height: ${props => props.small ? '44px' : '60px'};
+    width: ${props => props.small ? '44px' : '65px'};
+    height: ${props => props.small ? '44px' : '65px'};
     position: ${props => props.small ? 'absolute' : 'static'};
     top: -22px;
     left: 10px;

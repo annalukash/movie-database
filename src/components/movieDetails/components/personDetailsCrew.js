@@ -5,6 +5,8 @@ import moment from 'moment';
 import { useHistory } from "react-router-dom";
 import textEllipsis from 'text-ellipsis';
 import {CircleHover, MoviePreviewButton, Character, LikeCharacter, MovieTitle, ReleaseDate, MovieListItemWrapper, PopoverImgWrapper, PopoverPoster, PopoverContentWrapper, PopoverTitleWrapper, PopoverTitle, PopoverDescription, PopoverRate} from './personDetailsCasts';
+import MoviesServices from '../../../services/services';
+
 
 const PersonDetailsCrew = ({crew}) => {
     const noDateCrew = crew.filter((item) => !item.release_date && !item.first_air_date);
@@ -53,6 +55,19 @@ const HistoryItem = ({item, date, hasBorder}) => {
     const rate = item.vote_average.toFixed(1);
     const tvEpisodes = item.episode_count ? `(${item.episode_count} эпизодов)` : null;
     
+    const handleRouting = (id, type) => {
+        const moviesServices = new MoviesServices();
+        moviesServices.getMovieDetails(id)
+            .then((res) => {
+                debugger
+                if (res && res.status_code === 34) {
+                    history.push(`/collection/${id}`)
+                } else {
+                    history.push(`/${type}/${id}`)
+                }
+            })
+    }
+
     return (
         <MovieListItemWrapper hasBorder={hasBorder}>
                 <ReleaseDate>{date}</ReleaseDate>
@@ -73,13 +88,13 @@ const HistoryItem = ({item, date, hasBorder}) => {
                                     <PopoverPoster 
                                         src={src} 
                                         alt={item.title || item.name} 
-                                        onClick={() => {history.push(`/${item.media_type}/${item.id}`)}}
+                                        onClick={() => handleRouting(item.id, item.media_type)}
                                     />
                                 </PopoverImgWrapper>
                                 <PopoverContentWrapper>
                                     <PopoverTitleWrapper>
                                         <PopoverTitle
-                                            onClick={() => {history.push(`/${item.media_type}/${item.id}`)}}
+                                            onClick={() => handleRouting(item.id, item.media_type)}
                                         >{item.title || item.name}</PopoverTitle>
                                         <PopoverRate>
                                             <i className="fas fa-star"></i> {rate}
@@ -91,9 +106,7 @@ const HistoryItem = ({item, date, hasBorder}) => {
                         </Popover>
                     </Overlay>
                 <MovieTitle
-                    onClick={() => {
-                        history.push(`/${item.media_type}/${item.id}`)
-                    }}
+                    onClick={() => handleRouting(item.id, item.media_type)}
                 >{item.title || item.name}</MovieTitle>
                 <LikeCharacter> {tvEpisodes} ...</LikeCharacter>
                 <Character>{item.job}</Character>
