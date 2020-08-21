@@ -118,7 +118,8 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
     const showTrailer = video?.results.length === 0 ? null : trailerButton();
     const src = !poster_path ? '../../assets/poster.png' : ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path);
     const creator = history.location.pathname.includes('tv') ? <TvCreator creator={created_by} history={history}/> : null;
-
+    const releaseYear = release_date || first_air_date ? `(${moment(release_date || first_air_date).format('YYYY')})` : null;
+    const releaseDate = release_date || first_air_date ? moment(release_date || first_air_date).format('DD/MM/YYYY') : null;
     return(
         <>
             {modal}
@@ -126,11 +127,11 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
                 <ImgWrapper src={src} alt={title || name}/>
             </Col>
             <Col className='col-8 text-left px-0'>
-                <Title>{title || name} <Year>({moment(release_date || first_air_date).format('YYYY')})</Year>
+            <Title>{title || name} <Year>{releaseYear}</Year>
                 </Title>
                 <DetailsList>
                     <Row>
-                        <Col className="col-auto px-0 pl-3">{moment(release_date || first_air_date).format('DD/MM/YYYY')} (US)</Col>
+                        <Col className="col-auto px-0 pl-3">{releaseDate}</Col>
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
                         <Col className="col-auto px-0">{genreToString}</Col>
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>

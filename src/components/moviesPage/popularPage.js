@@ -17,6 +17,7 @@ export default class PopularPage extends Component {
     }
     
     componentWillMount() {
+        document.title = this.props.title;
         this.loadMovies();  
     }
 

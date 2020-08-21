@@ -33,7 +33,8 @@ export default class MovieDetails extends Component {
             keywords: null,
             loadingKeywords: true,
             modalWindow: false,
-            video: null
+            video: null,
+            socialLink: {}
         }
         this.moviesServices = new MoviesServices();
     }
@@ -47,11 +48,13 @@ export default class MovieDetails extends Component {
             this.getTVCast(movieId);
             this.getTVKeywords(movieId);
             this.getTVVideos(movieId);
+            this.getTVSocailLink(movieId);
         } else {
             this.getMovieDetails(movieId);
             this.getCast(movieId);
             this.getKeywords(movieId);
             this.getVideos(movieId);
+            this.getMovieSocailLink(movieId)
         }  
     }
 
@@ -111,6 +114,26 @@ export default class MovieDetails extends Component {
             })
     }
 
+    getMovieSocailLink = (id) => {
+        this.moviesServices.getMovieExternalIds(id)
+            .then((response) => {
+                this.onLinkLoading(response)
+            })
+    }
+
+    getTVSocailLink = (id) => {
+        this.moviesServices.getTVExternalIds(id)
+            .then((response) => {
+                this.onLinkLoading(response)
+            })
+    }
+
+    onLinkLoading = (response) => {
+        this.setState({
+            socialLink: response
+        })
+    }
+
     onLoadingDetails = (response) => {
         this.setState({
             details: response,
@@ -151,11 +174,11 @@ export default class MovieDetails extends Component {
     }
 
     render() {
-        const {details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video} = this.state;
+        const {details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink} = this.state;
         const {movieId, keywordId, history} = this.props;
 
         const spinnerDetails = loading ? <Spinner/> : <Details details={details} movieId={movieId} video={video} history={history} onOpenModal={this.onOpenModal} modalWindow={modalWindow} onCloseModal={this.onCloseModal}/>;
-        const spinnerOriginal = loading ? <Spinner/> : <OriginalDetails details={details} history={history}/>;
+        const spinnerOriginal = loading ? <Spinner/> : <OriginalDetails details={details} history={history} socialLink={socialLink}/>;
         const spinnerCast = loadingCast ? <Spinner/> : <Cast casts={casts} id={movieId} history={history}/>;
         const spinnerKeywords = loadingKeywords ? <Spinner/> : <Keywords keyword={keywords} history={this.props.history} keywordId={keywordId} url={'keywords'}/>
 

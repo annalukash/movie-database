@@ -17,7 +17,8 @@ export default class TopRatedPage extends Component {
     }
     
     componentWillMount() {
-       this.loadMovies();
+        document.title = this.props.title;
+        this.loadMovies();
     }
 
     onLoading = (response) => {

@@ -26,7 +26,8 @@ const NavCollapseWrapper = styled.div`
 
 
 
-const Header = () => {
+const Header = ({title}) => {
+    document.title = title;
     return(
         <Navbar bg="light" expand="lg">
             <Navbar.Brand>

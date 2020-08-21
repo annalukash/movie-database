@@ -15,9 +15,10 @@ import CollectionPage from '../collectionPage/collectionPage';
 export default class App extends Component {
 
     render() {
+        document.title = 'test'
         return(
             <Router>
-                <Header></Header>
+                <Header title='Movie Database'></Header>
                 <ScrollToTop>
                     <Switch>
                         <Route exact path='/person' render={
@@ -27,22 +28,22 @@ export default class App extends Component {
                         }/>
                         <Route exact path='/movie/popular' render={
                             ({history}) => {
-                                return <PopularPage history={history}/>
+                                return <PopularPage history={history} title='Популярные фильмы'/>
                             }
                         }/>
                         <Route exact path='/movie/playing-now' render={
                             ({history}) => {
-                                return <PlayingNowPage history={history}/>
+                                return <PlayingNowPage history={history} title='Сейчас смотрят фильмы'/>
                             }
                         }/>
                         <Route exact path='/movie/upcoming' render={
                             ({history}) => {
-                                return <UpcomingPage history={history}/>
+                                return <UpcomingPage history={history} title='Ожидамые фильмы'/>
                             }
                         }/>
                         <Route exact path='/movie/top-rated' render={
                             ({history}) => {
-                                return <TopRatedPage history={history}/>
+                                return <TopRatedPage history={history} title='Лучшие фильмы'/>
                             }
                         }/>
                         <Route exact path="/collection/:id" render={

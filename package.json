@@ -19,6 +19,7 @@
     "react-dom": "^16.13.1",
     "react-elastic-carousel": "^0.6.4",
     "react-ellipsis-text": "^1.2.1",
+    "react-helmet": "^6.1.0",
     "react-items-carousel": "^2.8.0",
     "react-multi-carousel": "^2.5.5",
     "react-onclickoutside": "^6.9.0",

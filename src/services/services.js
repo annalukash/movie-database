@@ -18,6 +18,9 @@ export default class MoviesServices {
 
     getMovieDetails = async (movieId) => { 
         const response = await this.getResource(`/movie/${movieId}?`);
+        if (response && response.status_code === 34) {
+            return this.getTVDetails(movieId)
+        }
         return response;   
     }
 
@@ -120,6 +123,21 @@ export default class MoviesServices {
 
     getGenreList = async () => {
         const response = await this.getResource(`/genre/movie/list?`);
+        return response;
+    }
+
+    getMovieExternalIds = async (movieId) => {
+        const response = await this.getResource(`/movie/${movieId}/external_ids?`);
+        return response;
+    }
+
+    getTVExternalIds = async (tvId) => {
+        const response = await this.getResource(`/tv/${tvId}/external_ids?`);
+        return response;
+    }
+
+    getPersonExternalIds = async (personId) => {
+        const response = await this.getResource(`/person/${personId}/external_ids?`);
         return response;
     }
 }

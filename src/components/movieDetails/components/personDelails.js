@@ -8,6 +8,7 @@ import Carousel from 'react-elastic-carousel';
 import { useHistory } from "react-router-dom";
 import EllipsisText from "react-ellipsis-text";
 import MoviesServices from '../../../services/services';
+import {Overlay, LinkIconWrapper, Link} from './originalDetails';
 
 const CarouselWrapper = styled.div`
     position: relative;
@@ -150,7 +151,8 @@ const ReadMoreButton = styled.button`
 `;
 
 
-const PersonDetails = ({person, cast, crew}) => {
+const PersonDetails = ({person, cast, crew, socialLink}) => {
+    const {facebook_id, instagram_id, twitter_id} = socialLink;
     const history = useHistory();
     const [isOpen, setOpen] = useState(false);
     const [elementHeight, setElementHeight] = useState(0);
@@ -181,10 +183,37 @@ const PersonDetails = ({person, cast, crew}) => {
     const filmCrew = crew.length !== 0 ? <CrewByDepartments crew={crew}/> : null;
     const famousCast = cast.length !== 0 ? <FamousCast cast={cast} history={history}/> : null;
 
+    const facebook = (
+        <Link href={`https://www.facebook.com/${facebook_id}`} target='_blank' rel="noopener noreferrer">
+            <i className="fab fa-facebook-f"></i>
+        </Link>
+    )
+
+    const twitter = (
+        <Link href={`https://twitter.com/${twitter_id}`} target='_blank' rel="noopener noreferrer">
+            <i className="fab fa-twitter"></i>
+        </Link>
+    )
+
+    const instagram = (
+        <Link href={`https://www.instagram.com/${instagram_id}`} target='_blank' rel="noopener noreferrer">
+            <i className="fab fa-instagram"></i>
+        </Link>
+    )
+
+    const overlayFacebook = facebook_id ? <Overlay logo={facebook} page={'Facebook'}/> : null;
+    const overlayTwitter = twitter_id ?  <Overlay logo={twitter} page={'Twitter'}/> : null;
+    const overlayInstagram = instagram_id ? <Overlay logo={instagram} page={'Instagram'}/> : null;
+
     return (
         <>
             <Col className="col-4">
                 <ImgWrapper src={src} alt={person.name}/>
+                <LinkIconWrapper>
+                    {overlayFacebook}
+                    {overlayTwitter}
+                    {overlayInstagram}
+                </LinkIconWrapper>
                 <PersonalInfo>Персональная информация</PersonalInfo>
                 <PersonalInfoItemTitle>Известность за
                     <PersonalInfoItemSubtitle>{person.known_for_department}</PersonalInfoItemSubtitle>
@@ -240,38 +269,38 @@ const FamousCast = ({cast, history}) => {
         )
     }
 
-    const handleRouting = (id) => {
+    const handleRouting = (id, type) => {
         const moviesServices = new MoviesServices();
         moviesServices.getMovieDetails(id)
             .then((res) => {
-                debugger
-                if (res && !res.success) {
+                if (res && res.status_code === 34) {
                     history.push(`/collection/${id}`)
                 } else {
-                    history.push(`/movie/${id}`)
+                    history.push(`/${type}/${id}`)
                 }
             })
     }
 
     let carousel;
 
-    const castItem = cast.map((item, index) => {
-        let src = item.poster_path ? ('https://image.tmdb.org/t/p/w150_and_h225_bestv2' + item.poster_path) : '../../assets/poster.png';
-        return (
-            <CastItemWrapper key={index}>
-                <CastImg 
-                    src={src} 
-                    alt={item.name || item.title} 
-                    onClick={() => handleRouting(item.id)}
-                />
-                <CastName
-                    onClick={() => handleRouting(item.id)}
-                >
-                    <EllipsisText text={item.name || item.title} length={13}/>
-                </CastName>
-            </CastItemWrapper>
-        )
-    }).filter((item, index) => index <= 7)
+    const castItem = cast.filter((item, index) => index <= 7)
+        .map((item, index) => {
+            let src = item.poster_path ? ('https://image.tmdb.org/t/p/w150_and_h225_bestv2' + item.poster_path) : '../../assets/poster.png';
+            return (
+                <CastItemWrapper key={index}>
+                    <CastImg 
+                        src={src} 
+                        alt={item.name || item.title} 
+                        onClick={() => handleRouting(item.id, item.media_type)}
+                    />
+                    <CastName
+                        onClick={() => handleRouting(item.id, item.media_type)}
+                    >
+                        <EllipsisText text={item.name || item.title} length={13}/>
+                    </CastName>
+                </CastItemWrapper>
+            )
+        });
 
     return (
         <>
