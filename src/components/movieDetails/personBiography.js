@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Spinner from '../spinner/spinner';
+import Spinner from '../shared/spinner/spinner';
 import MoviesServices from '../../services/services';
 import { Row, Container } from 'react-bootstrap';
 import {PersonDetails} from './components';

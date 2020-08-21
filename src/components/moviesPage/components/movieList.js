@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Row, Col, Container } from 'react-bootstrap';
-import Spinner from '../../spinner/spinner';
+import Spinner from '../../shared/spinner/spinner';
 import Rate from '../../shared/rate';
 import moment from 'moment';
-import LoadMoreSpinner from '../../spinner/loadMoreSpinner';
+import LoadMoreSpinner from '../../shared/spinner/loadMoreSpinner';
 
 const PosterWrapper = styled.div`
     border: 1px solid rgb(227, 227, 227);

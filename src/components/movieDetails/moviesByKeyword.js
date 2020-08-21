@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import MoviesServices from '../../services/services';
-import Spinner from '../spinner/spinner';
-import LoadMoreSpinner from '../spinner/loadMoreSpinner';
+import Spinner from '../shared/spinner/spinner';
+import LoadMoreSpinner from '../shared/spinner/loadMoreSpinner';
 import {MovieListByKeywords} from './components';
 
 const MovieListWrapper = styled.div`

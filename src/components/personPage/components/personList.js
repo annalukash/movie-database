@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Row, Col, Container } from 'react-bootstrap';
-import Spinner from '../../spinner/spinner';
+import Spinner from '../../shared/spinner/spinner';
 import EllipsisText from "react-ellipsis-text";
 import { Pagination } from '@material-ui/lab';
 

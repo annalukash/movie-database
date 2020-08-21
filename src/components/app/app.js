@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Header from '../header/header';
+import Header from '../shared/header/header';
 import {PopularPage, PlayingNowPage, TopRatedPage, UpcomingPage} from '../moviesPage';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import MovieDetails from '../movieDetails/movieDetails';
-import ScrollToTop from '../scrollToTop/scrollToTop';
+import ScrollToTop from '../shared/scrollToTop/scrollToTop';
 import MoviesByKeyword from '../movieDetails/moviesByKeyword';
 import FullCast from '../movieDetails/fullCasts';
 import PersonBiography from '../movieDetails/personBiography';

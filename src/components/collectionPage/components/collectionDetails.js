@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Container, Row, Col } from 'react-bootstrap';
 import {ImgWrapper, Title, DetailsList, Vote, Overview} from '../../movieDetails/components/details';
 import Rate from '../../shared/rate';
-import Spinner from '../../spinner/spinner';
+import Spinner from '../../shared/spinner/spinner';
 import {BackgroundWrapper, ContainerWrapper} from '../../movieDetails/movieDetails';
 import CollectionCast from './collectionCast';
 

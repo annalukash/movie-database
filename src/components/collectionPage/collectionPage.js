@@ -1,7 +1,7 @@
 import React, { Component }  from 'react';
 import MoviesServices from '../../services/services';
 import CollectionDetails from './components/collectionDetails';
-import Spinner from '../spinner/spinner';
+import Spinner from '../shared/spinner/spinner';
 
 
 export default class CollectionPage extends Component {

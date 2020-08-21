@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import MoviesServices from '../../services/services';
 import { Row, Col, Container } from 'react-bootstrap';
-import Spinner from '../spinner/spinner';
+import Spinner from '../shared/spinner/spinner';
 import moment from 'moment';
 import {Actors, Crew} from './components';
 
