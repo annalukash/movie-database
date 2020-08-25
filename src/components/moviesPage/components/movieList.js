@@ -58,7 +58,7 @@ const LoadMoreButton = styled.button`
     }
 `;
 
-const MovieList = ({movies, loading, loadingMore, small, url, getMovies, history}) => {
+const MovieList = ({movies, loading, loadingMore, url, getMovies, history}) => {
     const movieItems = movies.map((item, index) => {
         const {title, poster_path, release_date, vote_average, id, name, first_air_date} = item;
         const src = poster_path ? ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path) : '../../assets/poster.png';
@@ -80,7 +80,7 @@ const MovieList = ({movies, loading, loadingMore, small, url, getMovies, history
                     </ReleaseWrapper>
                     <Rate 
                         vote={vote_average}
-                        small={small}
+                        small
                     />
                     
                 </MovieDetailsWrapper>                   
@@ -88,7 +88,6 @@ const MovieList = ({movies, loading, loadingMore, small, url, getMovies, history
             </Col>
         )
     })
-
     const spinnerDetails = loading ? <Spinner/> : movieItems;
     const loadSpinner = loadingMore ? <LoadMoreSpinner/> : 'Загрузить еще';
 
