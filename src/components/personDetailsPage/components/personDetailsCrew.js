@@ -1,143 +1,26 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import moment from 'moment';
 import { useHistory } from "react-router-dom";
 import textEllipsis from 'text-ellipsis';
+import {CircleHover, MoviePreviewButton, Character, LikeCharacter, MovieTitle, ReleaseDate, MovieListItemWrapper, PopoverImgWrapper, PopoverPoster, PopoverContentWrapper, PopoverTitleWrapper, PopoverTitle, PopoverDescription, PopoverRate} from './personDetailsCasts';
 import MoviesServices from '../../../services/services';
 
-const MovieListItemWrapper = styled.div`
-    border-bottom: ${props => !props.hasBorder ? '1px solid rgb(227, 227, 227)' : 'none'};
-    font-size: 16px;
-    color: #000;
-    display: flex;
-    align-items: center;
-`;
-
-const ReleaseDate = styled.div`   
-    font-weight: 400;
-    padding: 8px 16px;
-    width: 70px;
-    text-align: center;
-`;
-
-const MovieTitle = styled.div`
-    font-weight: 600;
-    padding: 8px 0 8px 16px;
-    cursor: pointer;
-`;
-
-const LikeCharacter = styled.div`
-    opacity: 0.5;
-    padding: 0 8px;
-`;
-
-const Character = styled.div`
-    opacity: 0.8;
-    padding: 8px 16px 8px 0;
-`;
-
-const MoviePreviewButton = styled.div`
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 1px solid #000;
-    cursor: pointer;
-    position: relative;
-
-    .popover-body {
-        width: 535px;
-        background-color: rgb(3, 37, 65);
-        color: #fff;
-        border-radius: 4px;
-        display: flex;
-        justify-content: space-around;
-        cursor: default;
-        padding: 13px;
-    }
-
-    .bs-popover-top > .arrow::after, .bs-popover-auto[x-placement^="top"] > .arrow::after{
-        border-top-color: rgb(3, 37, 65);
-    }
-`;
-
-const CircleHover = styled.div`
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #000;
-    opacity: ${(props) => props.show ? 1 : 0};
-    transition: opacity 200ms;
-
-    &:hover {
-        opacity: 1;
-    }
-`;
-
-const PopoverImgWrapper = styled.div``;
-
-const PopoverPoster = styled.img`
-    width: 94px;
-    height: 141px;
-    border-radius: 8px;
-    cursor: pointer;
-`;
-
-const PopoverContentWrapper = styled.div`
-    padding-left: 20px;
-`;
-
-const PopoverTitleWrapper = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const PopoverTitle = styled.div`
-    font-size: 24px;
-    font-weight: 700;
-    cursor: pointer;
-`;
-
-const PopoverDescription = styled.div`
-    font-size: 14.4px;
-    line-height: 21.6px;
-`;
-
-const PopoverRate = styled.div`
-    background-color: rgb(1, 180, 228);
-    padding: 4px 8px;
-    font-size: 14.4px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin-left: 10px;
-
-    & i {
-        font-size: 10px;
-        margin-right: 3px;
-    }
-`;
 
 
-const PersonDetailsCasts = ({cast}) => {
-    const noDateCasts = cast.filter((item) => !item.release_date && !item.first_air_date);
-    const releaseDateCasts = cast.filter((item) => item.release_date || item.first_air_date);
-    const sortedCast = releaseDateCasts.sort((a, b) => {
+const PersonDetailsCrew = ({crew}) => {
+    const noDateCrew = crew.filter((item) => !item.release_date && !item.first_air_date);
+    const releaseDateCrew = crew.filter((item) => item.release_date || item.first_air_date);
+    const sortedCrew = releaseDateCrew.sort((a, b) => {
         const previous = new Date(a.release_date || a.first_air_date);
         const current = new Date(b.release_date || b.first_air_date);
         return current - previous;
     });
-
-    const allCasts = [...noDateCasts, ...sortedCast];
     
-    const castItem = allCasts.map((item, index, arr) => {
+    const allCrews = [...noDateCrew, ...sortedCrew];
+    
+    const crewItem = allCrews.map((item, index, arr) => {
         if (item.title || item.name) {
             const releaseDate = item.release_date || item.first_air_date;
             const fullDateToYear = moment(releaseDate).format('YYYY');
@@ -153,8 +36,10 @@ const PersonDetailsCasts = ({cast}) => {
             )
         }
     })
-    return castItem;
+
+    return crewItem;
 }
+
 
 const HistoryItem = ({item, date, hasBorder}) => {
     const history = useHistory();
@@ -170,11 +55,12 @@ const HistoryItem = ({item, date, hasBorder}) => {
     const src = item.poster_path ? ('https://image.tmdb.org/t/p/w94_and_h141_bestv2' + item.poster_path) : '../../assets/poster.png';
     const rate = item.vote_average.toFixed(1);
     const tvEpisodes = item.episode_count ? `(${item.episode_count} эпизодов)` : null;
-  
+    
     const handleRouting = (id, type) => {
         const moviesServices = new MoviesServices();
         moviesServices.getMovieDetails(id)
             .then((res) => {
+                debugger
                 if (res && res.status_code === 34) {
                     history.push(`/collection/${id}`)
                 } else {
@@ -223,8 +109,8 @@ const HistoryItem = ({item, date, hasBorder}) => {
                 <MovieTitle
                     onClick={() => handleRouting(item.id, item.media_type)}
                 >{item.title || item.name}</MovieTitle>
-                <LikeCharacter> {tvEpisodes} как</LikeCharacter>
-                <Character>{item.character}</Character>
+                <LikeCharacter> {tvEpisodes} ...</LikeCharacter>
+                <Character>{item.job}</Character>
             </MovieListItemWrapper>
     );
 }
@@ -233,5 +119,5 @@ const yearFormatter = (date) => {
     return moment(date).format('YYYY');
 }
 
-export default PersonDetailsCasts;
-export {CircleHover, MoviePreviewButton, Character, LikeCharacter, MovieTitle, ReleaseDate, MovieListItemWrapper, PopoverImgWrapper, PopoverPoster, PopoverContentWrapper, PopoverTitleWrapper, PopoverTitle, PopoverDescription, PopoverRate};
+
+export default PersonDetailsCrew;

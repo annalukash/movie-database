@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import MoviesServices from '../../services/services';
 import Spinner from '../shared/spinner/spinner';
 import LoadMoreSpinner from '../shared/spinner/loadMoreSpinner';
-import {MovieListByKeywords} from './components';
+import MovieListByKeywords from './components/movieListByKeywords';
 
 const MovieListWrapper = styled.div`
     display: flex;

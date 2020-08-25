@@ -13,7 +13,8 @@ export default class CollectionPage extends Component {
             loading: true,
             genresObj: {},
             cast: [],
-            crew: []
+            crew: [],
+            revenue: 0
         }     
     }
     
@@ -27,8 +28,10 @@ export default class CollectionPage extends Component {
         this.moviesServices.getCollection(collectionId)
             .then((res) => { 
                 if (res) {
-                    this.onLoading(res)
-                    this.getCast(res)
+                    const movieIds = res.parts.map(part => part.id);
+                    this.onLoading(res);
+                    this.getCast(res);
+                    this.getMovieDetails(movieIds);
                 }
             })
     }
@@ -53,6 +56,26 @@ export default class CollectionPage extends Component {
         })
     }
 
+    getMovieDetails = (ids) => {
+        const total = [];
+        ids.forEach(id => {
+            this.moviesServices.getMovieDetails(id)
+            .then((response) => {
+                if (response) {
+                    total.push(response.revenue);
+                    this.onLoadingDetails(total);
+                }
+            })
+        })
+    }
+
+    onLoadingDetails = (total) => {
+        const totalRevenue = total.reduce((sum, current) => sum + current, 0)
+        this.setState({
+            revenue: totalRevenue
+        })
+    }
+
     getCast = (collection) => {
         const ids = collection.parts.map(part => part.id)
         this.moviesServices.getCast(ids)
@@ -70,7 +93,7 @@ export default class CollectionPage extends Component {
     }
 
     render() {
-        const {collection, loading, genresObj, cast, crew} = this.state;
+        const {collection, loading, genresObj, cast, crew, revenue} = this.state;
         const {history} = this.props;
         const template = loading ? <Spinner/> : <CollectionDetails 
                                                     collection={collection} 
@@ -79,6 +102,7 @@ export default class CollectionPage extends Component {
                                                     genre={genresObj}
                                                     cast={cast}
                                                     crew={crew}
+                                                    revenue={revenue}
                                                 />
         
         return(

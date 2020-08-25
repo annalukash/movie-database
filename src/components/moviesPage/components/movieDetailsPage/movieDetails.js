@@ -1,25 +1,20 @@
 import React, {Component} from 'react';
-import Spinner from '../shared/spinner/spinner';
-import MoviesServices from '../../services/services';
+import Spinner from '../../../shared/spinner/spinner';
+import MoviesServices from '../../../../services/services';
 import { Row, Col, Container } from 'react-bootstrap';
 import styled from 'styled-components';
-import {Cast, Details, OriginalDetails, Keywords} from './components';
+import {Cast, Details, OriginalDetails, Keywords, Collection} from './components';
 
 const BackgroundWrapper = styled.div`
+    background-image: linear-gradient(315deg, rgba(233, 188, 183, 0.7) 0%, rgba(41, 82, 74, 0.8) 74%), ${props => `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${props.backdrop})`};
     background-size: cover;
     background-repeat: no-repeat;
     background-position: right;
-`
-
-const ContainerWrapper = styled.div`
-    background-image: linear-gradient(to right, rgba(12.94%, 14.90%, 22.75%, 1.00) 150px, rgba(20.39%, 22.35%, 29.02%, 0.84) 100%);
-    background-repeat: no-repeat;
-    background-size: cover;
     min-width: 100%;
     color: #fff;
     font-family: 'Source Sans Pro';
-`;
-
+    background-color: #e9bcb7;
+`
 
 export default class MovieDetails extends Component {
     constructor(props) {
@@ -34,7 +29,8 @@ export default class MovieDetails extends Component {
             loadingKeywords: true,
             modalWindow: false,
             video: null,
-            socialLink: {}
+            socialLink: {},
+            collection: {}
         }
         this.moviesServices = new MoviesServices();
     }
@@ -61,7 +57,10 @@ export default class MovieDetails extends Component {
     getMovieDetails = (movieId) => {
         this.moviesServices.getMovieDetails(movieId)
             .then((response) => {
-                this.onLoadingDetails(response)
+                this.onLoadingDetails(response);
+                if (response && response.belongs_to_collection) {
+                    this.getCollectionDetails(response.belongs_to_collection.id)
+                }  
             })
     }
 
@@ -128,12 +127,26 @@ export default class MovieDetails extends Component {
             })
     }
 
+    getCollectionDetails = (id) => {
+        this.moviesServices.getCollection(id)
+            .then((response) => {
+                this.onCollectionLoading(response)
+            })
+    }
+
+    onCollectionLoading = (response) => {
+        this.setState({
+            collection: response
+        })
+    }
+
     onLinkLoading = (response) => {
         this.setState({
             socialLink: response
         })
     }
 
+    
     onLoadingDetails = (response) => {
         this.setState({
             details: response,
@@ -173,34 +186,46 @@ export default class MovieDetails extends Component {
         })
     }
 
+    showCollection = (isBelongToCollection) => {
+        const {history} = this.props;
+        const {details, collection} = this.state;
+
+        if (this.state.loading) {
+            return <Spinner/>
+        } else if (isBelongToCollection) {
+            return <Collection details={details} history={history} collection={collection}/>
+        } else {
+            return null
+        }
+    }
+
     render() {
         const {details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink} = this.state;
         const {movieId, keywordId, history} = this.props;
 
-        const spinnerDetails = loading ? <Spinner/> : <Details details={details} movieId={movieId} video={video} history={history} onOpenModal={this.onOpenModal} modalWindow={modalWindow} onCloseModal={this.onCloseModal}/>;
-        const spinnerOriginal = loading ? <Spinner/> : <OriginalDetails details={details} history={history} socialLink={socialLink}/>;
-        const spinnerCast = loadingCast ? <Spinner/> : <Cast casts={casts} id={movieId} history={history}/>;
-        const spinnerKeywords = loadingKeywords ? <Spinner/> : <Keywords keyword={keywords} history={this.props.history} keywordId={keywordId} url={'keywords'}/>
+        const detail = loading ? <Spinner/> : <Details details={details} movieId={movieId} video={video} history={history} onOpenModal={this.onOpenModal} modalWindow={modalWindow} onCloseModal={this.onCloseModal}/>;
+        const original = loading ? <Spinner/> : <OriginalDetails details={details} history={history} socialLink={socialLink}/>;
+        const cast = loadingCast ? <Spinner/> : <Cast casts={casts} id={movieId} history={history}/>;
+        const keyword = loadingKeywords ? <Spinner/> : <Keywords keyword={keywords} history={this.props.history} keywordId={keywordId} url={'keywords'}/>;
 
         return(
             <>
-                <BackgroundWrapper style={{backgroundImage: loading ? <Spinner/> : `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${details.backdrop_path})`}}>
-                    <ContainerWrapper>
+                <BackgroundWrapper backdrop={details?.backdrop_path}>
                         <Container className="w-100">
                             <Row className="justify-content-center mx-auto text-center w-100 align-items-center py-4">
-                                {spinnerDetails}
+                                {detail}
                             </Row>
                         </Container> 
-                    </ContainerWrapper> 
                 </BackgroundWrapper> 
                 <Container className="mt-4 mb-5">
                     <Row>
                         <Col className="col-8">
-                            {spinnerCast}
+                            {cast}
+                            {this.showCollection(details?.belongs_to_collection)}
                         </Col>
                         <Col className="col-4">
-                            <Row>{spinnerOriginal}</Row>
-                            <Row className="flex-column">{spinnerKeywords}</Row>
+                            <Row>{original}</Row>
+                            <Row className="flex-column">{keyword}</Row>
                         </Col>                       
                     </Row>
                 </Container>
@@ -209,4 +234,4 @@ export default class MovieDetails extends Component {
     }
 }
 
-export {BackgroundWrapper, ContainerWrapper}
+export {BackgroundWrapper}

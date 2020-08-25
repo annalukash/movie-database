@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import Header from '../shared/header/header';
 import {PopularPage, PlayingNowPage, TopRatedPage, UpcomingPage} from '../moviesPage';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import MovieDetails from '../movieDetails/movieDetails';
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import MovieDetails from '../moviesPage/components/movieDetailsPage/movieDetails';
 import ScrollToTop from '../shared/scrollToTop/scrollToTop';
-import MoviesByKeyword from '../movieDetails/moviesByKeyword';
-import FullCast from '../movieDetails/fullCasts';
-import PersonBiography from '../movieDetails/personBiography';
+import MoviesByKeyword from '../moviesByKeywordsPage/moviesByKeyword';
+import FullCast from '../fullCastPage/castsPage';
+import PersonBiography from '../personDetailsPage/personBiography';
 import {TVPopularPage, OnTheAirPage, TVTopRatedPage, AiringTodayPage} from '../TVPages';
-import PersonPage from '../personPage/personPage';
+import PersonPage from '../popularPersonPage/popularPersonPage';
 import CollectionPage from '../collectionPage/collectionPage';
+import ErrorPageNotFound from '../errorComponent/ErrorPageNotFound';
 
 
 export default class App extends Component {
@@ -156,8 +157,7 @@ export default class App extends Component {
                                 const {id} = match.params;
                                 return <PersonBiography personId = {id}/>
                             }
-                        }/>
-                        
+                        }/> 
                     </Switch>
                 </ScrollToTop>
             </Router>

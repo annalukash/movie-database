@@ -4,6 +4,8 @@ import Carousel from 'react-elastic-carousel';
 
 const CarouselWrapper = styled.div`
     position: relative;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgb(215, 215, 215);
 
     .rec.rec-slider-container {
         margin: 0;
@@ -118,23 +120,24 @@ const Cast = ({casts, id, history}) => {
         return previous - current;
     })
 
-    const castItem = sortedByOrderCasts.map((item, index) => {
-        let src = item.profile_path ? ('https://image.tmdb.org/t/p/w138_and_h175_face' + item.profile_path) : '../../assets/avatar.png';
-        return (
-            <CastItemWrapper key={index}>
-                <CastImg 
-                    src={src} 
-                    alt={item.name} 
-                    onClick={() => onGoPersonBio(item.id)}
-                />
-                <CastName
-                    onClick={() => onGoPersonBio(item.id)}
-                >{item.name}</CastName>
-                <CastCharacter>{item.character}</CastCharacter>
-            </CastItemWrapper>
-            
-        )
-    }).filter((item, index) => index <= 7)
+    const castItem = sortedByOrderCasts.filter((item, index) => index <= 7)
+        .map((item, index) => {
+            let src = item.profile_path ? ('https://image.tmdb.org/t/p/w138_and_h175_face' + item.profile_path) : '../../assets/avatar.png';
+            return (
+                <CastItemWrapper key={index}>
+                    <CastImg 
+                        src={src} 
+                        alt={item.name} 
+                        onClick={() => onGoPersonBio(item.id)}
+                    />
+                    <CastName
+                        onClick={() => onGoPersonBio(item.id)}
+                    >{item.name}</CastName>
+                    <CastCharacter>{item.character}</CastCharacter>
+                </CastItemWrapper>
+                
+            )
+        });
 
     let carousel;
     return (

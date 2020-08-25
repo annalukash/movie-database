@@ -4,7 +4,7 @@ import MoviesServices from '../../services/services';
 import { Row, Col, Container } from 'react-bootstrap';
 import Spinner from '../shared/spinner/spinner';
 import moment from 'moment';
-import {Actors, Crew} from './components';
+import {Actors, Crew} from './components/fullCastList';
 
 
 const HeaderWrapper = styled.div`

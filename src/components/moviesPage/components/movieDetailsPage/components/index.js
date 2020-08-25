@@ -3,9 +3,7 @@ import Details from './details';
 import OriginalDetails from './originalDetails';
 import Keywords from './keywords';
 import ModalWindow from './modalWindow';
-import MovieListByKeywords from './movieListByKeywords';
-import {Actors, Crew} from './fullCastList';
-import PersonDetails from './personDelails';
+import Collection from './collection';
 
 export {
     Cast,
@@ -13,8 +11,5 @@ export {
     OriginalDetails,
     Keywords,
     ModalWindow,
-    MovieListByKeywords,
-    Actors,
-    Crew,
-    PersonDetails
+    Collection
 }

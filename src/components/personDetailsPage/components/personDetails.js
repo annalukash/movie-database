@@ -2,13 +2,12 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Col } from 'react-bootstrap';
 import moment from 'moment';
-import PersonDetailsCasts from './personDetailsCasts';
-import CrewByDepartments from './crewByDepartments';
+import {PersonDetailsCasts, CrewByDepartments} from './index';
 import Carousel from 'react-elastic-carousel';
 import { useHistory } from "react-router-dom";
 import EllipsisText from "react-ellipsis-text";
 import MoviesServices from '../../../services/services';
-import {Overlay, LinkIconWrapper, Link} from './originalDetails';
+import {Overlay, LinkIconWrapper, Link} from '../../moviesPage/components/movieDetailsPage/components/originalDetails';
 
 const CarouselWrapper = styled.div`
     position: relative;
@@ -87,6 +86,7 @@ const ImgWrapper = styled.img`
 const DescriptionWrapper = styled.div`
     max-width: 890px;
     width: 100%;
+    position: relative;
 `;
 
 const TitleWrapper = styled.div`
@@ -107,6 +107,7 @@ const BioContent = styled.div`
     height: ${props => (props.mainHeight && props.childRef > 200) ? '200px' : 'auto' };
     overflow: hidden;  
     transition: height 200ms;
+    text-align: justify;
 
     &.open {
         height: ${props => props.childRef + 'px'};
@@ -133,23 +134,36 @@ const AlsoKnowWrapper = styled.div`
     margin-top: 8px;
 `;
 
-const MovieListWrapper = styled.div``;
-
-const DepartmentListTitle = styled.div`
-    font-size:20.8px;
-    font-weight:600;
-    margin: 10px 0;
-`;
-
-const MovieListContent = styled.div`
-    box-shadow:rgba(0, 0, 0, 0.1) 0px 2px 8px 0px;
-    border: 1px solid rgb(227, 227, 227);
-`;
-
 const ReadMoreButton = styled.button`
-    display: ${props => (props.mainHeight && props.childRef > 200) ? 'block' : 'none'};
-`;
+    max-width: 111px;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    color: rgb(1, 180, 228);
+    font-size: 16px;
+    font-weight: 600;
+    position: absolute;
+    right: 0;
+    display: ${props => (props.mainHeight && props.childRef > 200) ? 'flex' : 'none'};
+    align-items: baseline;
+    justify-content: space-between;
 
+    &:focus {
+        outline: none;
+    }
+
+    &:hover {
+        color: rgb(30, 213, 169);
+    }
+
+    &:hover i {
+        color: rgb(1, 180, 228); 
+    }
+
+    i {
+        font-size: 14px;
+    }
+`;
 
 const PersonDetails = ({person, cast, crew, socialLink}) => {
     const {facebook_id, instagram_id, twitter_id} = socialLink;
@@ -179,7 +193,7 @@ const PersonDetails = ({person, cast, crew, socialLink}) => {
     const ageAlive = !person.birthday ? ' ' : person.deathday ? null : (`(${moment().diff(`${person.birthday}`, 'years')} лет)`);
     const ageDead = moment([person.deathday]).diff( moment([person.birthday]) , 'years');
     const dateOfDeath = !person.deathday ? null : <PersonalInfoItemTitle>Дата смерти<PersonalInfoItemSubtitle>{person.deathday} ({ageDead} лет)</PersonalInfoItemSubtitle></PersonalInfoItemTitle>;
-    const acting = cast.length !== 0 ? <Acting cast={cast}/> : null;
+    const acting = cast.length !== 0 ? <PersonDetailsCasts cast={cast}/> : null;
     const filmCrew = crew.length !== 0 ? <CrewByDepartments crew={crew}/> : null;
     const famousCast = cast.length !== 0 ? <FamousCast cast={cast} history={history}/> : null;
 
@@ -245,7 +259,9 @@ const PersonDetails = ({person, cast, crew, socialLink}) => {
                             childRef={elementHeight}
                             mainHeight={person.biography}
                             onClick={onOpen}
-                        >Read more</ReadMoreButton>
+                        >
+                            Читать ещё <i className="fas fa-chevron-right"></i>
+                        </ReadMoreButton>
                     </BioWrapper>   
                 </DescriptionWrapper>
                 {famousCast} 
@@ -324,15 +340,5 @@ const FamousCast = ({cast, history}) => {
 
 }
 
-const Acting = ({cast}) =>{
-    return (
-        <MovieListWrapper>
-            <DepartmentListTitle>Актёрское искусство</DepartmentListTitle>
-            <MovieListContent>
-                <PersonDetailsCasts cast={cast}/>
-            </MovieListContent>
-        </MovieListWrapper>
-    )
-}
 
 export default PersonDetails;

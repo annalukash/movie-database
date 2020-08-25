@@ -92,7 +92,11 @@ const MovieListByKeywords = ({movies, totalResults, keywordName}) => {
 
         return (
             <MovieCardWrapper key={index}>
-                <MovieCardImg src={src}/>
+                <MovieCardImg 
+                    src={src}
+                    onClick={() => {
+                        history.push(`/movie/${item.id}`)
+                    }}/>
                 <MovieCardContent>
                     <MovieCardTitle
                         onClick={() => {

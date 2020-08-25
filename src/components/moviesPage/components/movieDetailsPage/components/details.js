@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import moment from 'moment';
 import duration from "moment-duration-format";
-import Rate from '../../shared/rate';
+import Rate from '../../../../shared/rate';
 import ModalWindow from './modalWindow';
 
 const ImgWrapper = styled.img`

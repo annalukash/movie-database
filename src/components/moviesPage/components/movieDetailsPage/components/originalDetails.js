@@ -6,10 +6,9 @@ import Popover from 'react-bootstrap/Popover'
 
 const LinkIconWrapper = styled.div`
     display: inline-block;
-    font-size: 25px;
-    margin: ${props => props.movie ? '0 15px 20px 0' : '30px 15px 0 0'};
+    font-size: 25px;  
     cursor: pointer;
-
+    margin-right: 15px;
     & .popover-body {
         background-color: red
     }
@@ -22,9 +21,20 @@ const Link = styled.a`
     }
 `;
 
+const LinkWrapper = styled.div`
+    margin: ${props => props.movie ? '0 15px 20px 0' : '30px 15px 0 0'};
+    display: flex;
+`;
+
+const SocialLinkWrrapper = styled.div`
+    display: ${props => !props.facebook && !props.twitter && !props.instagram ? 'none' : 'block'};
+    border-right: 1px solid #d7d7d7;
+    margin-right: 15px;
+`;
+
 
 const OriginalDetails = ({details, history, socialLink}) => {
-    const {original_title, status, budget, revenue, original_language, original_name, networks} = details;
+    const {original_title, status, budget, revenue, original_language, original_name, networks, homepage} = details;
     const {facebook_id, instagram_id, twitter_id} = socialLink;
 
     let nf = new Intl.NumberFormat();
@@ -48,31 +58,43 @@ const OriginalDetails = ({details, history, socialLink}) => {
         <Link href={`https://www.facebook.com/${facebook_id}`} target='_blank' rel="noopener noreferrer">
             <i className="fab fa-facebook-f"></i>
         </Link>
-    )
+    );
 
     const twitter = (
         <Link href={`https://twitter.com/${twitter_id}`} target='_blank' rel="noopener noreferrer">
             <i className="fab fa-twitter"></i>
         </Link>
-    )
+    );
 
     const instagram = (
         <Link href={`https://www.instagram.com/${instagram_id}`} target='_blank' rel="noopener noreferrer">
             <i className="fab fa-instagram"></i>
         </Link>
-    )
+    );
+
+    const homePage = (
+        <Link href={homepage} target='_blank' rel="noopener noreferrer">
+            <i className="fas fa-link"></i>
+        </Link>
+    );
 
     const overlayFacebook = facebook_id ? <Overlay logo={facebook} page={'Facebook'}/> : null;
     const overlayTwitter = twitter_id ?  <Overlay logo={twitter} page={'Twitter'}/> : null;
     const overlayInstagram = instagram_id ? <Overlay logo={instagram} page={'Instagram'}/> : null;
+    const overlayHomePage = homepage ? <Overlay logo={homePage} page={'Домашнюю страницу'}/> : null;
 
     return(
         <Col>
             <Row>
-                <Col>
-                    {overlayFacebook}
-                    {overlayTwitter}
-                    {overlayInstagram}
+                <Col className='d-flex align-items-center'>
+                    <LinkWrapper movie>
+                        <SocialLinkWrrapper facebook={facebook_id} twitter={twitter_id} instagram={instagram_id}>
+                            {overlayFacebook}
+                            {overlayTwitter}
+                            {overlayInstagram}
+                        </SocialLinkWrrapper>
+                        {overlayHomePage}
+                    </LinkWrapper>
                 </Col>
             </Row>
             <Row className="flex-column">
@@ -124,7 +146,7 @@ const Overlay = ({logo, page}) => {
     
     return (
         <OverlayTrigger placement="top" overlay={popover}>
-            <LinkIconWrapper movie>{logo}</LinkIconWrapper>
+            <LinkIconWrapper>{logo}</LinkIconWrapper>
         </OverlayTrigger>
     )
 }

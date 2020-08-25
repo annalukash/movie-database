@@ -1,10 +1,9 @@
 import React  from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col } from 'react-bootstrap';
-import {ImgWrapper, Title, DetailsList, Vote, Overview} from '../../movieDetails/components/details';
+import {ImgWrapper, Title, DetailsList, Vote, Overview} from '../../moviesPage/components/movieDetailsPage/components/details';
 import Rate from '../../shared/rate';
-import Spinner from '../../shared/spinner/spinner';
-import {BackgroundWrapper, ContainerWrapper} from '../../movieDetails/movieDetails';
+import {BackgroundWrapper} from '../../moviesPage/components/movieDetailsPage/movieDetails';
 import CollectionCast from './collectionCast';
 
 const DetailsTitleWrapper = styled.div`
@@ -17,7 +16,7 @@ const DetailsContentWrapper = styled.span`
 `;
 
 
-const CollectionDetails = ({collection, loading, history, genre, cast, crew}) => {
+const CollectionDetails = ({collection, history, genre, cast, crew, revenue}) => {
 
     const {name, poster_path, overview, parts, backdrop_path} = collection;
     const averageVote = (parts.reduce((sum, item) => {
@@ -28,24 +27,33 @@ const CollectionDetails = ({collection, loading, history, genre, cast, crew}) =>
 
     const movieOverview = !overview ? '-' : overview;
     const genresList = [];
-    parts.forEach(part => {
-        part.genre_ids.forEach(id => {
-            genres.forEach(genre => {
-                if (genre.id === id) {
-                    genresList.push(genre.name)
-                }
+    const getGenres = () => {
+        if (collection.hasOwnProperty('parts') && genre.length) {
+            parts.forEach(part => {
+                part.genre_ids.forEach(id => {
+                    genres.forEach(genre => {
+                        if (genre.id === id) {
+                            genresList.push(genre.name)
+                        }
+                    })
+                })
             })
-        })
-    })
+        }
+        return null;
+    }  
+    const showGenre = genre && collection ? getGenres() : null;
     const uniques = genresList.filter((item, index, array) => {
         return array.indexOf(item) === index
     })
-    const uniquesToString = uniques.join(', ')
+    const uniquesToString = uniques.join(', ');
+
+    let nf = new Intl.NumberFormat();
+    const movieRevenue = revenue ? `$${nf.format(revenue).replace(/\s/g, ',')}` : '-';
+
 
     return (
         <>
-            <BackgroundWrapper style={{backgroundImage: loading ? <Spinner/> : `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${backdrop_path})`}}>
-                <ContainerWrapper>
+            <BackgroundWrapper backdrop={backdrop_path}>
                     <Container>
                         <Row className="justify-content-center mx-auto text-center w-100 align-items-center py-4">
                             <Col className='col-4'>
@@ -79,7 +87,7 @@ const CollectionDetails = ({collection, loading, history, genre, cast, crew}) =>
                                         </Col>
                                         <Col>
                                             <DetailsTitleWrapper>
-                                                Сборы: <DetailsContentWrapper> -</DetailsContentWrapper>
+                                                Сборы: <DetailsContentWrapper>{movieRevenue}</DetailsContentWrapper>
                                             </DetailsTitleWrapper>
                                         </Col>
                                     </Row>
@@ -87,7 +95,6 @@ const CollectionDetails = ({collection, loading, history, genre, cast, crew}) =>
                             </Col>
                         </Row>
                     </Container>
-                </ContainerWrapper>
             </BackgroundWrapper>
             <CollectionCast cast={cast} crew={crew} parts={parts} history={history}/>
         </>

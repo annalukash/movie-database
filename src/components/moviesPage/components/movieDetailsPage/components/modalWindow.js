@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Trailer from '../../shared/youtubeVideo/youtubeVideo';
+import Trailer from '../../../../shared/youtubeVideo/youtubeVideo';
 
 const Backdrop = styled.div`
     background-color: rgba(0, 0, 0, 0.6);
