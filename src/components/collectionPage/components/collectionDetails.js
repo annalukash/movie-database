@@ -28,7 +28,7 @@ const CollectionDetails = ({collection, history, genre, cast, crew, revenue}) =>
     const movieOverview = !overview ? '-' : overview;
     const genresList = [];
     const getGenres = () => {
-        if (collection.hasOwnProperty('parts') && genre.length) {
+        if (collection.hasOwnProperty('parts') && Object.keys(genre).length) {
             parts.forEach(part => {
                 part.genre_ids.forEach(id => {
                     genres.forEach(genre => {
@@ -41,7 +41,7 @@ const CollectionDetails = ({collection, history, genre, cast, crew, revenue}) =>
         }
         return null;
     }  
-    const showGenre = genre && collection ? getGenres() : null;
+    getGenres();
     const uniques = genresList.filter((item, index, array) => {
         return array.indexOf(item) === index
     })
