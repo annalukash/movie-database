@@ -10,7 +10,6 @@ import PersonBiography from '../personDetailsPage/personBiography';
 import {TVPopularPage, OnTheAirPage, TVTopRatedPage, AiringTodayPage} from '../TVPages';
 import PersonPage from '../popularPersonPage/popularPersonPage';
 import CollectionPage from '../collectionPage/collectionPage';
-import ErrorPageNotFound from '../errorComponent/ErrorPageNotFound';
 
 
 export default class App extends Component {

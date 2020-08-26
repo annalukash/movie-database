@@ -1,70 +1,71 @@
 import React, { Component } from 'react';
-import MoviesServices from '../../services/services';
 import MovieList from './components/movieList';
+import WithMoviesService from '../hoc/withMoviesService';
+import {connect} from 'react-redux';
+import {topRatedMoviesRequested, topRatedMoviesLoaded, topRatedMoviesMoreRequested, topRatedMoviesMoreLoaded, popularMoviesError} from '../../actions/actions';
 
 
-export default class TopRatedPage extends Component {
-    constructor(props) {
-        super(props);
-        this.moviesServices = new MoviesServices();
-        this.state = {
-            movies: [],
-            loading: true,
-            page: 0,
-            loadingMore: false,
-            small: true
-        }     
-    }
-    
+class TopRatedPage extends Component {
     componentWillMount() {
         document.title = this.props.title;
-        this.loadMovies();
+        
+        if (!this.props.movies.length) {
+            this.props.topRatedMoviesRequested();
+            this.loadMovies(this.props.topRatedMoviesLoaded)
+        }
     }
 
-    onLoading = (response) => {
-        this.setState({
-            movies: [...this.state.movies, ...response],
-            loading: false,
-            page: this.state.page + 1,
-            loadingMore: false
-        })
+    loadMovies = (success) => {
+        const {page, MoviesService, popularMoviesError} = this.props;
+
+        MoviesService.getTopRated(page + 1)
+            .then((res) => success(res.results))
+            .catch(error => popularMoviesError())
     }
 
-    loadMovies = () => {
-        const {page} = this.state;
-
-        this.onToogleLoading();
+    loadMoreMovies = () => {
+        const {page, topRatedMoviesMoreRequested, topRatedMoviesMoreLoaded} = this.props;
 
         if (page > 500) {
             return
         }
 
-        this.moviesServices.getTopRated(page + 1)
-            .then((res) => {
-                this.onLoading(res.results)
-            })
-    }
-
-    onToogleLoading = () => {
-        this.setState({
-            loadingMore: true
-        })
+        topRatedMoviesMoreRequested();
+        this.loadMovies(topRatedMoviesMoreLoaded)
     }
 
     render() {
-        const {movies, loading, loadingMore, small} = this.state;
-        const {history} = this.props;
+        const {movies, loading, loadingMore, history} = this.props;
         
         return(
             <MovieList
                 movies={movies}
                 loading={loading}
                 loadingMore={loadingMore}
-                small={small}
                 history={history}
                 url={history.location.pathname}
-                getMovies = {this.loadMovies}
+                getMovies = {this.loadMoreMovies}
             />
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    const {topRatedMovies, topRatedPage, loading, loadingMore} = state.moviePageReducer;
+    return {
+        movies: topRatedMovies,
+        page: topRatedPage,
+        loading,
+        loadingMore
+    }
+}
+
+const mapDispatchToProps = {
+    topRatedMoviesRequested,
+    topRatedMoviesLoaded,
+    topRatedMoviesMoreRequested,
+    topRatedMoviesMoreLoaded,
+    popularMoviesError
+}
+
+export default WithMoviesService()(connect(mapStateToProps, mapDispatchToProps)(TopRatedPage));

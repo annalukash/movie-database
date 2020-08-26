@@ -1,69 +1,69 @@
 import React, {Component} from 'react';
-import MoviesServices from '../../services/services';
 import MovieList from '../moviesPage/components/movieList';
+import WithMoviesService from '../hoc/withMoviesService';
+import {connect} from 'react-redux';
+import {popularTvRequested, popularTvLoaded, popularTvError, popularTvMoreRequested, popularTvMoreLoaded} from '../../actions/actions';
 
 
-export default class TVPopularPage extends Component {
-    constructor(props) {
-        super(props);
-        this.moviesServices = new MoviesServices();
-        this.state = {
-            tv: [],
-            loading: true,
-            page: 0,
-            loadingMore: false,
-            small: true
-        }     
-    }
-    
+class TVPopularPage extends Component {   
     componentWillMount() { 
-        this.loadTV();        
+        if(!this.props.tv.length) {
+            this.props.popularTvRequested();
+            this.loadTV(this.props.popularTvLoaded)
+        }      
     }
 
-    onLoading = (response) => {
-        this.setState({
-            tv: [...this.state.tv, ...response],
-            loading: false,
-            page: this.state.page + 1,
-            loadingMore: false
-        })
+    loadTV = (success) => {
+        const {page, MoviesService, popularTvError} = this.props;
+
+        MoviesService.getTVPopular(page + 1)
+            .then((res) => success(res.results))
+            .catch(error => popularTvError())
     }
 
-    loadTV = () => {
-        const {page} = this.state;
-
-        this.onToogleLoading();
+    loadMoreTv = () => {
+        const {page, popularTvMoreRequested, popularTvMoreLoaded} = this.props;
 
         if (page > 500) {
             return
         }
 
-        this.moviesServices.getTVPopular(page + 1)
-            .then((res) => {
-                this.onLoading(res.results)
-            })
-    }
-
-    onToogleLoading = () => {
-        this.setState({
-            loadingMore: true
-        })
+        popularTvMoreRequested();
+        this.loadTV(popularTvMoreLoaded)
     }
 
     render() {
-        const {tv, loading, loadingMore, small} = this.state;
-        const {history} = this.props;
+        const {tv, loading, loadingMore, history} = this.props;
 
         return(
             <MovieList
                 movies={tv}
                 loading={loading}
                 loadingMore={loadingMore}
-                small={small}
                 history={history}
                 url={history.location.pathname}
-                getMovies = {this.loadTV}
+                getMovies = {this.loadMoreTv}
             />
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    const {popularTv, popularPage, loading, loadingMore} = state.tvPageReducer;
+    return {
+        tv: popularTv,
+        page: popularPage,
+        loading,
+        loadingMore
+    }
+}
+
+const mapDispatchToProps = {
+    popularTvRequested,
+    popularTvLoaded,
+    popularTvMoreRequested,
+    popularTvMoreLoaded,
+    popularTvError
+}
+
+export default WithMoviesService()(connect(mapStateToProps, mapDispatchToProps)(TVPopularPage));
