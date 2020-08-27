@@ -123,7 +123,8 @@ const OriginalDetails = ({details, history, socialLink}) => {
 }
 
 const TvNetwork = ({networks}) => {
-    const logo = !networks[0].logo_path ? networks[0].name : <img src={`https://image.tmdb.org/t/p/h30${networks[0].logo_path}`} alt={networks.name}/>;
+    const networkItem = networks?.find((network, index) => index === 0);
+    const logo = !networkItem?.logo_path ? networkItem?.name : <img src={`https://image.tmdb.org/t/p/h30${networkItem?.logo_path}`} alt={networkItem?.name}/>;
 
     return (
         <Row className="flex-column">

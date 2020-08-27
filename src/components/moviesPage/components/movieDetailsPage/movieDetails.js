@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import Spinner from '../../../shared/spinner/spinner';
-import MoviesServices from '../../../../services/services';
 import { Row, Col, Container } from 'react-bootstrap';
 import styled from 'styled-components';
 import {Cast, Details, OriginalDetails, Keywords, Collection} from './components';
+import WithMoviesService from '../../../hoc/withMoviesService';
+import {connect} from 'react-redux';
+import {movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded, keywordsRequested, keywordsLoaded, modalWindowToggle, videoLoaded, socialLinkLoaded, collectionLoaded} from '../../../../actions/actions';
 
 const BackgroundWrapper = styled.div`
     background-image: linear-gradient(315deg, rgba(233, 188, 183, 0.7) 0%, rgba(41, 82, 74, 0.8) 74%), ${props => `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${props.backdrop})`};
@@ -16,181 +18,89 @@ const BackgroundWrapper = styled.div`
     background-color: #e9bcb7;
 `
 
-export default class MovieDetails extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            details: null,
-            loading: true,
-            small: false,
-            casts: null,
-            loadingCast: true,
-            keywords: null,
-            loadingKeywords: true,
-            modalWindow: false,
-            video: null,
-            socialLink: {},
-            collection: {}
-        }
-        this.moviesServices = new MoviesServices();
-    }
-    
+class MovieDetails extends Component {
     componentDidMount() {
-        const {movieId, history} = this.props;
+        const {movieId, history, details, movieDetailsRequested, castRequested, MoviesService} = this.props;
         const {pathname} = history.location;
 
-        if (pathname.includes('tv')) {
-            this.getTvDetails(movieId); 
-            this.getTVCast(movieId);
-            this.getTVKeywords(movieId);
-            this.getTVVideos(movieId);
-            this.getTVSocailLink(movieId);
-        } else {
-            this.getMovieDetails(movieId);
-            this.getCast(movieId);
-            this.getKeywords(movieId);
-            this.getVideos(movieId);
-            this.getMovieSocailLink(movieId)
-        }  
+        if (!details.length) {
+            if (pathname.includes('tv')) {
+                movieDetailsRequested();
+                castRequested();
+                this.getDetails(movieId, MoviesService.getTVDetails); 
+                this.getCast(movieId, MoviesService.getTVCasts);
+                this.getKeywords(movieId, MoviesService.getKeywords);
+                this.getVideos(movieId, MoviesService.getTVVideos);
+                this.getSocailLink(movieId, MoviesService.getTVExternalIds);
+            } else {
+                movieDetailsRequested();
+                castRequested();
+                this.getDetails(movieId, MoviesService.getMovieDetails);
+                this.getCast(movieId, MoviesService.getCast);
+                this.getKeywords(movieId, MoviesService.getKeywords);
+                this.getVideos(movieId, MoviesService.getVideos);
+                this.getSocailLink(movieId, MoviesService.getMovieExternalIds)
+            } 
+        }
     }
 
-    getMovieDetails = (movieId) => {
-        this.moviesServices.getMovieDetails(movieId)
+    getDetails = (id, request) => {
+        const {movieDetailsLoaded, movieDetailsError} = this.props;
+
+        request(id)
             .then((response) => {
-                this.onLoadingDetails(response);
+                movieDetailsLoaded(response);
                 if (response && response.belongs_to_collection) {
                     this.getCollectionDetails(response.belongs_to_collection.id)
                 }  
             })
+            .catch(error => movieDetailsError());
     }
 
-    getTvDetails = (tvId) => {
-        this.moviesServices.getTVDetails(tvId)
-            .then((response) => {
-                this.onLoadingDetails(response)
-            })
+    getCast = (id, request) => {
+        const {movieDetailsError, castLoaded} = this.props;
+
+        request(id)
+            .then((response) => castLoaded(response))
+            .catch(error => movieDetailsError());
     }
 
-    getCast = (movieId) => {
-        this.moviesServices.getCast(movieId)
-            .then((response) => {
-                this.onLoadingCast(response)
-            })
+    getKeywords = (id, request) => {
+        const {keywordsLoaded, movieDetailsError} = this.props;
+
+        request(id)
+            .then((response) => keywordsLoaded(response.keywords || response.results))
+            .catch(error => movieDetailsError());
     }
 
-    getTVCast = (tvId) => {
-        this.moviesServices.getTVCasts(tvId)
-            .then((response) => {
-                this.onLoadingCast(response)
-            })
+    getVideos = (id, request) => {
+        const {videoLoaded, movieDetailsError} = this.props;
+
+        request(id)
+            .then((response) => videoLoaded(response))
+            .catch(error => movieDetailsError());
     }
 
-    getKeywords = (movieId) => {
-        this.moviesServices.getKeywords(movieId)
-            .then((response) => {
-                this.onLoadingKeywords(response.keywords)
-            })
-    }
+    getSocailLink = (id, request) => {
+        const {socialLinkLoaded, movieDetailsError} = this.props;
 
-    getTVKeywords = (tvId) => {
-        this.moviesServices.getTVKeywords(tvId)
-            .then((response) => {
-                this.onLoadingKeywords(response.results)
-            })
-    }
-
-    getVideos = (movieId) => {
-        this.moviesServices.getVideos(movieId)
-            .then((response) => {
-                this.onVideoLoading(response)
-            })
-    }
-
-    getTVVideos = (tvId) => {
-        this.moviesServices.getTVVideos(tvId)
-            .then((response) => {
-                this.onVideoLoading(response)
-            })
-    }
-
-    getMovieSocailLink = (id) => {
-        this.moviesServices.getMovieExternalIds(id)
-            .then((response) => {
-                this.onLinkLoading(response)
-            })
-    }
-
-    getTVSocailLink = (id) => {
-        this.moviesServices.getTVExternalIds(id)
-            .then((response) => {
-                this.onLinkLoading(response)
-            })
+        request(id)
+            .then((response) => socialLinkLoaded(response))
+            .catch(error => movieDetailsError());
     }
 
     getCollectionDetails = (id) => {
-        this.moviesServices.getCollection(id)
-            .then((response) => {
-                this.onCollectionLoading(response)
-            })
-    }
+        const {MoviesService, collectionLoaded, movieDetailsError} = this.props;
 
-    onCollectionLoading = (response) => {
-        this.setState({
-            collection: response
-        })
-    }
-
-    onLinkLoading = (response) => {
-        this.setState({
-            socialLink: response
-        })
-    }
-
-    
-    onLoadingDetails = (response) => {
-        this.setState({
-            details: response,
-            loading: false,
-        })
-    }
-
-    onLoadingCast = (resp) => {
-        this.setState({
-            casts: resp,
-            loadingCast: false,
-        })
-    }
-
-    onLoadingKeywords = (resp) => {
-        this.setState({
-            keywords: resp,
-            loadingKeywords: false,
-        })
-    }
-
-    onVideoLoading = (response) => {
-        this.setState({
-            video: response
-        })
-    }
-
-    onOpenModal = (movieId) => {
-        this.setState({
-            modalWindow: true
-        })
-    }
-
-    onCloseModal = () => {
-        this.setState({
-            modalWindow: false
-        })
+        MoviesService.getCollection(id)
+            .then((response) => collectionLoaded(response))
+            .catch(error => movieDetailsError());
     }
 
     showCollection = (isBelongToCollection) => {
-        const {history} = this.props;
-        const {details, collection} = this.state;
+        const {history, details, loading, collection} = this.props;
 
-        if (this.state.loading) {
+        if (loading) {
             return <Spinner/>
         } else if (isBelongToCollection) {
             return <Collection details={details} history={history} collection={collection}/>
@@ -200,10 +110,9 @@ export default class MovieDetails extends Component {
     }
 
     render() {
-        const {details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink} = this.state;
-        const {movieId, keywordId, history} = this.props;
+        const {movieId, keywordId, history, details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, modalWindowToggle, socialLink} = this.props;
 
-        const detail = loading ? <Spinner/> : <Details details={details} movieId={movieId} video={video} history={history} onOpenModal={this.onOpenModal} modalWindow={modalWindow} onCloseModal={this.onCloseModal}/>;
+        const detail = loading ? <Spinner/> : <Details details={details} movieId={movieId} video={video} history={history} onOpenModal={modalWindowToggle} modalWindow={modalWindow} onCloseModal={modalWindowToggle}/>;
         const original = loading ? <Spinner/> : <OriginalDetails details={details} history={history} socialLink={socialLink}/>;
         const cast = loadingCast ? <Spinner/> : <Cast casts={casts} id={movieId} history={history}/>;
         const keyword = loadingKeywords ? <Spinner/> : <Keywords keyword={keywords} history={this.props.history} keywordId={keywordId} url={'keywords'}/>;
@@ -234,4 +143,35 @@ export default class MovieDetails extends Component {
     }
 }
 
-export {BackgroundWrapper}
+const mapStateToProps = (state) => {
+    const {movieDetails, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink, collection} = state.movieDetailsReducer;
+    return {
+        details: movieDetails,
+        loading,
+        casts,
+        loadingCast,
+        keywords,
+        loadingKeywords,
+        modalWindow,
+        video,
+        socialLink,
+        collection
+    }
+}
+
+const mapDispatchToProps = {
+    movieDetailsRequested,
+    movieDetailsLoaded,
+    movieDetailsError,
+    castRequested,
+    castLoaded,
+    keywordsRequested,
+    keywordsLoaded,
+    modalWindowToggle,
+    videoLoaded,
+    socialLinkLoaded,
+    collectionLoaded
+}
+
+export default WithMoviesService()(connect(mapStateToProps, mapDispatchToProps)(MovieDetails));
+export {BackgroundWrapper};

@@ -220,7 +220,96 @@ const topRatedTvTvMoreLoaded = (payload) => {
     }
 }
 
+const popularPersonRequested = () => {
+    return {
+        type: actionTypes.POPULAR_PERSON_REQUESTED
+    }
+}
 
+const popularPersonLoaded = (payload) => {
+    return {
+        type: actionTypes.POPULAR_PERSON_LOADED,
+        payload
+    }
+}
+
+const popularPersonError = () => {
+    return {
+        type: actionTypes.POPULAR_PERSON_ERROR
+    }
+}
+
+const movieDetailsRequested = () => {
+    return {
+        type: actionTypes.MOVIE_DETAILS_REQUESTED
+    }
+}
+
+const movieDetailsLoaded = (payload) => {
+    return {
+        type: actionTypes.MOVIE_DETAILS_LOADED,
+        payload
+    }
+}
+
+const movieDetailsError = () => {
+    return {
+        type: actionTypes.MOVIE_DETAILS_ERROR
+    }
+}
+
+const castRequested = () => {
+    return {
+        type: actionTypes.CAST_REQUESTED
+    }  
+}
+
+const castLoaded = (payload) => {
+    return {
+        type: actionTypes.CAST_LOADED,
+        payload
+    }
+}
+
+const keywordsRequested = () => {
+    return {
+        type: actionTypes.KEYWORDS_REQUESTED
+    }
+}
+
+const keywordsLoaded = (payload) => {
+    return {
+        type: actionTypes.KEYWORDS_LOADED,
+        payload
+    }
+}
+
+const modalWindowToggle = () => {
+    return {
+        type: actionTypes.MODAL_WINDOW_TOGGLE
+    }
+}
+
+const videoLoaded = (payload) => {
+    return {
+        type: actionTypes.VIDEO_LOADED,
+        payload
+    }
+}
+
+const socialLinkLoaded = (payload) => {
+    return {
+        type: actionTypes.SOCIAL_LINK_LOADED,
+        payload
+    }
+}
+
+const collectionLoaded = (payload) => {
+    return {
+        type: actionTypes.COLLECTION_LOADED,
+        payload
+    }
+}
 
 export {
     popularMoviesRequested,
@@ -256,5 +345,19 @@ export {
     topRatedTvRequested,
     topRatedTvTvLoaded,
     topRatedTvTvMoreRequested,
-    topRatedTvTvMoreLoaded
+    topRatedTvTvMoreLoaded,
+    popularPersonRequested,
+    popularPersonLoaded,
+    popularPersonError,
+    movieDetailsRequested,
+    movieDetailsLoaded,
+    movieDetailsError,
+    castRequested,
+    castLoaded,
+    keywordsRequested,
+    keywordsLoaded,
+    modalWindowToggle,
+    videoLoaded,
+    socialLinkLoaded,
+    collectionLoaded
 }

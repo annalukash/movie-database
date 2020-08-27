@@ -175,7 +175,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
 }
 
 const TvCreator = ({creator, history}) => {
-    if (creator.length) {
+    if (creator?.length) {
         return (
             <Row className='flex-column py-2'>
                 <Col>

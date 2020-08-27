@@ -1,63 +1,57 @@
 import React, { Component }  from 'react';
-import MoviesServices from '../../services/services';
 import PersonList from './components/personList';
+import WithMoviesService from '../hoc/withMoviesService';
+import {connect} from 'react-redux';
+import {popularPersonRequested, popularPersonLoaded, popularPersonError} from '../../actions/actions';
 
-export default class PersonPage extends Component {
-    constructor(props) {
-        super(props);
-        this.moviesServices = new MoviesServices();
-        this.state = {
-            person: [],
-            loading: true,
-            page: 1,
-            totalPages: 0
+class PersonPage extends Component {  
+    componentWillMount() {
+        const {popularPersonRequested, person, history, page} = this.props;
+        
+        history.push({
+            pathname: '/person',
+            search: `?page=${page}`
+        })
+
+        if (!person.length) {
+            popularPersonRequested();
+            this.loadPerson(); 
         }     
     }
-    
-    componentWillMount() {
-        this.props.history.push({
-            pathname: '/person',
-            search: `?page=${this.state.page}`
-        })
-        this.loadPerson();  
-    }
 
-    onLoading = (response, pages, currentPage) => {
-        this.setState({
-            person: response,
-            loading: false,
-            totalPages: pages,
-            page: currentPage
-        })
+    onServiceRequest = (page) => {
+        const {MoviesService, popularPersonError, popularPersonLoaded, history} = this.props;
 
+        MoviesService.getPopularPerson(page)
+        .then((res) => {
+            if (res) {
+                history.push({
+                    pathname: '/person',
+                    search: `?page=${page}`
+                });
+                const payload = {
+                    person: res.results,
+                    totalPages: res.total_pages,
+                    page: res.page
+                }
+                popularPersonLoaded(payload)
+            } 
+        })
+        .catch(error => popularPersonError())
     }
 
     loadPerson = () => {
-        this.moviesServices.getPopularPerson(this.state.page)
-            .then((res) => { 
-                this.props.history.push({
-                    pathname: '/person',
-                    search: `?page=${this.state.page}`
-                })
-                this.onLoading(res.results, res.total_pages, res.page)
-            })
+        const {page} = this.props;
+        this.onServiceRequest(page)
     }
 
     loadMorePerson = (page) => {
-        this.moviesServices.getPopularPerson(page)
-            .then((res) => { 
-                this.props.history.push({
-                    pathname: '/person',
-                    search: `?page=${page}`
-                })
-                this.onLoading(res.results, res.total_pages, res.page)
-            })
+        this.onServiceRequest(page)
     }
 
     render() {
-        const {person, loading, totalPages, page} = this.state;
-        const {history} = this.props;
-
+        const {person, loading, totalPages, page, history} = this.props;
+    
         return(
             <PersonList
                 person={person}
@@ -71,3 +65,21 @@ export default class PersonPage extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    const {person, loading, page, totalPages} = state.popularPersonReducer;
+    return {
+        person,
+        loading,
+        page,
+        totalPages
+    }
+}
+
+const mapDispatchToProps = {
+    popularPersonRequested,
+    popularPersonLoaded,
+    popularPersonError
+}
+
+export default WithMoviesService()(connect(mapStateToProps, mapDispatchToProps)(PersonPage));
