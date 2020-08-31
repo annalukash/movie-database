@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../shared/header/header';
 import {PopularPage, PlayingNowPage, TopRatedPage, UpcomingPage} from '../moviesPage';
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import MovieDetails from '../moviesPage/components/movieDetailsPage/movieDetails';
 import ScrollToTop from '../shared/scrollToTop/scrollToTop';
 import MoviesByKeyword from '../moviesByKeywordsPage/moviesByKeyword';
@@ -10,17 +10,22 @@ import PersonBiography from '../personDetailsPage/personBiography';
 import {TVPopularPage, OnTheAirPage, TVTopRatedPage, AiringTodayPage} from '../TVPages';
 import PersonPage from '../popularPersonPage/popularPersonPage';
 import CollectionPage from '../collectionPage/collectionPage';
+import HomePage from '../homePage/homePage';
 
 
 export default class App extends Component {
 
     render() {
-        document.title = 'test'
         return(
             <Router>
-                <Header title='Movie Database'></Header>
+                <Header/>
                 <ScrollToTop>
                     <Switch>
+                        <Route exact path='/' render={
+                            () => {
+                                return <HomePage title='Movie Database'/>
+                            }
+                        }/>
                         <Route exact path='/person' render={
                             ({history}) => {
                                 return <PersonPage history={history}/>
