@@ -36,7 +36,7 @@ const Header = () => {
             <Navbar expand="lg">
                 <Navbar.Brand>
                     <LogoWrapper>
-                        <Link to='/'> Movies DB</Link>   
+                        <Link to='/movie-database'> Movies DB</Link>   
                     </LogoWrapper>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
