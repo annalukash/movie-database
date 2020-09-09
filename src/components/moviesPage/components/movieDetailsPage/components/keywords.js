@@ -28,9 +28,10 @@ const Keywords = ({keyword, url}) => {
   
         const keywordsItem = keyword.map((keyword, index) => {
             return(
-                <KeywordItemWrapper key={index} onClick={() => {
-                    history.push(`/${url}/${keyword.id}`)
-                }}>
+                <KeywordItemWrapper 
+                    key={index} 
+                    onClick={() => history.push(`/${url}/${keyword.id}`)}
+                >
                     {keyword.name}
                 </KeywordItemWrapper>
             )

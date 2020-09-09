@@ -70,7 +70,7 @@ const CollectionCast = ({cast, crew, parts, history}) => {
 
     const castItem = cast.filter((item, index) => index < 12)
         .map((item, index) => {
-            const src = item.profile_path ? 'https://image.tmdb.org/t/p/w64_and_h64_face' + item.profile_path : '../../assets/avatar.png';
+            const src = item.profile_path ? 'https://image.tmdb.org/t/p/w64_and_h64_face' + item.profile_path : (process.env.PUBLIC_URL + '/assets/avatar.png');
 
             return (
                 <Col sm={3} key={index}>
@@ -95,7 +95,7 @@ const CollectionCast = ({cast, crew, parts, history}) => {
 
     const crewItem = crew.filter((item, index) => index < 8)
         .map((item, index) => {
-            const src = item.profile_path ? 'https://image.tmdb.org/t/p/w64_and_h64_face' + item.profile_path : '../../assets/avatar.png';
+            const src = item.profile_path ? 'https://image.tmdb.org/t/p/w64_and_h64_face' + item.profile_path : (process.env.PUBLIC_URL + '/assets/avatar.png');
 
             return (
                 <Col sm={3} key={index}>
@@ -117,7 +117,7 @@ const CollectionCast = ({cast, crew, parts, history}) => {
         })
 
     const partItem = parts.map((part, index) => {
-        const src = part.poster_path ? 'https://image.tmdb.org/t/p/w94_and_h141_bestv2' + part.poster_path : '../../assets/poster.png';
+        const src = part.poster_path ? 'https://image.tmdb.org/t/p/w94_and_h141_bestv2' + part.poster_path : (process.env.PUBLIC_URL + '/assets/poster.png');
 
         return (
             <Col sm={12} key={index}>

@@ -4,6 +4,7 @@ import OriginalDetails from './originalDetails';
 import Keywords from './keywords';
 import ModalWindow from './modalWindow';
 import Collection from './collection';
+import Recommendation from './recommendations';
 
 export {
     Cast,
@@ -11,5 +12,6 @@ export {
     OriginalDetails,
     Keywords,
     ModalWindow,
-    Collection
+    Collection,
+    Recommendation
 }

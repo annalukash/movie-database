@@ -87,7 +87,7 @@ const MovieListByKeywords = ({movies, totalResults, keywordName}) => {
         
         const releaseDate = moment(item.release_date).format('DD/MM/YYYY');
     
-        const src = !item.poster_path ? '../../assets/poster.png' : ('https://image.tmdb.org/t/p/w94_and_h141_bestv2' + item.poster_path);
+        const src = !item.poster_path ? (process.env.PUBLIC_URL + '/assets/poster.png') : ('https://image.tmdb.org/t/p/w94_and_h141_bestv2' + item.poster_path);
 
 
         return (

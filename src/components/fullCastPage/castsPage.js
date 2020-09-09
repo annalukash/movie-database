@@ -106,7 +106,7 @@ class FullCast extends Component {
         const spinnerCrew = loadingCast ? <Spinner/> : <Crew casts={casts} history={history}/>;
 
         const releaseYear = moment(details.first_air_date || details.release_date).format('YYYY');
-        const src = !details.poster_path ? '../../assets/poster.png' : ('https://image.tmdb.org/t/p/w58_and_h87_face' + details.poster_path);
+        const src = !details.poster_path ? (process.env.PUBLIC_URL + '/assets/poster.png') : ('https://image.tmdb.org/t/p/w58_and_h87_face' + details.poster_path);
         
         return (
             <>

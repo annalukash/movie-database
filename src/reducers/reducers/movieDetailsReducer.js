@@ -1,4 +1,4 @@
-import {actionTypes} from '../actions';
+import {actionTypes} from '../../actions';
 
 const initialState = {
     movieDetails: [],
@@ -11,7 +11,8 @@ const initialState = {
     modalWindow: false,
     video: null,
     socialLink: {},
-    collection: {}
+    collection: {},
+    recommendations: []
 }
 
 const movieDetailsReducer = (state = initialState, action) => {
@@ -68,6 +69,11 @@ const movieDetailsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 collection: action.payload
+            }
+        case actionTypes.RECOMMENDATIONS_LOADED:
+            return {
+                ...state,
+                recommendations: action.payload
             }
         default:
             return state

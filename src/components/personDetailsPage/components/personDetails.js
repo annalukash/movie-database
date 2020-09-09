@@ -179,7 +179,7 @@ const PersonDetails = ({person, cast, crew, socialLink}) => {
         setElementHeight(element?.clientHeight)
     }
     const classNames = isOpen ? 'open' : '';
-    const src = !person.profile_path ? '../../assets/avatar.png' : ('https://image.tmdb.org/t/p/w300_and_h450_bestv2' + person.profile_path);
+    const src = !person.profile_path ? (process.env.PUBLIC_URL + '/assets/avatar.png') : ('https://image.tmdb.org/t/p/w300_and_h450_bestv2' + person.profile_path);
     const biography = !person.biography ? `У нас нет биографии для ${person.name}` : <div ref={element => getElementHeight(element)}>{person.biography}</div>;
     const gender = person.gender === 1 ? 'Женский' : 'Мужской';
     const alsoKnow = person.also_known_as.map((item, index) => {
@@ -276,9 +276,9 @@ const FamousCast = ({cast, history}) => {
     
     const myArrow = ({ type, onClick, isEdge }) => {
         return (
-          <span style={{display: 'none'}}></span>
+            <span style={{display: 'none'}}></span>
         )
-      }
+    }
     const myPagination = ({ pages, activePage, onClick }) => {
         return (
             <span style={{display: 'none'}}></span>
@@ -301,7 +301,7 @@ const FamousCast = ({cast, history}) => {
 
     const castItem = cast.filter((item, index) => index <= 7)
         .map((item, index) => {
-            let src = item.poster_path ? ('https://image.tmdb.org/t/p/w150_and_h225_bestv2' + item.poster_path) : '../../assets/poster.png';
+            let src = item.poster_path ? ('https://image.tmdb.org/t/p/w150_and_h225_bestv2' + item.poster_path) : (process.env.PUBLIC_URL + '/assets/poster.png');
             return (
                 <CastItemWrapper key={index}>
                     <CastImg 
@@ -319,26 +319,21 @@ const FamousCast = ({cast, history}) => {
         });
 
     return (
-        <>
-            <CarouselWrapper>
-                <CastTitle>Известность за</CastTitle>
-                <Carousel renderArrow={myArrow}
-                        itemsToScroll={1} 
-                        itemsToShow={5}
-                        focusOnSelect={false}
-                        ref={ref => (carousel = ref)}
-                        renderPagination={myPagination}
-                >
-                    {castItem}
-                </Carousel>
-                <PrevButton onClick={() => carousel.slidePrev()}><i className="fas fa-angle-double-left"></i></PrevButton>
-                <NextButton onClick={() => carousel.slideNext()}><i className="fas fa-angle-double-right"></i></NextButton>
-           </CarouselWrapper>
-           
-        </>
+        <CarouselWrapper>
+            <CastTitle>Известность за</CastTitle>
+            <Carousel renderArrow={myArrow}
+                    itemsToScroll={1} 
+                    itemsToShow={5}
+                    focusOnSelect={false}
+                    ref={ref => (carousel = ref)}
+                    renderPagination={myPagination}
+            >
+                {castItem}
+            </Carousel>
+            <PrevButton onClick={() => carousel.slidePrev()}><i className="fas fa-angle-double-left"></i></PrevButton>
+            <NextButton onClick={() => carousel.slideNext()}><i className="fas fa-angle-double-right"></i></NextButton>
+        </CarouselWrapper>  
     )
-
 }
-
 
 export default PersonDetails;

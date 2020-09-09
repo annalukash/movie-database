@@ -23,7 +23,7 @@ const CollectionDetails = ({collection, history, genre, cast, crew, revenue}) =>
         return sum + item.vote_average;
     }, 0) / parts.length).toFixed(2);
     const {genres} = genre;
-    const src = !poster_path ? '../../assets/poster.png' : ('https://image.tmdb.org/t/p/w300_and_h450_bestv2' + poster_path);
+    const src = !poster_path ? (process.env.PUBLIC_URL + '/assets/poster.png') : ('https://image.tmdb.org/t/p/w300_and_h450_bestv2' + poster_path);
 
     const movieOverview = !overview ? '-' : overview;
     const genresList = [];

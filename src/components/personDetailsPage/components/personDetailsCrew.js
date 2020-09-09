@@ -52,7 +52,7 @@ const HistoryItem = ({item, date, hasBorder}) => {
         setTarget(event.target);
     };
 
-    const src = item.poster_path ? ('https://image.tmdb.org/t/p/w94_and_h141_bestv2' + item.poster_path) : '../../assets/poster.png';
+    const src = item.poster_path ? ('https://image.tmdb.org/t/p/w94_and_h141_bestv2' + item.poster_path) : (process.env.PUBLIC_URL + '/assets/poster.png');
     const rate = item.vote_average.toFixed(1);
     const tvEpisodes = item.episode_count ? `(${item.episode_count} эпизодов)` : null;
     

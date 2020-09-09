@@ -1,5 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
+import WithMoviesService from '../hoc/withMoviesService';
+import {connect} from 'react-redux';
+import {inTrendRequested, inTrendLoaded, inTrendError} from '../../actions/actions';
+import Spinner from '../shared/spinner/spinner';
+import {InTrend} from './components';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const HomePageWrapper = styled.div`
     width: 1100px;
@@ -21,16 +27,53 @@ const HomePageSubTitle = styled.div`
     font-weight: 600;
 `;
 
-const HomePage = ({title}) => {
+const HomePage = ({title, MoviesService, inTrendLoaded, inTrendError, inTrend, loading}) => {
     document.title = title;
+
+    const loadTrend = (time) => {
+        MoviesService.getInTrend(time)
+            .then((res) => inTrendLoaded(res.results))
+            .catch(error => inTrendError());
+    }
+
+    useEffect(() => {
+        loadTrend('day')
+    }, []);
+
+    const trending = loading ? <Spinner/> : <InTrend inTrend={inTrend} MoviesService={MoviesService} loadTrend={loadTrend}/>
     return (
-        <HomePageWrapper>
-            Добро пожаловать в Movies Database.
-            <HomePageSubTitle>
-                Миллионы фильмов, сериалов и людей. Исследуйте сейчас.
-            </HomePageSubTitle>
-        </HomePageWrapper>
+        <Container>
+            <Row>
+                <Col>
+                    <HomePageWrapper>
+                        Добро пожаловать в Movies Database.
+                        <HomePageSubTitle>
+                            Миллионы фильмов, сериалов и людей. Исследуйте сейчас.
+                        </HomePageSubTitle>
+                    </HomePageWrapper>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    {trending}
+                </Col>
+            </Row>
+        </Container>
     )
 }
 
-export default HomePage;
+const mapStateToProps = (state) => {
+    const {inTrend, loading} = state.homePageReducer;
+    return {
+        inTrend,
+        loading
+    }
+}
+
+const mapDispatchToProps = {
+    inTrendRequested,
+    inTrendLoaded,
+    inTrendError
+}
+
+export default WithMoviesService()(connect(mapStateToProps, mapDispatchToProps)(HomePage));

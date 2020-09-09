@@ -60,18 +60,18 @@ const Actors = ({casts, history}) => {
     })
 
     const castItem = sortedByOrderCasts.map((item, index) => {
-        const src = item.profile_path ? ('https://image.tmdb.org/t/p/w66_and_h66_face' + item.profile_path) : '../../assets/avatar.png';
+        const src = item.profile_path ? ('https://image.tmdb.org/t/p/w66_and_h66_face' + item.profile_path) : (process.env.PUBLIC_URL + '/assets/avatar.png');
 
         return (
             <CastItemWrapper key={index}>
                 <CastItemImg 
                     alt={item.name} 
                     src={src} 
-                    onClick={() => {history.push(`/person/${item.id}`)}}
+                    onClick={() => history.push(`/person/${item.id}`)}
                 />
                 <CastNameWrapper>
                     <CastName 
-                        onClick={() => {history.push(`/person/${item.id}`)}}
+                        onClick={() => history.push(`/person/${item.id}`)}
                     >{item.name}</CastName>
                     <CastCharacter>{item.character}</CastCharacter>
                 </CastNameWrapper>
@@ -97,7 +97,7 @@ const Crew = ({casts, history}) => {
 
     const CrewDepartment = ({department}) => {
         const crewItem = crew.map((item, index) => {
-            const src = item.profile_path ? ('https://image.tmdb.org/t/p/w66_and_h66_face' + item.profile_path) : '../../assets/avatar.png';
+            const src = item.profile_path ? ('https://image.tmdb.org/t/p/w66_and_h66_face' + item.profile_path) : (process.env.PUBLIC_URL + '/assets/avatar.png');
 
             if (item.department === department) {
                 return (

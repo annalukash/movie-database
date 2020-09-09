@@ -116,7 +116,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
 
     const modal = modalWindow ? <ModalWindow video={video} onCloseModal={onCloseModal}/> : null;
     const showTrailer = video?.results.length === 0 ? null : trailerButton();
-    const src = !poster_path ? '../../assets/poster.png' : ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path);
+    const src = !poster_path ? (process.env.PUBLIC_URL + '/assets/poster.png') : ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path);
     const creator = history.location.pathname.includes('tv') ? <TvCreator creator={created_by} history={history}/> : null;
     const releaseYear = release_date || first_air_date ? `(${moment(release_date || first_air_date).format('YYYY')})` : null;
     const releaseDate = release_date || first_air_date ? moment(release_date || first_air_date).format('DD/MM/YYYY') : null;

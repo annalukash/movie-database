@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux'
-import moviePageReducer from './moviePageReducers';
-import tvPageReducer from './tvPageReducer';
-import popularPersonReducer from './popularPersonReducer';
-import movieDetailsReducer from './movieDetailsReducer';
+import moviePageReducer from './reducers/moviePageReducers';
+import tvPageReducer from './reducers/tvPageReducer';
+import popularPersonReducer from './reducers/popularPersonReducer';
+import movieDetailsReducer from './reducers/movieDetailsReducer';
+import homePageReducer from './reducers/homePageReducer';
 
 export default combineReducers({
     moviePageReducer,
     tvPageReducer,
     popularPersonReducer,
-    movieDetailsReducer
+    movieDetailsReducer,
+    homePageReducer
 })

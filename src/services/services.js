@@ -140,4 +140,19 @@ export default class MoviesServices {
         const response = await this.getResource(`/person/${personId}/external_ids?`);
         return response;
     }
+
+    getInTrend = async (time) => {
+        const response = await this.getResource(`/trending/all/${time}?`);
+        return response;
+    }
+
+    getMovieRecommendations = async (id) => {
+        const response = await this.getResource(`/movie/${id}/recommendations?`);
+        return response;
+    }
+
+    getTVRecommendations = async (id) => {
+        const response = await this.getResource(`/tv/${id}/recommendations?`);
+        return response;
+    }
 }

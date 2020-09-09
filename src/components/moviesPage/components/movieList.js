@@ -61,7 +61,7 @@ const LoadMoreButton = styled.button`
 const MovieList = ({movies, loading, loadingMore, url, getMovies, history}) => {
     const movieItems = movies.map((item, index) => {
         const {title, poster_path, release_date, vote_average, id, name, first_air_date} = item;
-        const src = poster_path ? ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path) : '../../assets/poster.png';
+        const src = poster_path ? ('https://image.tmdb.org/t/p/w220_and_h330_face' + poster_path) : (process.env.PUBLIC_URL + '/assets/poster.png');
 
         return(
             <Col key={index} className="col-3 d-flex justify-content-center mb-4">

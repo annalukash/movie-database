@@ -42,7 +42,7 @@ const PersonCast = styled.div`
 const PersonList = ({person, loading, history, url, totalPages, getPerson, page}) => {
     const personItem = person.map(item => {
         const {name, known_for, profile_path, id} = item;
-        const src = profile_path ? ('https://image.tmdb.org/t/p/w235_and_h235_face' + profile_path) : '../../assets/avatar.png';
+        const src = profile_path ? ('https://image.tmdb.org/t/p/w235_and_h235_face' + profile_path) : (process.env.PUBLIC_URL + '/assets/avatar.png');
         
         const castArray = known_for.map(movie => movie.name || movie.title);
         const castToString = castArray.join(', ');
