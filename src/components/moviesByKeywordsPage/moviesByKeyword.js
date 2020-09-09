@@ -96,20 +96,38 @@ export default class MoviesByKeyword extends Component {
         })
     }
 
-    render() {
-        const {movies, loading, loadingMore, totalResults, totalPages, keywordName} = this.state;
-
-        const spinnerMovies = loading ? <Spinner/> : <MovieListByKeywords movies={movies} totalResults={totalResults} keywordName={keywordName}/>;
+    showButton = () => {
+        const {loadingMore, totalPages} = this.state;
         const loadSpinner = loadingMore ? <LoadMoreSpinner/> : 'Загрузить еще';
-        const button = totalPages === 1 ? null : <ButtonWrapper><LoadMoreButton onClick={ () => this.getMovies()}>{loadSpinner}</LoadMoreButton></ButtonWrapper> 
+        if (totalPages !== 1) {
+            return (
+                <ButtonWrapper>
+                    <LoadMoreButton onClick={ () => this.getMovies()}>
+                        {loadSpinner}
+                    </LoadMoreButton>
+                </ButtonWrapper>
+            )
+        }
+    }
 
-        return (
-            <>               
-                <MovieListWrapper>
-                    {spinnerMovies}
-                </MovieListWrapper>
-                    {button}           
-            </>
-        )
+    render() {
+        const {movies, loading, totalResults, keywordName} = this.state;
+
+        if (loading) {
+            return <Spinner/>
+        } else {
+            return (
+                <>               
+                    <MovieListWrapper>
+                        <MovieListByKeywords 
+                            movies={movies} 
+                            totalResults={totalResults} 
+                            keywordName={keywordName}
+                        />
+                    </MovieListWrapper>
+                        {this.showButton()}         
+                </>
+            ) 
+        }
     }
 }

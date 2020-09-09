@@ -56,6 +56,7 @@ export default class PersonBiography extends Component {
 
     render() {
         const {person, loading, cast, crew, socialLink} = this.state;
+
         const spinnerPerson = loading ? <Spinner/> : <PersonDetails person={person} cast={cast} crew={crew} socialLink={socialLink}/>
         return(
             <Container className="mt-4">

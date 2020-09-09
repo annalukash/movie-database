@@ -121,7 +121,7 @@ class MovieDetails extends Component {
 
     showRecommendations = (isRecommendation) => {
         const {history, loading, recommendations, MoviesService, movieDetailsRequested, castRequested} = this.props;
-        
+
         if (loading) {
             return <Spinner/>
         } else if (isRecommendation.length) {
@@ -147,35 +147,39 @@ class MovieDetails extends Component {
 
     render() {
         const {movieId, keywordId, history, details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, modalWindowToggle, socialLink, recommendations} = this.props;
-        const detail = loading ? <Spinner/> : <Details details={details} movieId={movieId} video={video} history={history} onOpenModal={modalWindowToggle} modalWindow={modalWindow} onCloseModal={modalWindowToggle}/>;
-        const original = loading ? <Spinner/> : <OriginalDetails details={details} history={history} socialLink={socialLink}/>;
-        const cast = loadingCast ? <Spinner/> : <Cast casts={casts} id={movieId} history={history}/>;
-        const keyword = loadingKeywords ? <Spinner/> : <Keywords keyword={keywords} history={this.props.history} keywordId={keywordId} url={'keywords'}/>;
-
-        return(
+        const globalLoading = loading || loadingCast || loadingKeywords;
+        if (globalLoading) {
+           return <Spinner/>
+        } else {
+           return(
             <>
                 <BackgroundWrapper backdrop={details?.backdrop_path}>
                         <Container className="w-100">
                             <Row className="justify-content-center mx-auto text-center w-100 align-items-center py-4">
-                                {detail}
+                            <Details details={details} movieId={movieId} video={video} history={history} onOpenModal={modalWindowToggle} modalWindow={modalWindow} onCloseModal={modalWindowToggle}/>
                             </Row>
                         </Container> 
                 </BackgroundWrapper> 
                 <Container className="mt-4 mb-5">
                     <Row>
                         <Col className="col-8">
-                            {cast}
+                            <Cast casts={casts} id={movieId} history={history}/>
                             {this.showCollection(details?.belongs_to_collection)}
                             {this.showRecommendations(recommendations)}
                         </Col>
                         <Col className="col-4">
-                            <Row>{original}</Row>
-                            <Row className="flex-column">{keyword}</Row>
+                            <Row>
+                                <OriginalDetails details={details} history={history} socialLink={socialLink}/>
+                            </Row>
+                            <Row className="flex-column">
+                                <Keywords keyword={keywords} history={this.props.history} keywordId={keywordId} url={'keywords'}/>
+                            </Row>
                         </Col>                       
                     </Row>
                 </Container>
             </>
-        )
+           )
+        }
     }
 }
 
