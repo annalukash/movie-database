@@ -41,6 +41,13 @@ const PrevButton = styled.button`
     &:focus {
         outline: none;
     }
+
+    & i {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 `;
 
 const NextButton = styled(PrevButton)`
