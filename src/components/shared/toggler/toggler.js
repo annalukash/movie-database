@@ -8,7 +8,7 @@ const TogglerWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     position: relative;
-    font-size: 16px;
+    font-size: 1.1em;
     cursor: pointer;
 `;
 

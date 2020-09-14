@@ -6,28 +6,32 @@ import {inTrendRequested, inTrendLoaded, inTrendError} from '../../actions/actio
 import Spinner from '../shared/spinner/spinner';
 import {InTrend} from './components';
 import { Container, Row, Col } from 'react-bootstrap';
+import useWindowSize from '../shared/useWindowSize/useWindowSize';
 
 const HomePageWrapper = styled.div`
     width: 100%;
-    margin: 10% auto;
+    margin: ${props => props.size < 415 ? '0 auto 10%': '10% auto'};
     background-color: #f1f2f6;
-    border-radius: 10px;
+    border-radius: ${props => props.size < 415 ? '0' : '10px'};
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-family: "Source Sans Pro", Arial, sans-serif;
-    font-size: 3em;
+    font-size: ${props => props.size < 415 ? '2.4em' : '3em'};
     font-weight: 700;
-    padding: 100px 0;
+    padding: 10% 15px;
+    text-align: center;
 `;
 
 const HomePageSubTitle = styled.div`
     font-size: 0.7em;
     font-weight: 600;
+    text-align: center;
 `;
 
 const HomePage = ({title, MoviesService, inTrendLoaded, inTrendError, inTrend, loading}) => {
+    const size = useWindowSize();
     document.title = title;
 
     const loadTrend = (time) => {
@@ -40,26 +44,34 @@ const HomePage = ({title, MoviesService, inTrendLoaded, inTrendError, inTrend, l
         loadTrend('day')
     }, []);
 
-    const trending = loading ? <Spinner/> : <InTrend inTrend={inTrend} MoviesService={MoviesService} loadTrend={loadTrend}/>
-    return (
-        <Container>
-            <Row>
-                <Col>
-                    <HomePageWrapper>
-                        Добро пожаловать в Movies Database.
-                        <HomePageSubTitle>
-                            Миллионы фильмов, сериалов и людей. Исследуйте сейчас.
-                        </HomePageSubTitle>
-                    </HomePageWrapper>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    {trending}
-                </Col>
-            </Row>
-        </Container>
-    )
+    if (loading) {
+        return <Spinner/>
+    } else {
+        return (
+            <Container>
+                <Row>
+                    <Col className='px-0'>
+                        <HomePageWrapper size={size}>
+                            Добро пожаловать в Movies Database.
+                            <HomePageSubTitle>
+                                Миллионы фильмов, сериалов и людей. Исследуйте сейчас.
+                            </HomePageSubTitle>
+                        </HomePageWrapper>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col className='px-0'>
+                        <InTrend 
+                            inTrend={inTrend} 
+                            MoviesService={MoviesService} 
+                            loadTrend={loadTrend} 
+                            size={size}
+                        />
+                    </Col>
+                </Row>
+            </Container>
+        )
+    }
 }
 
 const mapStateToProps = (state) => {

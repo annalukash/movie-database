@@ -4,18 +4,19 @@ import { Row, Col, Container } from 'react-bootstrap';
 import Spinner from '../../shared/spinner/spinner';
 import EllipsisText from "react-ellipsis-text";
 import { Pagination } from '@material-ui/lab';
+import useWindowSize from '../../shared/useWindowSize/useWindowSize';
 
 const PersonItemWrapper = styled.div`
     max-width: 235px;
     width: 100%;
-    min-height: 287px;
+    min-height: ${props => props.size < 415 ? '220px' : '287px'};
     height: 100%;
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
 `;
 
 const PersonImg = styled.img`
-    width: 235px;
-    height: 235px;
+    width: 100%;
+    height: ${props => props.size < 415 ? '63%' : '80%'};
     cursor: pointer;
 `;
 
@@ -38,8 +39,14 @@ const PersonCast = styled.div`
     text-align: left;
 `;
 
+const SectionTitle = styled.div`
+    font-size: 1.5em;
+    font-weight: 700;
+    padding: 0 0 15px 30px;
+`;
 
 const PersonList = ({person, loading, history, url, totalPages, getPerson, page}) => {
+    const size = useWindowSize();
     const personItem = person.map(item => {
         const {name, known_for, profile_path, id} = item;
         const src = profile_path ? ('https://image.tmdb.org/t/p/w235_and_h235_face' + profile_path) : (process.env.PUBLIC_URL + '/assets/avatar.png');
@@ -48,9 +55,10 @@ const PersonList = ({person, loading, history, url, totalPages, getPerson, page}
         const castToString = castArray.join(', ');
 
         return (
-            <Col key={id} xs={3} className='mb-4'>
-                <PersonItemWrapper>
+            <Col key={id} className='mb-4 col-xl-3 col-6 col-sm-6'>
+                <PersonItemWrapper size={size}>
                     <PersonImg 
+                        size={size}
                         src={src} 
                         alt={name}
                         onClick={() => history.push(`${url}/${id}`)}
@@ -60,7 +68,7 @@ const PersonList = ({person, loading, history, url, totalPages, getPerson, page}
                             onClick={() => history.push(`${url}/${id}`)}
                         >{name}</PersonName>
                         <PersonCast>
-                            <EllipsisText text={castToString} length={27}/>
+                            <EllipsisText text={castToString} length={size < 415 ? 15 : 27}/>
                         </PersonCast>
                     </PersonNameWrapper>  
                 </PersonItemWrapper>
@@ -68,26 +76,33 @@ const PersonList = ({person, loading, history, url, totalPages, getPerson, page}
         )
     })
 
-    const spinner = loading ? <Spinner/> : personItem;
-
-    return (
-        <Container className="mt-5 container-xl">
-            <Row className="justify-content-center mx-auto text-center w-100">
-                {spinner}
-            </Row>
-            <Row className="justify-content-center mx-auto text-center w-100">
-                <Pagination 
-                    count={totalPages} 
-                    boundaryCount={2}
-                    page={page}
-                    onChange={(event, page) => {
-                        getPerson(page)
-                    }}
-                />
-            </Row>
-        </Container>
-        
-    )
+    if (loading) {
+        return <Spinner/>
+    } else {
+        return (
+            <Container className="mt-4 mt-lg-5 container-xl">
+                <Row>
+                    <SectionTitle>
+                        Популярные люди
+                    </SectionTitle>
+                </Row>
+                <Row className="justify-content-center mx-auto text-center w-100">
+                    {personItem}
+                </Row>
+                <Row className="justify-content-center mx-auto text-center w-100 mb-5">
+                    <Pagination 
+                        size={size < 415 ? "small" : 'large'}
+                        count={totalPages} 
+                        boundaryCount={2}
+                        page={page}
+                        onChange={(event, page) => {
+                            getPerson(page)
+                        }}
+                    />
+                </Row>
+            </Container>
+        )
+    }
 }
 
 export default PersonList;

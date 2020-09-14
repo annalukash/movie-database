@@ -109,7 +109,6 @@ const MovieList = ({movies, loading, loadingMore, url, getMovies, history}) => {
             </LoadMoreButton>
         )
     }
-    const load = true;
 
     if (loading) {
         return <Spinner/>

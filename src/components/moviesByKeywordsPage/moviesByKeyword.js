@@ -112,7 +112,6 @@ export default class MoviesByKeyword extends Component {
 
     render() {
         const {movies, loading, totalResults, keywordName} = this.state;
-        const load = true;
         if (loading) {
             return <Spinner/>
         } else {
