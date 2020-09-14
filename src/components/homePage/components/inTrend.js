@@ -36,6 +36,7 @@ const PrevButton = styled.button`
     left: ${props => props.size < 415 ? '5%' : '0'};
     transform: translate(-50%, -50%);
     box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.7);
+    background-color: rgb(239, 239, 239);
 
     &:focus {
         outline: none;
