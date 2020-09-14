@@ -54,7 +54,7 @@ const mapStateToProps = (state) => {
         movies: popularMovies,
         loading,
         loadingMore,
-        page: popularPage
+        page: popularPage,
     }
 } 
 

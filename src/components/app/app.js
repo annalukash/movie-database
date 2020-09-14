@@ -11,14 +11,33 @@ import {TVPopularPage, OnTheAirPage, TVTopRatedPage, AiringTodayPage} from '../T
 import PersonPage from '../popularPersonPage/popularPersonPage';
 import CollectionPage from '../collectionPage/collectionPage';
 import HomePage from '../homePage/homePage';
-
+import HeaderMobile from '../shared/header/headerMob';
 
 export default class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { width: 0 };
+    }
+
+    componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions());
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions());
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({ width: window.innerWidth});
+    }
 
     render() {
+        const {width} = this.state;
+        const header = width < 415 ? <HeaderMobile/> : <Header/>;
         return(
             <Router>
-                <Header/>
+                {header}
                 <ScrollToTop>
                     <Switch>
                         <Redirect exact from='/' to='/movie-database'/>

@@ -8,7 +8,7 @@ import {InTrend} from './components';
 import { Container, Row, Col } from 'react-bootstrap';
 
 const HomePageWrapper = styled.div`
-    width: 1100px;
+    width: 100%;
     margin: 10% auto;
     background-color: #f1f2f6;
     border-radius: 10px;
@@ -17,13 +17,13 @@ const HomePageWrapper = styled.div`
     align-items: center;
     justify-content: center;
     font-family: "Source Sans Pro", Arial, sans-serif;
-    font-size: 48px;
+    font-size: 3em;
     font-weight: 700;
     padding: 100px 0;
 `;
 
 const HomePageSubTitle = styled.div`
-    font-size: 32px;
+    font-size: 0.7em;
     font-weight: 600;
 `;
 

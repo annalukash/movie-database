@@ -1,11 +1,9 @@
 import React from 'react';
 import './spinner.css';
 
-const Spinner = ({isButton}) => {
-    const classNames = `loadingio-spinner-spin-ddphnesjhka ${isButton ? 'button' : ''}`
-
+const Spinner = () => {
     return (
-        <div className={classNames}>
+        <div className='spinner'>
             <div className="loadingio-spinner-pulse-4q9a11w5c1h">
                 <div className="ldio-8zfoqlwj9ri">
                     <div></div><div></div><div></div>

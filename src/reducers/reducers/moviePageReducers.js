@@ -11,7 +11,8 @@ const initialState = {
     upcomingMovies: [],
     upcomingPage: 0,
     topRatedMovies: [],
-    topRatedPage: 0
+    topRatedPage: 0,
+    totalPages: 0
 }
 
 const moviePageReducer = (state = initialState, action) => {
@@ -26,7 +27,8 @@ const moviePageReducer = (state = initialState, action) => {
                 ...state,
                 popularMovies: action.payload,
                 loading: false,
-                popularPage: state.popularPage + 1
+                popularPage: state.popularPage + 1,
+                totalPages: action.payload
             }
         case actionTypes.POPULAR_MOVIES_ERROR: 
             return {
@@ -55,7 +57,8 @@ const moviePageReducer = (state = initialState, action) => {
                 ...state,
                 playingNowMovies: action.payload,
                 loading: false,
-                playingNowPage: state.playingNowPage + 1
+                playingNowPage: state.playingNowPage + 1,
+                totalPages: action.payload
             }
         case actionTypes.PLAYING_NOW_MOVIES_MORE_REQUESTED:
             return {
@@ -79,7 +82,8 @@ const moviePageReducer = (state = initialState, action) => {
                 ...state,
                 upcomingMovies: action.payload,
                 loading: false,
-                upcomingPage: state.upcomingPage + 1
+                upcomingPage: state.upcomingPage + 1,
+                totalPages: action.payload
             }
         case actionTypes.UPCOMING_MOVIES_MORE_REQUESTED: 
             return {
@@ -103,7 +107,8 @@ const moviePageReducer = (state = initialState, action) => {
                 ...state,
                 topRatedMovies: action.payload,
                 loading: false,
-                topRatedPage: state.topRatedPage + 1
+                topRatedPage: state.topRatedPage + 1,
+                totalPages: action.payload
             }
         case actionTypes.TOP_RATED_MOVIES_MORE_REQUESTED: 
             return {

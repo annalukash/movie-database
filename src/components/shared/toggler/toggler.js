@@ -56,7 +56,6 @@ const Toggler = ({names, loadTrend, types}) => {
     useEffect(() => {
         if (buttons[0].isActive) {
             setWidth(ref.current.clientWidth)
-
         }
     }, []);
 
