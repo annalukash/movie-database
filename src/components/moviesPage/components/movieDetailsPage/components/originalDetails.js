@@ -97,24 +97,24 @@ const OriginalDetails = ({details, history, socialLink}) => {
                     </LinkWrapper>
                 </Col>
             </Row>
-            <Row className="flex-column">
+            <Row className="flex-column mb-3">
                 <Col className="font-weight-bold">Исходное название</Col>
                 <Col>{original_title || original_name}</Col>
             </Row>
-            <Row className="flex-column">
+            <Row className="flex-column mb-3">
                 <Col className="font-weight-bold">Статус</Col>
                 <Col>{statusMovie()}</Col>
             </Row>
-            <Row className="flex-column">
+            <Row className="flex-column mb-3">
                 <Col className="font-weight-bold">Исходный язык</Col>
                 <Col>{original_language === 'en' ?  'английский' : original_language}</Col>
             </Row>
             {tvNet}
-            <Row className="flex-column">
+            <Row className="flex-column mb-3">
                 <Col className="font-weight-bold">Бюджет</Col>
                 <Col>${movieBudget}.00</Col>
             </Row>
-            <Row className="flex-column">
+            <Row className="flex-column mb-3">
                 <Col className="font-weight-bold">Сборы</Col>
                 <Col>${movieRevenue}.00</Col>
             </Row>

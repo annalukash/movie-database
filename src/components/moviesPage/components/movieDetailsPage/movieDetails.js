@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {Cast, Details, OriginalDetails, Keywords, Collection, Recommendation} from './components';
 import WithMoviesService from '../../../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded, keywordsRequested, keywordsLoaded, modalWindowToggle, videoLoaded, socialLinkLoaded, collectionLoaded, recommendationsLoaded} from '../../../../actions/actions';
+import {movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded, keywordsRequested, keywordsLoaded, modalWindowToggle, videoLoaded, socialLinkLoaded, collectionLoaded, recommendationsLoaded, ratingLoaded} from '../../../../actions/actions';
 
 const BackgroundWrapper = styled.div`
     background-image: linear-gradient(315deg, rgba(233, 188, 183, 0.7) 0%, rgba(41, 82, 74, 0.8) 74%), ${props => `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${props.backdrop})`};
@@ -27,21 +27,25 @@ class MovieDetails extends Component {
             if (pathname.includes('tv')) {
                 movieDetailsRequested();
                 castRequested();
+                keywordsRequested();
                 this.getDetails(movieId, MoviesService.getTVDetails); 
+                this.getRating(movieId, MoviesService.getTVRating);
                 this.getCast(movieId, MoviesService.getTVCasts);
                 this.getKeywords(movieId, MoviesService.getTVKeywords);
                 this.getVideos(movieId, MoviesService.getTVVideos);
                 this.getSocailLink(movieId, MoviesService.getTVExternalIds);
-                this.getRecommendations(movieId, MoviesService.getTVRecommendations);
+                this.getRecommendations(movieId, MoviesService.getTVRecommendations);   
             } else {
                 movieDetailsRequested();
                 castRequested();
+                keywordsRequested();
                 this.getDetails(movieId, MoviesService.getMovieDetails);
+                this.getRating(movieId, MoviesService.getMovieRating)
                 this.getCast(movieId, MoviesService.getCast);
                 this.getKeywords(movieId, MoviesService.getKeywords);
                 this.getVideos(movieId, MoviesService.getVideos);
                 this.getSocailLink(movieId, MoviesService.getMovieExternalIds);
-                this.getRecommendations(movieId, MoviesService.getMovieRecommendations);
+                this.getRecommendations(movieId, MoviesService.getMovieRecommendations);  
             } 
         }
     }
@@ -107,6 +111,14 @@ class MovieDetails extends Component {
             .catch(error => movieDetailsError());
     }
 
+    getRating = (id, request) => {
+        const {ratingLoaded, movieDetailsError} = this.props;
+
+        request(id)
+            .then((response) => ratingLoaded(response.results))
+            .catch(error => movieDetailsError());
+    }
+
     showCollection = (isBelongToCollection) => {
         const {history, details, loading, collection} = this.props;
 
@@ -146,7 +158,7 @@ class MovieDetails extends Component {
     }
 
     render() {
-        const {movieId, keywordId, history, details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, modalWindowToggle, socialLink, recommendations} = this.props;
+        const {movieId, history, details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, modalWindowToggle, socialLink, recommendations, rating} = this.props;
         const globalLoading = loading || loadingCast || loadingKeywords;
         if (globalLoading) {
            return <Spinner/>
@@ -156,7 +168,7 @@ class MovieDetails extends Component {
                 <BackgroundWrapper backdrop={details?.backdrop_path}>
                         <Container className="w-100">
                             <Row className="justify-content-center mx-auto text-center w-100 align-items-center py-4">
-                            <Details details={details} movieId={movieId} video={video} history={history} onOpenModal={modalWindowToggle} modalWindow={modalWindow} onCloseModal={modalWindowToggle}/>
+                            <Details details={details} movieId={movieId} rating={rating} video={video} history={history} onOpenModal={modalWindowToggle} modalWindow={modalWindow} onCloseModal={modalWindowToggle}/>
                             </Row>
                         </Container> 
                 </BackgroundWrapper> 
@@ -172,7 +184,7 @@ class MovieDetails extends Component {
                                 <OriginalDetails details={details} history={history} socialLink={socialLink}/>
                             </Row>
                             <Row className="flex-column">
-                                <Keywords keyword={keywords} history={this.props.history} keywordId={keywordId} url={'keywords'}/>
+                                <Keywords keyword={keywords} history={history} url={'keywords'}/>
                             </Row>
                         </Col>                       
                     </Row>
@@ -184,7 +196,7 @@ class MovieDetails extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {movieDetails, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink, collection, recommendations} = state.movieDetailsReducer;
+    const {movieDetails, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink, collection, recommendations, rating} = state.movieDetailsReducer;
     return {
         details: movieDetails,
         loading,
@@ -196,7 +208,8 @@ const mapStateToProps = (state) => {
         video,
         socialLink,
         collection,
-        recommendations
+        recommendations,
+        rating
     }
 }
 
@@ -212,7 +225,8 @@ const mapDispatchToProps = {
     videoLoaded,
     socialLinkLoaded,
     collectionLoaded,
-    recommendationsLoaded
+    recommendationsLoaded,
+    ratingLoaded
 }
 
 export default WithMoviesService()(connect(mapStateToProps, mapDispatchToProps)(MovieDetails));

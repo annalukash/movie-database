@@ -12,6 +12,7 @@ import PersonPage from '../popularPersonPage/popularPersonPage';
 import CollectionPage from '../collectionPage/collectionPage';
 import HomePage from '../homePage/homePage';
 import HeaderMobile from '../shared/header/headerMob';
+import MovieDetailsMobile from '../moviesPage/components/movieDetailsPage/movieDetailsMob';
 
 export default class App extends Component {
     constructor(props) {
@@ -45,9 +46,7 @@ export default class App extends Component {
                             () => {
                                 return <HomePage title='Movie Database'/>
                             }
-                        }>
-                            
-                        </Route>
+                        }/>
                         <Route exact path='/person' render={
                             ({history}) => {
                                 return <PersonPage history={history}/>
@@ -82,25 +81,41 @@ export default class App extends Component {
                         <Route exact path="/movie/popular/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                }  
                             }
                         }/>
                         <Route exact path="/movie/playing-now/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                } 
                             }
                         }/>
                         <Route exact path="/movie/upcoming/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                } 
                             }
                         }/>
                         <Route exact path="/movie/top-rated/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                } 
                             }
                         }/>
                         <Route exact path='/tv/popular/' render={
@@ -126,25 +141,41 @@ export default class App extends Component {
                         <Route exact path="/tv/popular/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                } 
                             }
                         }/>
                         <Route exact path="/tv/airing_today/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                } 
                             }
                         }/>
                         <Route exact path="/tv/on_the_air/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                } 
                             }
                         }/>
                         <Route exact path="/tv/top-rated/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                } 
                             }
                         }/>
                         
@@ -169,13 +200,21 @@ export default class App extends Component {
                         <Route exact path="/movie/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                } 
                             }
                         }/>
                         <Route exact path="/tv/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <MovieDetails movieId = {id} history={history}/>
+                                if (width < 415) {
+                                    return <MovieDetailsMobile movieId = {id} history={history}/>
+                                } else {
+                                    return <MovieDetails movieId = {id} history={history}/>
+                                } 
                             }
                         }/>
                         <Route exact path="/person/:id" render={

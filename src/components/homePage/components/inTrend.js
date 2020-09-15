@@ -37,16 +37,12 @@ const PrevButton = styled.button`
     transform: translate(-50%, -50%);
     box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.7);
     background-color: rgb(239, 239, 239);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:focus {
         outline: none;
-    }
-
-    & i {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
     }
 `;
 

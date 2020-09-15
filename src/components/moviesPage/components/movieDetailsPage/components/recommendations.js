@@ -1,9 +1,9 @@
 import React from 'react';
-import {useHistory} from 'react-router-dom';
 import Carousel from 'react-elastic-carousel';
 import styled from 'styled-components';
 import EllipsisText from "react-ellipsis-text";
 import moment from 'moment';
+import useWindowSize from '../../../../shared/useWindowSize/useWindowSize';
 
 const RecommendationCardWrapper = styled.div`
     max-width: 230px;
@@ -50,7 +50,7 @@ const CarouselWrapper = styled.div`
     position: relative;
     background-repeat: repeat-x;
     background-position: bottom;
-    border-bottom: 1px solid rgb(215,215,215);
+    border-bottom:  ${props => props.size < 415 ? 'none' : '1px solid rgb(215,215,215)'};
     .rec.rec-slider-container {
         margin: 0;
         height: 210px;
@@ -71,9 +71,10 @@ const PrevButton = styled.button`
     border: none;
     position: absolute;
     top: 50%;
-    left: 0;
+    left: ${props => props.size < 415 ? '5%' : '0'};
     transform: translate(-50%, -50%);
     box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.7);
+    display: ${props => props.size < 415 ? 'none' : 'block'};
 
     &:focus {
         outline: none;
@@ -81,7 +82,7 @@ const PrevButton = styled.button`
 `;
 
 const NextButton = styled(PrevButton)`
-    left: 100%;
+    left: ${props => props.size < 415 ? '95%' : '100%'};
 `;
 
 const SectionTitle = styled.div`
@@ -116,7 +117,7 @@ const Recommendation = ({recommendations, history, MoviesService, castRequested,
             history.push(`/movie/${id}`)
         }
     }
-
+    const size = useWindowSize();
     const recommendationItems = recommendations.filter((item, index) => index < 8)
         .map((item, index) => {
             const {id, vote_average, title, release_date, name, first_air_date, backdrop_path} = item;
@@ -158,19 +159,29 @@ const Recommendation = ({recommendations, history, MoviesService, castRequested,
     let carousel;
 
     return (
-        <CarouselWrapper>
+        <CarouselWrapper size={size}>
             <SectionTitle>Рекомендации </SectionTitle>
             <Carousel renderArrow={myArrow}
-                    itemsToScroll={2} 
-                    itemsToShow={3}
+                    itemsToScroll={size < 415 ? 1 : 2} 
+                    itemsToShow={size < 415 ? 1.4 : 3}
                     focusOnSelect={false}
                     ref={ref => (carousel = ref)}
                     renderPagination={myPagination}
             >
                 {recommendationItems}
             </Carousel>
-            <PrevButton onClick={() => carousel.slidePrev()}><i className="fas fa-angle-double-left"></i></PrevButton>
-            <NextButton onClick={() => carousel.slideNext()}><i className="fas fa-angle-double-right"></i></NextButton>
+            <PrevButton 
+                size={size}
+                onClick={() => carousel.slidePrev()}
+            >
+                <i className="fas fa-angle-double-left"></i>
+            </PrevButton>
+            <NextButton 
+                size={size}
+                onClick={() => carousel.slideNext()}
+            >
+                <i className="fas fa-angle-double-right"></i>
+            </NextButton>
         </CarouselWrapper>
     )
 }

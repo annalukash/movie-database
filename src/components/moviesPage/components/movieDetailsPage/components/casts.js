@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Carousel from 'react-elastic-carousel';
+import useWindowSize from '../../../../shared/useWindowSize/useWindowSize';
 
 const CarouselWrapper = styled.div`
     position: relative;
@@ -61,9 +62,13 @@ const PrevButton = styled.button`
     border: none;
     position: absolute;
     top: 50%;
-    left: 0;
+    left: ${props => props.size < 415 ? '5%' : '0'};
     transform: translate(-50%, -50%);
     box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.7);
+    background-color: rgb(239, 239, 239);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:focus {
         outline: none;
@@ -71,7 +76,7 @@ const PrevButton = styled.button`
 `;
 
 const NextButton = styled(PrevButton)`
-    left: 100%;
+    left: ${props => props.size < 415 ? '95%' : '100%'};
 `;
 
 const FullCastWrapper = styled.div`
@@ -81,11 +86,13 @@ const FullCastWrapper = styled.div`
     margin-top: 10px;
     cursor: pointer;
     text-decoration: underline;
+    text-align: ${props => props.size < 415 ? 'center' : 'left'};
 `;
 
 
 
 const Cast = ({casts, id, history}) => {
+    const size = useWindowSize();
 
     const myArrow = ({ type, onClick, isEdge }) => {
         return (
@@ -145,18 +152,29 @@ const Cast = ({casts, id, history}) => {
             <CarouselWrapper>
                 <CastTitle>В главных ролях</CastTitle>
                 <Carousel renderArrow={myArrow}
-                        itemsToScroll={1} 
-                        itemsToShow={5}
+                        itemsToScroll={size < 415 ? 2 : 1} 
+                        itemsToShow={size < 415 ? 2 : 5}
                         focusOnSelect={false}
                         ref={ref => (carousel = ref)}
                         renderPagination={myPagination}
                 >
                     {castItem}
                 </Carousel>
-                <PrevButton onClick={() => carousel.slidePrev()}><i className="fas fa-angle-double-left"></i></PrevButton>
-                <NextButton onClick={() => carousel.slideNext()}><i className="fas fa-angle-double-right"></i></NextButton>
+                <PrevButton 
+                    size={size}
+                    onClick={() => carousel.slidePrev()}
+                >
+                    <i className="fas fa-angle-double-left"></i>
+                </PrevButton>
+                <NextButton 
+                    size={size}
+                    onClick={() => carousel.slideNext()}
+                >
+                    <i className="fas fa-angle-double-right"></i>
+                </NextButton>
                 <FullCastWrapper
-                     onClick={() => onGoFullCast()}
+                    size={size}
+                    onClick={() => onGoFullCast()}
                 >Полный актёрский и съёмочный состав</FullCastWrapper>
            </CarouselWrapper>
            

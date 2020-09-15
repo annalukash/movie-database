@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import useWindowSize from '../../../../shared/useWindowSize/useWindowSize';
 
 const CollectionWrapper = styled.div`
     padding: 30px 0;
@@ -48,7 +49,7 @@ const CollectionButton = styled.button`
 `;
 
 const Collection = ({details, history, collection}) => {
-
+    const size = useWindowSize();
     const {belongs_to_collection} = details;
     const {name, backdrop_path, id} = belongs_to_collection;
     const {parts} = collection;
@@ -61,12 +62,13 @@ const Collection = ({details, history, collection}) => {
         return null
     }
     
-    const path = `https://image.tmdb.org/t/p/w1440_and_h320_multi_faces${backdrop_path}`
+    const path = size < 415 ? `https://image.tmdb.org/t/p/w1000_and_h450_multi_faces${backdrop_path}` : `https://image.tmdb.org/t/p/w1440_and_h320_multi_faces${backdrop_path}`;
+    const collectionIncludes = size < 415 ? null : `Коллекция включает ${getTitle()}`;
     return (
         <CollectionWrapper>
             <CollectionContent bg={path}>
             <CollectionName>Входит в {name}</CollectionName>
-            <CollectionDescription>Коллекция включает {getTitle()}</CollectionDescription>
+            <CollectionDescription>{collectionIncludes}</CollectionDescription>
             <CollectionButton
                 onClick={() => history.push(`/collection/${id}`)}
             >Смотреть коллекцию</CollectionButton>

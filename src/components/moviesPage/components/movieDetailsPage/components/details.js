@@ -95,8 +95,18 @@ const CreatorNameWrapper = styled.div`
     cursor: pointer;
 `;
 
-const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, video, history}) => {
+const Rating = styled.div`
+    border: 1px solid #fff;
+    opacity: 0.8;
+    padding: 0 7px;
+    font-size: 1em;
+`;
+
+const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, video, history, rating}) => {
     const {poster_path, title, release_date, genres, runtime, vote_average, tagline, overview, name, first_air_date, episode_run_time, created_by} = details;
+    const rate = rating.find(item => item.iso_3166_1 === 'US');
+
+
 
     const genreItem = genres.map(genre => genre.name);
     const genreToString = genreItem.join(', ');
@@ -120,6 +130,17 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
     const creator = history.location.pathname.includes('tv') ? <TvCreator creator={created_by} history={history}/> : null;
     const releaseYear = release_date || first_air_date ? `(${moment(release_date || first_air_date).format('YYYY')})` : null;
     const releaseDate = release_date || first_air_date ? moment(release_date || first_air_date).format('DD/MM/YYYY') : null;
+
+    const showRating = () => {
+        if (history.location.pathname.includes('tv')) {
+            const rateTV = rate.rating ? <Rating>{rate.rating}</Rating> : null;   
+            return rateTV;
+        } else {
+            const rateMovie = rate?.release_dates[0].certification ? <Rating>{rate?.release_dates[0].certification}</Rating> : null;
+            return rateMovie;
+        }
+    }
+
     return(
         <>
             {modal}
@@ -131,6 +152,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
                 </Title>
                 <DetailsList>
                     <Row>
+                        <Col className="col-auto px-0 pl-3">{showRating()}</Col>
                         <Col className="col-auto px-0 pl-3">{releaseDate}</Col>
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
                         <Col className="col-auto px-0">{genreToString}</Col>

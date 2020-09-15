@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Trailer from '../../../../shared/youtubeVideo/youtubeVideo';
-
+import Trailer from '../../../../../shared/youtubeVideo/youtubeVideo';
+import useWindowSize from '../../../../../shared/useWindowSize/useWindowSize';
 
 const Backdrop = styled.div`
     background-color: rgba(0, 0, 0, 0.6);
@@ -15,18 +15,18 @@ const Backdrop = styled.div`
 
 const TrailerBodyWrapper = styled.div`
     background-color: rgba(0, 0, 0);
-    max-width: 1075px;
-    max-height: 667px;
+    max-width: ${props => props.size + 'px'};
+    max-height: 40%;
     width: 100%;
-    height: 100%;
+
     position: fixed;
-    top: 20px;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%);
+    transform: translate(-50%, -50%);
 `;
 
 const TrailerTitleWraper = styled.div`
-    max-width: 1075px;
+    max-width: ${props => props.size + 'px'};
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -34,17 +34,19 @@ const TrailerTitleWraper = styled.div`
     padding: 16px;
     cursor: default;
     font-size: 20px;
+    color: #fff;
 `;
 
 const TrailerCloseButton = styled.div`
     cursor: pointer;
 `;
 
-const ModalWindow = ({video, onCloseModal}) => {
+const ModalWindowMobile = ({video, onCloseModal}) => {
+    const size = useWindowSize();
     return(
         <Backdrop>
-            <TrailerBodyWrapper>
-                <TrailerTitleWraper>
+            <TrailerBodyWrapper size={size}>
+                <TrailerTitleWraper size={size}>
                     Воспроизвести трейлер
                     <TrailerCloseButton
                         onClick={onCloseModal}
@@ -58,4 +60,4 @@ const ModalWindow = ({video, onCloseModal}) => {
     )    
 }
 
-export default ModalWindow;
+export default ModalWindowMobile;

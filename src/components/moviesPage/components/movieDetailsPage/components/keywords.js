@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Col } from 'react-bootstrap';
-import { useHistory } from "react-router-dom";
+import useWindowSize from '../../../../shared/useWindowSize/useWindowSize';
 
 const KeywordsWrapper = styled.div`
-    margin: 30px 0;
-    max-width: 260px;
+    margin: 10px 0;
+    max-width: ${props => props.size < 415 ? props.size + 'px' : '260px'};
     width: 100%;
 `;
 
@@ -18,29 +18,27 @@ const KeywordItemWrapper = styled.div`
     width: fit-content;
     margin: 5px;
     display: inline-block;
-    font-size: 14.4px;
+    font-size: 0.9em;
     cursor: pointer;
 `;
 
-const Keywords = ({keyword, url}) => {
-
-    const history = useHistory();
-  
-        const keywordsItem = keyword.map((keyword, index) => {
-            return(
-                <KeywordItemWrapper 
-                    key={index} 
-                    onClick={() => history.push(`/${url}/${keyword.id}`)}
-                >
-                    {keyword.name}
-                </KeywordItemWrapper>
-            )
-        })
+const Keywords = ({keyword, url, history}) => {
+    const size = useWindowSize();
+    const keywordsItem = keyword.map((keyword, index) => {
+        return(
+            <KeywordItemWrapper 
+                key={index} 
+                onClick={() => history.push(`/${url}/${keyword.id}`)}
+            >
+                {keyword.name}
+            </KeywordItemWrapper>
+        )
+    })
 
     const keywordItem = keywordsItem.length === 0 ? 'Ключевые слова не добавлены.' : keywordsItem;
 
     return (
-        <KeywordsWrapper>
+        <KeywordsWrapper size={size}>
             <Col className="font-weight-bold">Ключевые слова</Col>
             <Col>
                 {keywordItem}

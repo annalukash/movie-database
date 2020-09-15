@@ -155,4 +155,14 @@ export default class MoviesServices {
         const response = await this.getResource(`/tv/${id}/recommendations?`);
         return response;
     }
+
+    getMovieRating = async (id) => {
+        const response = await this.getResource(`/movie/${id}/release_dates?`);
+        return response;
+    }
+
+    getTVRating = async (id) => {
+        const response = await this.getResource(`/tv/${id}/content_ratings?`);
+        return response;
+    }
 }

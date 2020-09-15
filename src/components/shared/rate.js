@@ -6,7 +6,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 const RateWrapper = styled.div`
     width: ${props => props.small ? '44px' : '65px'};
     height: ${props => props.small ? '44px' : '65px'};
-    position: ${props => props.small ? 'absolute' : 'static'};
+    position: ${props => (props.small && props.static) ? 'static' : props.small ? 'absolute' : 'static'};
     top: -22px;
     left: 10px;
 
@@ -18,10 +18,10 @@ const RateWrapper = styled.div`
     }
 `;
 
-const Rate = ({vote, small}) => {
+const Rate = ({vote, small, isStatic}) => {
 
     return (
-        <RateWrapper small={small}>
+        <RateWrapper small={small} static={isStatic}>
             <CircularProgressbar
                 value={vote * 10}
                 background = {true}

@@ -4,7 +4,7 @@ const initialState = {
     movieDetails: [],
     loading: true,
     error: false,
-    casts: [],
+    casts: null,
     loadingCast: true,
     keywords: null,
     loadingKeywords: true,
@@ -12,7 +12,8 @@ const initialState = {
     video: null,
     socialLink: {},
     collection: {},
-    recommendations: []
+    recommendations: [],
+    rating: []
 }
 
 const movieDetailsReducer = (state = initialState, action) => {
@@ -74,6 +75,11 @@ const movieDetailsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 recommendations: action.payload
+            }
+        case actionTypes.RATING_LOADED:
+            return {
+                ...state,
+                rating: action.payload
             }
         default:
             return state
