@@ -141,8 +141,17 @@ const DetailsMobile = ({details, history, video, onOpenModal, modalWindow, onClo
     const genreToString = genreItem.join(', ');
     const releaseYear = release_date || first_air_date ? `(${moment(release_date || first_air_date).format('YYYY')})` : null;
     const releaseDate = release_date || first_air_date ? moment(release_date || first_air_date).format('DD/MM/YYYY') : null;
-    const ratingObject = rating.find(item => item.iso_3166_1 === 'US');
-    const ratingCertificate = ratingObject?.release_dates[0].certification ? <Rating>{ratingObject?.release_dates[0].certification}</Rating> : null;
+    const rate = rating.find(item => item.iso_3166_1 === 'US');
+
+    const showRating = () => {
+        if (history.location.pathname.includes('tv')) {
+            const rateTV = rate.rating ? <Rating>{rate.rating}</Rating> : null;   
+            return rateTV;
+        } else {
+            const rateMovie = rate?.release_dates[0].certification ? <Rating>{rate?.release_dates[0].certification}</Rating> : null;
+            return rateMovie;
+        }
+    }
 
     const trailerButton = () => {
         return(
@@ -176,7 +185,7 @@ const DetailsMobile = ({details, history, video, onOpenModal, modalWindow, onClo
             </TitleWrapper>
             <GenreWrapper>
                 <ReleaseWrapper>
-                    {ratingCertificate}
+                    {showRating()}
                     {releaseDate}
                     <i className="fas fa-circle"></i>
                     {duration}

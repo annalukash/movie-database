@@ -105,9 +105,6 @@ const Rating = styled.div`
 const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, video, history, rating}) => {
     const {poster_path, title, release_date, genres, runtime, vote_average, tagline, overview, name, first_air_date, episode_run_time, created_by} = details;
     const rate = rating.find(item => item.iso_3166_1 === 'US');
-
-
-
     const genreItem = genres.map(genre => genre.name);
     const genreToString = genreItem.join(', ');
 
