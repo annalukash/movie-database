@@ -5,10 +5,10 @@ import {DetailsMobile} from './components/mobileComponents';
 import WithMoviesService from '../../../hoc/withMoviesService';
 import {connect} from 'react-redux';
 import {Cast, Recommendation, Collection, OriginalDetails, Keywords} from '../movieDetailsPage/components/index';
-import {movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded, keywordsRequested, keywordsLoaded, modalWindowToggle, videoLoaded, socialLinkLoaded, collectionLoaded, recommendationsLoaded, ratingLoaded} from '../../../../actions/actions';
+import {movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded, keywordsRequested, keywordsLoaded, modalWindowToggle, videoLoaded, socialLinkLoaded, collectionLoaded, recommendationsLoaded, ratingRequested, ratingLoaded} from '../../../../actions/actions';
 
 
-const MovieDetailsMobile = ({movieId, history, rating, details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink, collection, recommendations, movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded, keywordsRequested, keywordsLoaded, modalWindowToggle, videoLoaded, socialLinkLoaded, collectionLoaded, recommendationsLoaded, MoviesService, ratingLoaded}) => {
+const MovieDetailsMobile = ({movieId, history, rating, loadingRating, details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink, collection, recommendations, movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded, keywordsRequested, keywordsLoaded, modalWindowToggle, videoLoaded, socialLinkLoaded, collectionLoaded, recommendationsLoaded, MoviesService, ratingRequested, ratingLoaded}) => {
 
     useEffect(() => {
         const {pathname} = history.location;
@@ -126,7 +126,7 @@ const MovieDetailsMobile = ({movieId, history, rating, details, loading, casts, 
         }
     }
 
-    const globalLoading = loading || loadingCast || loadingKeywords;
+    const globalLoading = loading || loadingCast || loadingKeywords || loadingRating;
     if (globalLoading) {
         return <Spinner/>
     } else {
@@ -168,7 +168,7 @@ const MovieDetailsMobile = ({movieId, history, rating, details, loading, casts, 
 }
 
 const mapStateToProps = (state) => {
-    const {movieDetails, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink, collection, recommendations, rating} = state.movieDetailsReducer;
+    const {movieDetails, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink, collection, recommendations, rating, loadingRating} = state.movieDetailsReducer;
     return {
         details: movieDetails,
         loading,
@@ -181,7 +181,8 @@ const mapStateToProps = (state) => {
         socialLink,
         collection,
         recommendations,
-        rating
+        rating,
+        loadingRating
     }
 }
 
@@ -198,6 +199,7 @@ const mapDispatchToProps = {
     socialLinkLoaded,
     collectionLoaded,
     recommendationsLoaded,
+    ratingRequested,
     ratingLoaded
 }
 

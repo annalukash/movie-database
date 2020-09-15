@@ -20,7 +20,8 @@ const ButtonWrapper = styled.div`
 
 const LoadMoreButton = styled.button`
     background-color: rgb(1, 180, 228);
-    width: 930px;
+    max-width: 1030px;
+    width: 85%;
     border: none;
     font-family: 'Source Sans Pro';
     color: #fff;
@@ -112,6 +113,8 @@ export default class MoviesByKeyword extends Component {
 
     render() {
         const {movies, loading, totalResults, keywordName} = this.state;
+        const {history} = this.props;
+
         if (loading) {
             return <Spinner/>
         } else {
@@ -122,6 +125,7 @@ export default class MoviesByKeyword extends Component {
                             movies={movies} 
                             totalResults={totalResults} 
                             keywordName={keywordName}
+                            history={history}
                         />
                     </MovieListWrapper>
                     {this.showButton()}         

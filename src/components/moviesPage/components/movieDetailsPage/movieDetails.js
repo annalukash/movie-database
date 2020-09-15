@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {Cast, Details, OriginalDetails, Keywords, Collection, Recommendation} from './components';
 import WithMoviesService from '../../../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded, keywordsRequested, keywordsLoaded, modalWindowToggle, videoLoaded, socialLinkLoaded, collectionLoaded, recommendationsLoaded, ratingLoaded} from '../../../../actions/actions';
+import {movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded, keywordsRequested, keywordsLoaded, modalWindowToggle, videoLoaded, socialLinkLoaded, collectionLoaded, recommendationsLoaded, ratingLoaded, ratingRequested} from '../../../../actions/actions';
 
 const BackgroundWrapper = styled.div`
     background-image: linear-gradient(315deg, rgba(233, 188, 183, 0.7) 0%, rgba(41, 82, 74, 0.8) 74%), ${props => `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${props.backdrop})`};
@@ -20,7 +20,7 @@ const BackgroundWrapper = styled.div`
 
 class MovieDetails extends Component {
     componentDidMount() {
-        const {movieId, history, details, movieDetailsRequested, castRequested, MoviesService} = this.props;
+        const {movieId, history, details, movieDetailsRequested, castRequested, MoviesService, ratingRequested, keywordsRequested} = this.props;
         const {pathname} = history.location;
 
         if (!details.length) {
@@ -28,6 +28,7 @@ class MovieDetails extends Component {
                 movieDetailsRequested();
                 castRequested();
                 keywordsRequested();
+                ratingRequested();
                 this.getDetails(movieId, MoviesService.getTVDetails); 
                 this.getRating(movieId, MoviesService.getTVRating);
                 this.getCast(movieId, MoviesService.getTVCasts);
@@ -39,6 +40,7 @@ class MovieDetails extends Component {
                 movieDetailsRequested();
                 castRequested();
                 keywordsRequested();
+                ratingRequested();
                 this.getDetails(movieId, MoviesService.getMovieDetails);
                 this.getRating(movieId, MoviesService.getMovieRating)
                 this.getCast(movieId, MoviesService.getCast);
@@ -158,8 +160,8 @@ class MovieDetails extends Component {
     }
 
     render() {
-        const {movieId, history, details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, modalWindowToggle, socialLink, recommendations, rating} = this.props;
-        const globalLoading = loading || loadingCast || loadingKeywords;
+        const {movieId, history, details, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, modalWindowToggle, socialLink, recommendations, rating, loadingRating} = this.props;
+        const globalLoading = loading || loadingCast || loadingKeywords || loadingRating;
         if (globalLoading) {
            return <Spinner/>
         } else {
@@ -196,7 +198,7 @@ class MovieDetails extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {movieDetails, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink, collection, recommendations, rating} = state.movieDetailsReducer;
+    const {movieDetails, loading, casts, loadingCast, keywords, loadingKeywords, modalWindow, video, socialLink, collection, recommendations, rating, loadingRating} = state.movieDetailsReducer;
     return {
         details: movieDetails,
         loading,
@@ -209,7 +211,8 @@ const mapStateToProps = (state) => {
         socialLink,
         collection,
         recommendations,
-        rating
+        rating,
+        loadingRating
     }
 }
 
@@ -226,6 +229,7 @@ const mapDispatchToProps = {
     socialLinkLoaded,
     collectionLoaded,
     recommendationsLoaded,
+    ratingRequested,
     ratingLoaded
 }
 

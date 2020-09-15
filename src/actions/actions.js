@@ -318,6 +318,12 @@ const recommendationsLoaded = (payload) => {
     }
 }
 
+const ratingRequested = () => {
+    return {
+        type: actionTypes.RATING_REQUESTED
+    }
+}
+
 const ratingLoaded = (payload) => {
     return {
         type: actionTypes.RATING_LOADED,
@@ -397,5 +403,6 @@ export {
     inTrendLoaded,
     inTrendError,
     recommendationsLoaded,
+    ratingRequested,
     ratingLoaded
 }

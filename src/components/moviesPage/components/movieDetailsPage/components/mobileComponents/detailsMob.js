@@ -5,7 +5,8 @@ import Rate from '../../../../../shared/rate';
 import {ModalWindowMobile} from './index';
 
 const GlobalWrapper = styled.div`
-    background-color: rgba(33, 38, 58, 0.96);
+    background-color: #5b6467;
+    background-image: linear-gradient(315deg, #5b6467 0%, #8b939a 74%);
     color: #fff;
 `;
 
@@ -81,7 +82,7 @@ const TrailerTitle = styled.div`
 `;
 
 const GenreWrapper = styled.div`
-    background-color: rgba(33, 38, 58, 1);
+    background-color: #2F4353;
     border-top: 1px solid rgba(0,0,0,0.2);
     border-bottom: 1px solid rgba(0,0,0,0.2);
     padding: 10px;

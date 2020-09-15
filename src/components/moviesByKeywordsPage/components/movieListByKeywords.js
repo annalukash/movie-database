@@ -2,18 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import EllipsisText from "react-ellipsis-text";
 import moment from 'moment';
-import { useHistory } from "react-router-dom";
+import useWindowSize from '../../shared/useWindowSize/useWindowSize';
 
 const MovieCardWrapper = styled.div`
     max-width: 1218px;
-    width: 100%;
+    width: 90%;
     min-height: 141px;
     height: 100%;
     box-shadow:rgba(0, 0, 0, 0.1) 0px 2px 8px 0px;
     border-radius: 10px;
     display: flex;
     align-items: center;
-    margin: 10px 0;
+    margin: 10px;
 
     &:first-child {
         margin-top: 35px;
@@ -64,25 +64,24 @@ const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 15px;
 `;
 
 const KeywordName = styled.div`
-    font-size: 32px;
+    font-size: 1.6em;
     font-weight: 700;
     color: #fff;
 `;
 
 const MovieQuantity = styled.div`
-    font-size: 24px;
+    font-size: 1.2em;
     font-weight: 600;
     opacity: 0.5;
     color: #fff;
 `;
 
-const MovieListByKeywords = ({movies, totalResults, keywordName}) => {
-
-    const history = useHistory();
-
+const MovieListByKeywords = ({movies, totalResults, keywordName, history}) => {
+    const size = useWindowSize();
     const moviesItem = movies.map((item, index) => {
         
         const releaseDate = moment(item.release_date).format('DD/MM/YYYY');
@@ -105,7 +104,7 @@ const MovieListByKeywords = ({movies, totalResults, keywordName}) => {
                     >{item.title}</MovieCardTitle>
                     <MovieCardReleaseDate>{releaseDate}</MovieCardReleaseDate>
                     <MovieCardDescription>
-                        <EllipsisText text={item.overview} length={260}/>
+                        <EllipsisText text={item.overview} length={size < 415 ? 47 : 260}/>
                     </MovieCardDescription>
                 </MovieCardContent>
             </MovieCardWrapper>
