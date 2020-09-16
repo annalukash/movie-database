@@ -75,7 +75,7 @@ export default class App extends Component {
                         <Route exact path="/collection/:id" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <CollectionPage collectionId = {id} history={history}/>
+                                return <CollectionPage collectionId = {id} history={history} width={width}/>   
                             }
                         }/>
                         <Route exact path="/movie/popular/:id" render={

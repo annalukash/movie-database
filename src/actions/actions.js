@@ -304,10 +304,22 @@ const socialLinkLoaded = (payload) => {
     }
 }
 
+const collectionRequested = () => {
+    return {
+        type: actionTypes.COLLECTION_REQUESTED
+    }
+}
+
 const collectionLoaded = (payload) => {
     return {
         type: actionTypes.COLLECTION_LOADED,
         payload
+    }
+}
+
+const collectionError = () => {
+    return {
+        type: actionTypes.COLLECTION_ERROR
     }
 }
 
@@ -347,6 +359,46 @@ const inTrendLoaded = (payload) => {
 const inTrendError = () => {
     return {
         type: actionTypes.IN_TREND_ERROR
+    }
+}
+
+const genresRequested = () => {
+    return {
+        type: actionTypes.GENRES_REQUESTED
+    }
+}
+
+const genresLoaded = (payload) => {
+    return {
+        type: actionTypes.GENRES_LOADED,
+        payload
+    }
+}
+
+const collectionMovieDetailsRequested = () => {
+    return {
+        type: actionTypes.COLLECTION_MOVIE_DETAILS_REQUESTED
+    }
+}
+
+const collectionMovieDetailsLoaded = (payload) => {
+    return {
+        type: actionTypes.COLLECTION_MOVIE_DETAILS_LOADED,
+        payload
+    }
+}
+
+
+const collectionCastRequested = () => {
+    return {
+        type: actionTypes.COLLECTION_CAST_REQUESTED
+    }
+}
+
+const collectionCastLoaded = (payload) => {
+    return {
+        type: actionTypes.COLLECTION_CAST_LOADED,
+        payload
     }
 }
 
@@ -398,11 +450,19 @@ export {
     modalWindowToggle,
     videoLoaded,
     socialLinkLoaded,
+    collectionRequested,
     collectionLoaded,
+    collectionError,
     inTrendRequested,
     inTrendLoaded,
     inTrendError,
     recommendationsLoaded,
     ratingRequested,
-    ratingLoaded
+    ratingLoaded,
+    genresRequested,
+    genresLoaded,
+    collectionMovieDetailsRequested,
+    collectionMovieDetailsLoaded,
+    collectionCastRequested,
+    collectionCastLoaded,
 }

@@ -1,11 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Container, Row, Col } from 'react-bootstrap';
+import React from "react";
+import styled from "styled-components";
+import { Container, Row, Col } from "react-bootstrap";
 import EllipsisText from "react-ellipsis-text";
-import moment from 'moment';
+import moment from "moment";
+import useWindowSize from "../../shared/useWindowSize/useWindowSize";
 
 const CastItemWrapper = styled.div`
-    max-width: ${props => props.large ? '1218px' : '290px'};
+    max-width: ${props => props.large ? "1218px" : props.size < 415 ? props.size + 'px' : "290px"};
     width: 100%;
     display: flex;
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
@@ -14,8 +15,8 @@ const CastItemWrapper = styled.div`
 `;
 
 const CastImgWrapper = styled.img`
-    width: ${props => props.large ? '94px' : '60px'};
-    height: ${props => props.large ? '141px' : '60px'};
+    width: ${(props) => (props.large ? "94px" : "60px")};
+    height: ${(props) => (props.large ? "141px" : "60px")};
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
     cursor: pointer;
@@ -29,7 +30,7 @@ const CastNameWrapper = styled.div`
 `;
 
 const CastName = styled.div`
-    font-size: ${props => props.large ? '19px' : '16px'};
+    font-size: ${(props) => (props.large ? "19px" : "16px")};
     font-weight: 700;
     cursor: pointer;
 
@@ -39,7 +40,7 @@ const CastName = styled.div`
 `;
 
 const CastCharacter = styled.div`
-    font-size:14.4px;
+    font-size: 0.9em;
 `;
 
 const HeaderWrapper = styled.div`
@@ -49,8 +50,8 @@ const HeaderWrapper = styled.div`
 
 const ReleaseDate = styled.div`
     color: rgb(153, 153, 153);
-    font-size: 16px;
-    margin-bottom: 20px;
+    font-size: 0.7em;
+    margin-bottom: ${props => props.size < 415 ? '5px' : '20px'};
 `;
 
 const Section = styled.div`
@@ -58,133 +59,142 @@ const Section = styled.div`
     border-bottom: 1px solid rgb(215, 215, 215);
 `;
 
-const CollectionCast = ({cast, crew, parts, history}) => {  
+const CollectionCast = ({ cast, crew, parts, history }) => {
+    const size = useWindowSize();
 
     const onGoToPersonDetails = (id) => {
-        history.push(`/person/${id}`)
-    }
+        history.push(`/person/${id}`);
+    };
 
     const onGoToMovieDetails = (id) => {
-        history.push(`/movie/${id}`)
-    }
+        history.push(`/movie/${id}`);
+    };
 
-    const castItem = cast.filter((item, index) => index < 12)
+    const castItem = cast
+        .filter((item, index) => index < 12)
         .map((item, index) => {
-            const src = item.profile_path ? 'https://image.tmdb.org/t/p/w64_and_h64_face' + item.profile_path : (process.env.PUBLIC_URL + '/assets/avatar.png');
+            const src = item.profile_path
+                ? "https://image.tmdb.org/t/p/w64_and_h64_face" +
+                  item.profile_path
+                : process.env.PUBLIC_URL + "/assets/avatar.png";
 
             return (
                 <Col sm={3} key={index}>
-                    <CastItemWrapper>
-                        <CastImgWrapper 
-                            src={src} 
+                    <CastItemWrapper size={size}>
+                        <CastImgWrapper
+                            src={src}
                             alt={item.name}
                             onClick={() => onGoToPersonDetails(item.id)}
                         />
                         <CastNameWrapper>
                             <CastName
                                 onClick={() => onGoToPersonDetails(item.id)}
-                            >{item.name}</CastName>
+                            >
+                                {item.name}
+                            </CastName>
                             <CastCharacter>
-                                <EllipsisText text={item.character} length={20}/> 
+                                <EllipsisText
+                                    text={item.character}
+                                    length={size < 415 ? 30 : 20}
+                                />
                             </CastCharacter>
                         </CastNameWrapper>
                     </CastItemWrapper>
                 </Col>
-            )
-        })
+            );
+        });
 
-    const crewItem = crew.filter((item, index) => index < 8)
+    const crewItem = crew
+        .filter((item, index) => index < 8)
         .map((item, index) => {
-            const src = item.profile_path ? 'https://image.tmdb.org/t/p/w64_and_h64_face' + item.profile_path : (process.env.PUBLIC_URL + '/assets/avatar.png');
+            const src = item.profile_path
+                ? "https://image.tmdb.org/t/p/w64_and_h64_face" +
+                  item.profile_path
+                : process.env.PUBLIC_URL + "/assets/avatar.png";
 
             return (
                 <Col sm={3} key={index}>
-                    <CastItemWrapper>
-                        <CastImgWrapper 
-                            src={src} 
+                    <CastItemWrapper size={size}>
+                        <CastImgWrapper
+                            src={src}
                             alt={item.name}
                             onClick={() => onGoToPersonDetails(item.id)}
                         />
                         <CastNameWrapper>
                             <CastName
                                 onClick={() => onGoToPersonDetails(item.id)}
-                            >{item.name}</CastName>
+                            >
+                                {item.name}
+                            </CastName>
                             <CastCharacter>{item.department}</CastCharacter>
                         </CastNameWrapper>
                     </CastItemWrapper>
                 </Col>
-            )
-        })
+            );
+        });
 
     const partItem = parts.map((part, index) => {
-        const src = part.poster_path ? 'https://image.tmdb.org/t/p/w94_and_h141_bestv2' + part.poster_path : (process.env.PUBLIC_URL + '/assets/poster.png');
+        const src = part.poster_path
+            ? "https://image.tmdb.org/t/p/w94_and_h141_bestv2" +
+              part.poster_path
+            : process.env.PUBLIC_URL + "/assets/poster.png";
 
         return (
             <Col sm={12} key={index}>
                 <CastItemWrapper large>
-                    <CastImgWrapper 
-                        src={src} 
-                        alt={part.title} 
+                    <CastImgWrapper
+                        src={src}
+                        alt={part.title}
                         large
                         onClick={() => onGoToMovieDetails(part.id)}
                     />
                     <CastNameWrapper>
-                        <CastName 
+                        <CastName
                             large
                             onClick={() => onGoToMovieDetails(part.id)}
                         >
                             {part.title}
-                            <ReleaseDate>{moment(part.release_date).format('DD/MM/YYYY')}</ReleaseDate>
+                            <ReleaseDate size={size}>
+                                {moment(part.release_date).format("DD/MM/YYYY")}
+                            </ReleaseDate>
                         </CastName>
                         <CastCharacter>
-                            <EllipsisText text={part.overview} length={270}/>
+                            <EllipsisText text={part.overview} length={size < 415 ? 50 : 268} />
                         </CastCharacter>
                     </CastNameWrapper>
                 </CastItemWrapper>
             </Col>
-        )
-    })
+        );
+    });
 
-    return(
+    return (
         <Container>
             <Section>
                 <Row>
-                    <Col className='font-weight-bold'>
-                        <HeaderWrapper>
-                            В главных ролях
-                        </HeaderWrapper>
+                    <Col className="font-weight-bold">
+                        <HeaderWrapper>В главных ролях</HeaderWrapper>
                     </Col>
                 </Row>
-                <Row>
-                    {castItem}
-                </Row>
+                <Row>{castItem}</Row>
             </Section>
             <Section>
                 <Row>
-                    <Col className='font-weight-bold'>
-                        <HeaderWrapper>
-                            Постановщики
-                        </HeaderWrapper>
+                    <Col className="font-weight-bold">
+                        <HeaderWrapper>Постановщики</HeaderWrapper>
                     </Col>
                 </Row>
-                <Row>
-                    {crewItem}
-                </Row>
+                <Row>{crewItem}</Row>
             </Section>
             <Section>
                 <Row>
-                    <Col className='font-weight-bold'>
-                        <HeaderWrapper>
-                            {parts.length} фильмов
-                        </HeaderWrapper>
+                    <Col className="font-weight-bold">
+                        <HeaderWrapper>{parts.length} фильмов</HeaderWrapper>
                     </Col>
                 </Row>
-                <Row>
-                    {partItem}
-                </Row>
+                <Row>{partItem}</Row>
             </Section>
         </Container>
-    )
-}
+    );
+};
 
 export default CollectionCast;

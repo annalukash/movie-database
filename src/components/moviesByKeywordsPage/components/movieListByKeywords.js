@@ -23,9 +23,9 @@ const MovieCardWrapper = styled.div`
 const MovieCardImg = styled.img`
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    width: 94px;
     height: 141px;
     cursor: pointer;
+    flex-shrink: 0;
 `;
 
 const MovieCardContent = styled.div`

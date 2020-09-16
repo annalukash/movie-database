@@ -1,112 +1,180 @@
-import React, { Component }  from 'react';
-import MoviesServices from '../../services/services';
-import CollectionDetails from './components/collectionDetails';
-import Spinner from '../shared/spinner/spinner';
+import React, { Component } from "react";
+import CollectionDetails from "./components/collectionDetails";
+import Spinner from "../shared/spinner/spinner";
+import CollectionDetailsMobile from './components/collectionDetailsMob';
+import WithMoviesService from "../hoc/withMoviesService";
+import { connect } from "react-redux";
+import {
+    collectionRequested,
+    collectionLoaded,
+    collectionError,
+    genresRequested,
+    genresLoaded,
+    collectionMovieDetailsRequested,
+    collectionMovieDetailsLoaded,
+    collectionCastRequested,
+    collectionCastLoaded
+} from "../../actions/actions";
 
-
-export default class CollectionPage extends Component {
-    constructor(props) {
-        super(props);
-        this.moviesServices = new MoviesServices();
-        this.state = {
-            collection: null,
-            loading: true,
-            genresObj: {},
-            cast: [],
-            crew: [],
-            revenue: 0
-        }     
-    }
-    
+class CollectionPage extends Component {
     componentWillMount() {
-        const {collectionId} = this.props;
-        this.getGenresName(); 
-        this.loadCollection(collectionId); 
+        const {
+            collectionId,
+            collectionRequested,
+            collection,
+            genresRequested,
+            collectionMovieDetailsRequested,
+            collectionCastRequested,
+        } = this.props;
+
+        if (!collection) {
+            collectionRequested();
+            genresRequested();
+            collectionMovieDetailsRequested();
+            collectionCastRequested();
+            this.getGenresName();
+            this.loadCollection(collectionId);
+        }
     }
 
     loadCollection = (collectionId) => {
-        this.moviesServices.getCollection(collectionId)
-            .then((res) => { 
+        const { MoviesService, collectionLoaded, collectionError } = this.props;
+        MoviesService.getCollection(collectionId)
+            .then((res) => {
                 if (res) {
-                    const movieIds = res.parts.map(part => part.id);
-                    this.onLoading(res);
+                    const movieIds = res.parts.map((part) => part.id);
+                    collectionLoaded(res);
                     this.getCast(res);
                     this.getMovieDetails(movieIds);
                 }
             })
-    }
-
-    onLoading = (response) => {
-        this.setState({
-            collection: response,
-            loading: false
-        })
-    }
+            .catch((error) => collectionError());
+    };
 
     getGenresName = () => {
-        this.moviesServices.getGenreList()
-            .then((res) => { 
-                this.onLoadingGenres(res)
-            })
-    }
-
-    onLoadingGenres = (response) => {
-        this.setState({
-            genresObj: response
-        })
-    }
+        const { MoviesService, genresLoaded, collectionError } = this.props;
+        MoviesService.getGenreList()
+            .then((res) => genresLoaded(res))
+            .catch((error) => collectionError());
+    };
 
     getMovieDetails = (ids) => {
+        const {
+            MoviesService,
+            collectionMovieDetailsLoaded,
+            collectionError,
+        } = this.props;
         const total = [];
-        ids.forEach(id => {
-            this.moviesServices.getMovieDetails(id)
-            .then((response) => {
-                if (response) {
-                    total.push(response.revenue);
-                    this.onLoadingDetails(total);
-                }
-            })
-        })
-    }
-
-    onLoadingDetails = (total) => {
-        const totalRevenue = total.reduce((sum, current) => sum + current, 0)
-        this.setState({
-            revenue: totalRevenue
-        })
-    }
+        ids.forEach((id) => {
+            MoviesService.getMovieDetails(id)
+                .then((response) => {
+                    if (response) {
+                        total.push(response.revenue);
+                        collectionMovieDetailsLoaded(total);
+                    }
+                })
+                .catch((error) => collectionError());
+        });
+    };
 
     getCast = (collection) => {
-        const ids = collection.parts.map(part => part.id)
-        this.moviesServices.getCast(ids)
-        .then((res) => { 
-            this.onLoadingCast(res.cast, res.crew);
+        const { MoviesService, collectionCastLoaded, collectionError } = this.props;
+        const ids = collection.parts.map((part) => part.id);
 
-        })
-    }
-
-    onLoadingCast = (cast, crew) => {
-        this.setState({
-            cast,
-            crew
-        })
-    }
+        MoviesService.getCast(ids)
+            .then((res) => {
+                if (res) {
+                    const payload = { cast: res.cast, crew: res.crew };
+                    collectionCastLoaded(payload);
+                }
+            })
+            .catch((error) => collectionError());
+    };
 
     render() {
-        const {collection, loading, genresObj, cast, crew, revenue} = this.state;
-        const {history} = this.props;
-        const template = loading ? <Spinner/> : <CollectionDetails 
-                                                    collection={collection} 
-                                                    loading={loading} 
-                                                    history={history} 
-                                                    genre={genresObj}
-                                                    cast={cast}
-                                                    crew={crew}
-                                                    revenue={revenue}
-                                                />
-        
-        return(
-            <>{template}</>
-        )
+        const {
+            collection,
+            history,
+            loading,
+            genres,
+            genresLoading,
+            revenue,
+            revenueLoading,
+            cast,
+            crew,
+            castLoading,
+            width
+        } = this.props;
+
+
+        const globalLoading =
+            loading || genresLoading || revenueLoading || castLoading;
+
+        if (globalLoading) {
+            return <Spinner />;
+        } else if (width < 415) {
+            return (
+                <CollectionDetailsMobile
+                    collection={collection}
+                    history={history}
+                    genre={genres}
+                    cast={cast}
+                    crew={crew}
+                    revenue={revenue}
+                />
+            )
+        } else {
+            return (
+                <CollectionDetails
+                    collection={collection}
+                    history={history}
+                    genre={genres}
+                    cast={cast}
+                    crew={crew}
+                    revenue={revenue}
+                />
+            );
+        }
     }
 }
+
+const mapStateToProps = (state) => {
+    const {
+        collection,
+        loading,
+        genres,
+        genresLoading,
+        revenue,
+        revenueLoading,
+        cast,
+        crew,
+        castLoading,
+    } = state.collectionPageReducer;
+    return {
+        collection,
+        loading,
+        genres,
+        genresLoading,
+        revenue,
+        revenueLoading,
+        cast,
+        crew,
+        castLoading
+    };
+};
+
+const mapDispatchToProps = {
+    collectionRequested,
+    collectionLoaded,
+    collectionError,
+    genresRequested,
+    genresLoaded,
+    collectionMovieDetailsRequested,
+    collectionMovieDetailsLoaded,
+    collectionCastRequested,
+    collectionCastLoaded
+};
+
+export default WithMoviesService()(
+    connect(mapStateToProps, mapDispatchToProps)(CollectionPage)
+);

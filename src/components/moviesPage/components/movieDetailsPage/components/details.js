@@ -108,7 +108,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
     const genreItem = genres.map(genre => genre.name);
     const genreToString = genreItem.join(', ');
 
-    let duration = (runtime || episode_run_time) ? moment.duration(runtime || episode_run_time[0], "minutes").format("h : m o").replace(':', 'h').replace('o', 'm') : null;
+    const durations = (runtime || episode_run_time) ? moment.duration(runtime || episode_run_time[0], "minutes").format("h : m o").replace(':', 'h').replace('o', 'm') : null;
 
     const trailerButton = () => {
         return(
@@ -154,7 +154,7 @@ const Details = ({details, movieId, onOpenModal, modalWindow, onCloseModal, vide
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
                         <Col className="col-auto px-0">{genreToString}</Col>
                         <Col className="col-auto d-flex align-items-center"><IconWrapper><i className="fas fa-circle"></i></IconWrapper></Col>
-                        <Col className="col-auto px-0">{duration}</Col>
+                        <Col className="col-auto px-0">{durations}</Col>
                     </Row>  
                     <Row className="font-weight-bold py-3">
                         <Col className="col-auto d-flex">

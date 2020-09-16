@@ -1,8 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import moment from 'moment';
-import Rate from '../../../../../shared/rate';
-import {ModalWindowMobile} from './index';
+import React from "react";
+import styled from "styled-components";
+import moment from "moment";
+import duration from "moment-duration-format";
+import Rate from "../../../../../shared/rate";
+import { ModalWindowMobile } from "./index";
 
 const GlobalWrapper = styled.div`
     background-color: #5b6467;
@@ -12,12 +13,18 @@ const GlobalWrapper = styled.div`
 
 const BackgroundWrapper = styled.div`
     width: 100%;
-    background-image: linear-gradient(315deg,rgba(233,188,183,0.7) 0%,rgba(41,82,74,0.8) 74%), ${props => `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${props.url})`};
+    background-image: linear-gradient(
+            315deg,
+            rgba(233, 188, 183, 0.7) 0%,
+            rgba(41, 82, 74, 0.8) 74%
+        ),
+        ${(props) =>
+            `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${props.url})`};
     background-size: cover;
     background-repeat: no-repeat;
     background-position: right;
     min-width: 100%;
-    font-family: 'Source Sans Pro';
+    font-family: "Source Sans Pro";
     background-color: #e9bcb7;
 `;
 
@@ -53,7 +60,8 @@ const RateWrapper = styled.div`
 
 const Vote = styled.div`
     position: relative;
-    border-right: 1px solid rgba(255, 255, 255, 0.8);
+    border-right: ${(props) =>
+        props.border ? "1px solid rgba(255, 255, 255, 0.8)" : "none"};
     font-weight: 600;
     padding: 0 5px 0 15px;
     display: flex;
@@ -68,8 +76,8 @@ const TrailerWrapper = styled.div`
     transition: opacity 200ms;
     padding-left: 5px;
 
-    &:hover{
-        opacity: 0.6
+    &:hover {
+        opacity: 0.6;
     }
 
     & i {
@@ -82,9 +90,9 @@ const TrailerTitle = styled.div`
 `;
 
 const GenreWrapper = styled.div`
-    background-color: #2F4353;
-    border-top: 1px solid rgba(0,0,0,0.2);
-    border-bottom: 1px solid rgba(0,0,0,0.2);
+    background-color: #2f4353;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     padding: 10px;
 `;
 
@@ -106,7 +114,7 @@ const OverviewWrapper = styled.div`
     padding: 20px;
 `;
 
-const Tagline = styled.div`  
+const Tagline = styled.div`
     font-size: 1.1em;
     font-weight: 400;
     font-style: italic;
@@ -133,55 +141,129 @@ const Rating = styled.div`
     font-size: 1em;
 `;
 
-const DetailsMobile = ({details, history, video, onOpenModal, modalWindow, onCloseModal, rating}) => {
+const CreatorWrapper = styled.div`
+    margin-top: 20px;
+    font-size: 0.9em;
+`;
 
-    const {title, name, backdrop_path, poster_path, id, homepage, vote_average, release_date, genres, runtime, tagline, overview, first_air_date, episode_run_time, created_by} = details;
-    const src = poster_path ? ('//image.tmdb.org/t/p/w116_and_h174_face' + poster_path) : (process.env.PUBLIC_URL + '/assets/poster.png');
-    let duration = (runtime || episode_run_time) ? moment.duration(runtime || episode_run_time[0], "minutes").format("h : m o").replace(':', 'h').replace('o', 'm') : null;
-    const genreItem = genres.map(genre => genre.name);
-    const genreToString = genreItem.join(', ');
-    const releaseYear = release_date || first_air_date ? `(${moment(release_date || first_air_date).format('YYYY')})` : null;
-    const releaseDate = release_date || first_air_date ? moment(release_date || first_air_date).format('DD/MM/YYYY') : null;
-    const rate = rating.find(item => item.iso_3166_1 === 'US');
+const Creator = styled.div`
+    font-size: 1.1em;
+    font-weight: 600;
+`;
+
+const DetailsMobile = ({
+    details,
+    history,
+    video,
+    onOpenModal,
+    modalWindow,
+    onCloseModal,
+    rating,
+}) => {
+    const {
+        title,
+        name,
+        backdrop_path,
+        poster_path,
+        id,
+        vote_average,
+        release_date,
+        genres,
+        runtime,
+        tagline,
+        overview,
+        first_air_date,
+        episode_run_time,
+        created_by,
+    } = details;
+    const src = poster_path
+        ? "//image.tmdb.org/t/p/w116_and_h174_face" + poster_path
+        : process.env.PUBLIC_URL + "/assets/poster.png";
+    const durations =
+        runtime || episode_run_time
+            ? moment
+                  .duration(runtime || episode_run_time[0], "minutes")
+                  .format("h : m o")
+                  .replace(":", "h")
+                  .replace("o", "m")
+            : null;
+    const genreItem = genres.map((genre) => genre.name);
+    const genreToString = genreItem.join(", ");
+    const releaseYear =
+        release_date || first_air_date
+            ? `(${moment(release_date || first_air_date).format("YYYY")})`
+            : null;
+    const releaseDate =
+        release_date || first_air_date
+            ? moment(release_date || first_air_date).format("DD/MM/YYYY")
+            : null;
+    const rate = rating.find((item) => item.iso_3166_1 === "US");
+    const creator = created_by?.find((item, index) => index === 0).name;
+    const creatorId = created_by?.find((item, index) => index === 0).id;
 
     const showRating = () => {
-        if (history.location.pathname.includes('tv')) {
-            const rateTV = rate.rating ? <Rating>{rate.rating}</Rating> : null;   
+        if (history.location.pathname.includes("tv")) {
+            const rateTV = rate.rating ? <Rating>{rate.rating}</Rating> : null;
             return rateTV;
         } else {
-            const rateMovie = rate?.release_dates[0].certification ? <Rating>{rate?.release_dates[0].certification}</Rating> : null;
+            const rateMovie = rate?.release_dates[0].certification ? (
+                <Rating>{rate?.release_dates[0].certification}</Rating>
+            ) : null;
             return rateMovie;
         }
-    }
+    };
+
+    const showCreator = () => {
+        if (history.location.pathname.includes("tv")) {
+            return (
+                <CreatorWrapper>
+                    <Creator
+                        onClick={() => history.push(`/person/${creatorId}`)}
+                    >
+                        {creator}
+                    </Creator>
+                    Создатель
+                </CreatorWrapper>
+            );
+        } else {
+            return null;
+        }
+    };
 
     const trailerButton = () => {
-        return(
+        return (
             <TrailerWrapper>
                 <i className="fas fa-play"></i>
-                <TrailerTitle
-                    onClick = {() => onOpenModal(id)}
-                >Трейлер</TrailerTitle>
+                <TrailerTitle onClick={() => onOpenModal(id)}>
+                    Трейлер
+                </TrailerTitle>
             </TrailerWrapper>
-        )   
-    }
+        );
+    };
 
-    const modal = modalWindow ? <ModalWindowMobile video={video} onCloseModal={onCloseModal}/> : null;
-    const showTrailer = video?.results.length === 0 ? null : trailerButton();
+    const modal = modalWindow ? (
+        <ModalWindowMobile video={video} onCloseModal={onCloseModal} />
+    ) : null;
+    const showTrailer = !video?.results.length ? null : trailerButton();
 
-    return (   
-        <GlobalWrapper> 
+    return (
+        <GlobalWrapper>
             {modal}
             <BackgroundWrapper url={backdrop_path}>
                 <PosterWrapper>
-                    <img src={src} alt={title || name}/>
+                    <img src={src} alt={title || name} />
                 </PosterWrapper>
             </BackgroundWrapper>
             <TitleWrapper>
-                <Title>{title || name} <span>{(releaseYear)}</span></Title>
+                <Title>
+                    {title || name} <span>{releaseYear}</span>
+                </Title>
                 <RateWrapper>
-                    <Rate vote={vote_average} small isStatic/>
-                    <Vote>Пользовательский <span>счёт</span></Vote>
-                    {showTrailer}  
+                    <Rate vote={vote_average} small isStatic />
+                    <Vote border={video?.results.length}>
+                        Пользовательский <span>счёт</span>
+                    </Vote>
+                    {showTrailer}
                 </RateWrapper>
             </TitleWrapper>
             <GenreWrapper>
@@ -189,7 +271,7 @@ const DetailsMobile = ({details, history, video, onOpenModal, modalWindow, onClo
                     {showRating()}
                     {releaseDate}
                     <i className="fas fa-circle"></i>
-                    {duration}
+                    {durations}
                 </ReleaseWrapper>
                 <GenreList>{genreToString}</GenreList>
             </GenreWrapper>
@@ -199,9 +281,23 @@ const DetailsMobile = ({details, history, video, onOpenModal, modalWindow, onClo
                     <div>Обзор</div>
                     {overview}
                 </Overview>
+                {showCreator()}
             </OverviewWrapper>
         </GlobalWrapper>
-    )
-}
+    );
+};
 
 export default DetailsMobile;
+export {
+    GlobalWrapper,
+    BackgroundWrapper,
+    PosterWrapper,
+    TitleWrapper,
+    Title,
+    RateWrapper,
+    Vote,
+    GenreWrapper,
+    GenreList,
+    OverviewWrapper,
+    Overview,
+};
