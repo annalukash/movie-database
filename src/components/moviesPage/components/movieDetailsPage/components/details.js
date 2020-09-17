@@ -124,7 +124,6 @@ const Details = ({
     onCloseModal,
     video,
     history,
-    rating,
     casts,
     keywords,
     socialLink,
@@ -146,7 +145,6 @@ const Details = ({
         episode_run_time,
         created_by,
     } = details;
-    const rate = rating.find((item) => item.iso_3166_1 === "US");
     const genreItem = genres.map((genre) => genre.name);
     const genreToString = genreItem.join(", ");
 
@@ -189,17 +187,6 @@ const Details = ({
             ? moment(release_date || first_air_date).format("DD/MM/YYYY")
             : null;
 
-    const showRating = () => {
-        if (history.location.pathname.includes("tv")) {
-            const rateTV = rate.rating ? <Rating>{rate.rating}</Rating> : null;
-            return rateTV;
-        } else {
-            const rateMovie = rate?.release_dates[0].certification ? (
-                <Rating>{rate?.release_dates[0].certification}</Rating>
-            ) : null;
-            return rateMovie;
-        }
-    };
     const showOverview = overview ? overview : '-';
     const dateGenreDurationArray = [releaseDate, genreToString, durations];
     const dateGenreDurationString = dateGenreDurationArray.filter(item => item).join('  \u25CF  ');
@@ -220,7 +207,6 @@ const Details = ({
                             <DetailsList>
                                 <Row>
                                     <Col className="col-auto d-flex align-items-center">
-                                        {showRating()}
                                         {dateGenreDurationString}
                                     </Col>
                                 </Row>

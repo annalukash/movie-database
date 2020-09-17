@@ -73,19 +73,6 @@ const recommendationsLoaded = (payload) => {
     }
 }
 
-const ratingRequested = () => {
-    return {
-        type: actionTypes.RATING_REQUESTED
-    }
-}
-
-const ratingLoaded = (payload) => {
-    return {
-        type: actionTypes.RATING_LOADED,
-        payload
-    }
-}
-
 const movieDetailsCollectionLoaded = (payload) => {
     return {
         type: actionTypes.MOVIE_DETAILS_COLLECTION_LOADED,
@@ -105,7 +92,5 @@ export {
     videoLoaded,
     socialLinkLoaded,
     recommendationsLoaded,
-    ratingRequested,
-    ratingLoaded,
     movieDetailsCollectionLoaded
 }

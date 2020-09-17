@@ -130,14 +130,6 @@ const Overview = styled.div`
     }
 `;
 
-const Rating = styled.div`
-    border: 1px solid #fff;
-    opacity: 0.8;
-    padding: 0 7px;
-    margin-right: 10px;
-    font-size: 1em;
-`;
-
 const CreatorWrapper = styled.div`
     margin-top: 20px;
     font-size: 0.9em;
@@ -155,7 +147,6 @@ const DetailsMobile = ({
     onOpenModal,
     modalWindow,
     onCloseModal,
-    rating,
     movieId,
     casts,
     keywords,
@@ -200,21 +191,11 @@ const DetailsMobile = ({
         release_date || first_air_date
             ? moment(release_date || first_air_date).format("DD/MM/YYYY")
             : null;
-    const ageRate = rating.find((item) => item.iso_3166_1 === "US");
+
     const creator = !created_by?.length ? '-' : created_by?.find((item, index) => index === 0).name;
     const creatorId = !created_by?.length ? null : created_by?.find((item, index) => index === 0).id;
  
-    const showRating = () => {
-        if (history.location.pathname.includes("tv") && ageRate) {
-            const rateTV = ageRate.rating ? <Rating>{ageRate.rating}</Rating> : null;
-            return rateTV;
-        } else if (history.location.pathname.includes("movie") && ageRate) {
-            const ageRateMovie = ageRate?.release_dates[0].certification ? (
-                <Rating>{ageRate?.release_dates[0].certification}</Rating>
-            ) : null;
-            return ageRateMovie;
-        }
-    };
+
 
     const showCreator = () => {
         if (history.location.pathname.includes("tv")) {
@@ -250,7 +231,6 @@ const DetailsMobile = ({
     const showTrailer = !video?.results.length ? null : trailerButton();
     const separator = releaseDate ? <>{releaseDate} <i className="fas fa-circle"></i></> : null;
     const showOverview = overview ? overview : '-';
-    console.log(casts.cast.length)
     const showCast = casts.cast.length ? <Cast casts={casts} id={movieId} history={history} /> : null;
 
     return (
@@ -287,7 +267,6 @@ const DetailsMobile = ({
                         <Col className="px-0">
                             <GenreWrapper>
                                 <ReleaseWrapper>
-                                    {showRating()}
                                     {separator}
                                     {durations}
                                 </ReleaseWrapper>

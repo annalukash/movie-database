@@ -13,8 +13,6 @@ const initialState = {
     socialLink: {},
     collection: {},
     recommendations: [],
-    loadingRating: true,
-    rating: []
 }
 
 const movieDetailsReducer = (state = initialState, action) => {
@@ -76,17 +74,6 @@ const movieDetailsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 recommendations: action.payload
-            }
-        case actionTypes.RATING_REQUESTED:
-            return {
-                ...state,
-                loadingRating: true
-            }
-        case actionTypes.RATING_LOADED:
-            return {
-                ...state,
-                rating: action.payload,
-                loadingRating: false
             }
         default:
             return state

@@ -20,18 +20,15 @@ import {
     videoLoaded,
     socialLinkLoaded,
     movieDetailsCollectionLoaded,
-    recommendationsLoaded,
-    ratingLoaded,
-    ratingRequested,
+    recommendationsLoaded
 } from "../../../../actions/actionsMovieDetailsPage/actionMovieDetailsPage";
 
 
 class MovieDetails extends Component {
-    componentDidMount() {
+    componentWillMount() {
         const {
             movieId,
             history,
-            details,
             movieDetailsRequested,
             castRequested,
             MoviesService,
@@ -40,39 +37,34 @@ class MovieDetails extends Component {
         } = this.props;
         const { pathname } = history.location;
 
-        if (!details.length) {
-            if (pathname.includes("tv")) {
-                movieDetailsRequested();
-                castRequested();
-                keywordsRequested();
-                ratingRequested();
-                this.getDetails(movieId, MoviesService.getTVDetails);
-                this.getRating(movieId, MoviesService.getTVRating);
-                this.getCast(movieId, MoviesService.getTVCasts);
-                this.getKeywords(movieId, MoviesService.getTVKeywords);
-                this.getVideos(movieId, MoviesService.getTVVideos);
-                this.getSocailLink(movieId, MoviesService.getTVExternalIds);
-                this.getRecommendations(
-                    movieId,
-                    MoviesService.getTVRecommendations
-                );
-            } else {
-                movieDetailsRequested();
-                castRequested();
-                keywordsRequested();
-                ratingRequested();
-                this.getDetails(movieId, MoviesService.getMovieDetails);
-                this.getRating(movieId, MoviesService.getMovieRating);
-                this.getCast(movieId, MoviesService.getCast);
-                this.getKeywords(movieId, MoviesService.getKeywords);
-                this.getVideos(movieId, MoviesService.getVideos);
-                this.getSocailLink(movieId, MoviesService.getMovieExternalIds);
-                this.getRecommendations(
-                    movieId,
-                    MoviesService.getMovieRecommendations
-                );
-            }
-        }
+        
+        if (pathname.includes("tv")) {
+            movieDetailsRequested();
+            castRequested();
+            keywordsRequested();
+            this.getDetails(movieId, MoviesService.getTVDetails);
+            this.getCast(movieId, MoviesService.getTVCasts);
+            this.getKeywords(movieId, MoviesService.getTVKeywords);
+            this.getVideos(movieId, MoviesService.getTVVideos);
+            this.getSocailLink(movieId, MoviesService.getTVExternalIds);
+            this.getRecommendations(
+                movieId,
+                MoviesService.getTVRecommendations
+            );
+        } else {
+            movieDetailsRequested();
+            castRequested();
+            keywordsRequested();
+            this.getDetails(movieId, MoviesService.getMovieDetails);
+            this.getCast(movieId, MoviesService.getCast);
+            this.getKeywords(movieId, MoviesService.getKeywords);
+            this.getVideos(movieId, MoviesService.getVideos);
+            this.getSocailLink(movieId, MoviesService.getMovieExternalIds);
+            this.getRecommendations(
+                movieId,
+                MoviesService.getMovieRecommendations
+            );
+        }  
     }
 
     getDetails = (id, request) => {
@@ -144,14 +136,6 @@ class MovieDetails extends Component {
             .catch((error) => movieDetailsError());
     };
 
-    getRating = (id, request) => {
-        const { ratingLoaded, movieDetailsError } = this.props;
-
-        request(id)
-            .then((response) => ratingLoaded(response.results))
-            .catch((error) => movieDetailsError());
-    };
-
     showCollection = (isBelongToCollection) => {
         const { history, details, loading, collection } = this.props;
 
@@ -218,12 +202,10 @@ class MovieDetails extends Component {
             modalWindowToggle,
             socialLink,
             recommendations,
-            rating,
-            loadingRating,
             width
         } = this.props;
         
-        const globalLoading = loading || loadingCast || loadingKeywords || loadingRating;
+        const globalLoading = loading || loadingCast || loadingKeywords;
 
         if (globalLoading) {
             return <Spinner />;
@@ -232,7 +214,6 @@ class MovieDetails extends Component {
                 <DetailsMobile
                     details={details}
                     movieId={movieId}
-                    rating={rating}
                     video={video}
                     history={history}
                     onOpenModal={modalWindowToggle}
@@ -251,7 +232,6 @@ class MovieDetails extends Component {
                 <Details
                     details={details}
                     movieId={movieId}
-                    rating={rating}
                     video={video}
                     history={history}
                     onOpenModal={modalWindowToggle}
@@ -281,9 +261,7 @@ const mapStateToProps = (state) => {
         video,
         socialLink,
         collection,
-        recommendations,
-        rating,
-        loadingRating,
+        recommendations
     } = state.movieDetailsReducer;
     return {
         details: movieDetails,
@@ -296,9 +274,7 @@ const mapStateToProps = (state) => {
         video,
         socialLink,
         collection,
-        recommendations,
-        rating,
-        loadingRating,
+        recommendations
     };
 };
 
@@ -314,9 +290,7 @@ const mapDispatchToProps = {
     videoLoaded,
     socialLinkLoaded,
     movieDetailsCollectionLoaded,
-    recommendationsLoaded,
-    ratingRequested,
-    ratingLoaded,
+    recommendationsLoaded
 };
 
 export default WithMoviesService()(
