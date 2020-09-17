@@ -25,6 +25,7 @@ const MovieCardImg = styled.img`
     border-bottom-left-radius: 10px;
     height: 141px;
     cursor: pointer;
+    min-width: 94px;
     flex-shrink: 0;
 `;
 

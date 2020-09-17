@@ -16,6 +16,7 @@ const CastItemWrapper = styled.div`
 
 const CastImgWrapper = styled.img`
     width: ${(props) => (props.large ? "94px" : "60px")};
+    min-width: ${(props) => (props.large ? "94px" : "60px")};
     height: ${(props) => (props.large ? "141px" : "60px")};
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;

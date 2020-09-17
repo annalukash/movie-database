@@ -4,6 +4,8 @@ import moment from "moment";
 import duration from "moment-duration-format";
 import Rate from "../../../../../shared/rate";
 import { ModalWindowMobile } from "./index";
+import { Container, Row, Col } from "react-bootstrap";
+import {Cast, OriginalDetails, Keywords} from '../index';
 
 const GlobalWrapper = styled.div`
     background-color: #5b6467;
@@ -159,6 +161,13 @@ const DetailsMobile = ({
     modalWindow,
     onCloseModal,
     rating,
+    movieId,
+    casts,
+    keywords,
+    socialLink,
+    recommendations,
+    showCollection,
+    showRecommendations
 }) => {
     const {
         title,
@@ -247,43 +256,98 @@ const DetailsMobile = ({
     const showTrailer = !video?.results.length ? null : trailerButton();
 
     return (
-        <GlobalWrapper>
-            {modal}
-            <BackgroundWrapper url={backdrop_path}>
-                <PosterWrapper>
-                    <img src={src} alt={title || name} />
-                </PosterWrapper>
-            </BackgroundWrapper>
-            <TitleWrapper>
-                <Title>
-                    {title || name} <span>{releaseYear}</span>
-                </Title>
-                <RateWrapper>
-                    <Rate vote={vote_average} small isStatic />
-                    <Vote border={video?.results.length}>
-                        Пользовательский <span>счёт</span>
-                    </Vote>
-                    {showTrailer}
-                </RateWrapper>
-            </TitleWrapper>
-            <GenreWrapper>
-                <ReleaseWrapper>
-                    {showRating()}
-                    {releaseDate}
-                    <i className="fas fa-circle"></i>
-                    {durations}
-                </ReleaseWrapper>
-                <GenreList>{genreToString}</GenreList>
-            </GenreWrapper>
-            <OverviewWrapper>
-                <Tagline>{tagline}</Tagline>
-                <Overview>
-                    <div>Обзор</div>
-                    {overview}
-                </Overview>
-                {showCreator()}
-            </OverviewWrapper>
-        </GlobalWrapper>
+        <>
+            <GlobalWrapper>
+                <Container>
+                    <Row>
+                        <Col className="px-0">
+                            {modal}
+                            <BackgroundWrapper url={backdrop_path}>
+                                <PosterWrapper>
+                                    <img src={src} alt={title || name} />
+                                </PosterWrapper>
+                            </BackgroundWrapper>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="px-0">
+                            <TitleWrapper>
+                                <Title>
+                                    {title || name} <span>{releaseYear}</span>
+                                </Title>
+                                <RateWrapper>
+                                    <Rate vote={vote_average} small isStatic />
+                                    <Vote border={video?.results.length}>
+                                        Пользовательский <span>счёт</span>
+                                    </Vote>
+                                    {showTrailer}
+                                </RateWrapper>
+                            </TitleWrapper>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="px-0">
+                            <GenreWrapper>
+                                <ReleaseWrapper>
+                                    {showRating()}
+                                    {releaseDate}
+                                    <i className="fas fa-circle"></i>
+                                    {durations}
+                                </ReleaseWrapper>
+                                <GenreList>{genreToString}</GenreList>
+                            </GenreWrapper>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="px-0">
+                            <OverviewWrapper>
+                                <Tagline>{tagline}</Tagline>
+                                <Overview>
+                                    <div>Обзор</div>
+                                    {overview}
+                                </Overview>
+                                {showCreator()}
+                            </OverviewWrapper>
+                        </Col>
+                    </Row>
+                </Container>
+            </GlobalWrapper>
+            <Container>
+                <Row className='mt-3'>
+                    <Col>
+                        <Cast casts={casts} id={movieId} history={history} />
+                    </Col>
+                </Row>
+                <Row className='mt-3'>
+                    <Col>
+                        {showCollection(details?.belongs_to_collection)}
+                    </Col>
+                </Row>
+                <Row className='mt-3'>
+                    <Col>
+                        {showRecommendations(recommendations)}
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <OriginalDetails
+                            details={details}
+                            history={history}
+                            socialLink={socialLink}
+                        />
+                    </Col>
+                </Row>
+                <Row className='mb-3'>
+                    <Col>
+                        <Keywords
+                            keyword={keywords}
+                            history={history}
+                            url={"keywords"}
+                        />
+                    </Col>
+                </Row>
+            </Container>
+        </>
     );
 };
 

@@ -1,4 +1,4 @@
-import {actionTypes} from '../../actions';
+import {actionTypes} from '../../actions/actionsMovieDetailsPage';
 
 const initialState = {
     movieDetails: [],
@@ -67,7 +67,7 @@ const movieDetailsReducer = (state = initialState, action) => {
                 ...state,
                 socialLink: action.payload
             }
-        case actionTypes.COLLECTION_LOADED:
+        case actionTypes.MOVIE_DETAILS_COLLECTION_LOADED:
             return {
                 ...state,
                 collection: action.payload

@@ -149,7 +149,7 @@ const Cast = ({casts, id, history}) => {
     let carousel;
     return (
         <>
-            <CarouselWrapper>
+            <CarouselWrapper size={size}>
                 <CastTitle>В главных ролях</CastTitle>
                 <Carousel renderArrow={myArrow}
                         itemsToScroll={size < 415 ? 2 : 1} 

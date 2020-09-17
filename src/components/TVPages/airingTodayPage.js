@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MovieList from '../moviesPage/components/movieList';
 import WithMoviesService from '../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {airingTodayTvRequested, airingTodayTvLoaded, popularTvError, airingTodayTvMoreRequested, airingTodayTvMoreLoaded} from '../../actions/actions';
+import {airingTodayTvRequested, airingTodayTvLoaded, popularTvError, airingTodayTvMoreRequested, airingTodayTvMoreLoaded} from '../../actions/actionsMoviesTVPage/actionMoviesTVPage';
 
 
 class AiringTodayPage extends Component {

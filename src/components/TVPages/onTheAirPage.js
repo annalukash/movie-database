@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import MovieList from '../moviesPage/components/movieList';
 import WithMoviesService from '../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {onTheAirTvRequested, onTheAirTvLoaded, popularTvError, onTheAirTvMoreRequested, onTheAirTvMoreLoaded} from '../../actions/actions';
+import {onTheAirTvRequested, onTheAirTvLoaded, popularTvError, onTheAirTvMoreRequested, onTheAirTvMoreLoaded} from '../../actions/actionsMoviesTVPage/actionMoviesTVPage';
 
 
 class OnTheAirPage extends Component {

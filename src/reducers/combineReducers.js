@@ -5,6 +5,7 @@ import popularPersonReducer from './reducers/popularPersonReducer';
 import movieDetailsReducer from './reducers/movieDetailsReducer';
 import homePageReducer from './reducers/homePageReducer';
 import collectionPageReducer from './reducers/collectionPageReducer';
+import personDetailsPageReducer from './reducers/personDetailsPageReducer';
 
 export default combineReducers({
     moviePageReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     popularPersonReducer,
     movieDetailsReducer,
     homePageReducer,
-    collectionPageReducer
+    collectionPageReducer,
+    personDetailsPageReducer
 })

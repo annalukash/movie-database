@@ -14,7 +14,7 @@ import {
     collectionMovieDetailsLoaded,
     collectionCastRequested,
     collectionCastLoaded
-} from "../../actions/actions";
+} from "../../actions/actionsCollectionPage/actionCollectionPage";
 
 class CollectionPage extends Component {
     componentWillMount() {

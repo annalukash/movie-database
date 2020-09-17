@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {popularMoviesError} from '../../actions/actions';
+import {popularMoviesError} from '../../actions/actionsMoviesTVPage/actionMoviesTVPage';
 import {connect} from 'react-redux';
 import WithMoviesService from '../hoc/withMoviesService';
 

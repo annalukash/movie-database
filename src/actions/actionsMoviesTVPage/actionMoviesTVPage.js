@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from './actionTypesMoviesTVPage';
 
 const popularMoviesRequested = () => {
     return {
@@ -19,16 +19,16 @@ const popularMoviesError = () => {
     }
 }
 
+const popularMoviesMoreRequested = () => {
+    return {
+        type: actionTypes.POPULAR_MOVIES_MORE_REQUESTED
+    }
+}
+
 const popularMoviesMoreLoaded = (payload) => {
     return {
         type: actionTypes.POPULAR_MOVIES_MORE_LOADED,
         payload
-    }
-}
-
-const popularMoviesMoreRequested = () => {
-    return {
-        type: actionTypes.POPULAR_MOVIES_MORE_REQUESTED
     }
 }
 
@@ -220,183 +220,12 @@ const topRatedTvTvMoreLoaded = (payload) => {
     }
 }
 
-const popularPersonRequested = () => {
-    return {
-        type: actionTypes.POPULAR_PERSON_REQUESTED
-    }
-}
-
-const popularPersonLoaded = (payload) => {
-    return {
-        type: actionTypes.POPULAR_PERSON_LOADED,
-        payload
-    }
-}
-
-const popularPersonError = () => {
-    return {
-        type: actionTypes.POPULAR_PERSON_ERROR
-    }
-}
-
-const movieDetailsRequested = () => {
-    return {
-        type: actionTypes.MOVIE_DETAILS_REQUESTED
-    }
-}
-
-const movieDetailsLoaded = (payload) => {
-    return {
-        type: actionTypes.MOVIE_DETAILS_LOADED,
-        payload
-    }
-}
-
-const movieDetailsError = () => {
-    return {
-        type: actionTypes.MOVIE_DETAILS_ERROR
-    }
-}
-
-const castRequested = () => {
-    return {
-        type: actionTypes.CAST_REQUESTED
-    }  
-}
-
-const castLoaded = (payload) => {
-    return {
-        type: actionTypes.CAST_LOADED,
-        payload
-    }
-}
-
-const keywordsRequested = () => {
-    return {
-        type: actionTypes.KEYWORDS_REQUESTED
-    }
-}
-
-const keywordsLoaded = (payload) => {
-    return {
-        type: actionTypes.KEYWORDS_LOADED,
-        payload
-    }
-}
-
-const modalWindowToggle = () => {
-    return {
-        type: actionTypes.MODAL_WINDOW_TOGGLE
-    }
-}
-
-const videoLoaded = (payload) => {
-    return {
-        type: actionTypes.VIDEO_LOADED,
-        payload
-    }
-}
-
-const socialLinkLoaded = (payload) => {
-    return {
-        type: actionTypes.SOCIAL_LINK_LOADED,
-        payload
-    }
-}
-
-const collectionRequested = () => {
-    return {
-        type: actionTypes.COLLECTION_REQUESTED
-    }
-}
-
-const collectionLoaded = (payload) => {
-    return {
-        type: actionTypes.COLLECTION_LOADED,
-        payload
-    }
-}
-
-const collectionError = () => {
-    return {
-        type: actionTypes.COLLECTION_ERROR
-    }
-}
-
-const recommendationsLoaded = (payload) => {
-    return {
-        type: actionTypes.RECOMMENDATIONS_LOADED,
-        payload
-    }
-}
-
-const ratingRequested = () => {
-    return {
-        type: actionTypes.RATING_REQUESTED
-    }
-}
-
-const ratingLoaded = (payload) => {
-    return {
-        type: actionTypes.RATING_LOADED,
-        payload
-    }
-}
-
-const inTrendRequested = () => {
-    return {
-        type: actionTypes.IN_TREND_REQUESTED
-    }
-}
-
-const inTrendLoaded = (payload) => {
-    return {
-        type: actionTypes.IN_TREND_LOADED,
-        payload
-    }
-}
-
-const inTrendError = () => {
-    return {
-        type: actionTypes.IN_TREND_ERROR
-    }
-}
-
-const genresRequested = () => {
-    return {
-        type: actionTypes.GENRES_REQUESTED
-    }
-}
-
-const genresLoaded = (payload) => {
-    return {
-        type: actionTypes.GENRES_LOADED,
-        payload
-    }
-}
-
-
-const collectionMovieDetailsLoaded = (payload) => {
-    return {
-        type: actionTypes.COLLECTION_MOVIE_DETAILS_LOADED,
-        payload
-    }
-}
-
-
-const collectionCastLoaded = (payload) => {
-    return {
-        type: actionTypes.COLLECTION_CAST_LOADED,
-        payload
-    }
-}
-
 export {
     popularMoviesRequested,
     popularMoviesLoaded,
     popularMoviesError,
-    popularMoviesMoreLoaded,
     popularMoviesMoreRequested,
+    popularMoviesMoreLoaded,
     playingNowMoviesRequested,
     playingNowMoviesLoaded,
     playingNowMoviesMoreRequested,
@@ -425,31 +254,5 @@ export {
     topRatedTvRequested,
     topRatedTvTvLoaded,
     topRatedTvTvMoreRequested,
-    topRatedTvTvMoreLoaded,
-    popularPersonRequested,
-    popularPersonLoaded,
-    popularPersonError,
-    movieDetailsRequested,
-    movieDetailsLoaded,
-    movieDetailsError,
-    castRequested,
-    castLoaded,
-    keywordsRequested,
-    keywordsLoaded,
-    modalWindowToggle,
-    videoLoaded,
-    socialLinkLoaded,
-    collectionRequested,
-    collectionLoaded,
-    collectionError,
-    inTrendRequested,
-    inTrendLoaded,
-    inTrendError,
-    recommendationsLoaded,
-    ratingRequested,
-    ratingLoaded,
-    genresRequested,
-    genresLoaded,
-    collectionMovieDetailsLoaded,
-    collectionCastLoaded,
+    topRatedTvTvMoreLoaded
 }

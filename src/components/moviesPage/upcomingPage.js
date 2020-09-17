@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import MovieList from './components/movieList';
 import WithMoviesService from '../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {upcomingMoviesRequested, upcomingMoviesLoaded, upcomingMoviesMoreRequested, upcomingMoviesMoreLoaded, popularMoviesError} from '../../actions/actions';
+import {upcomingMoviesRequested, upcomingMoviesLoaded, upcomingMoviesMoreRequested, upcomingMoviesMoreLoaded, popularMoviesError} from '../../actions/actionsMoviesTVPage/actionMoviesTVPage';
 
 class UpcomingPage extends Component {   
     componentWillMount() {

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import MovieList from './components/movieList';
 import WithMoviesService from '../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {popularMoviesRequested, popularMoviesLoaded, popularMoviesError, popularMoviesMoreLoaded, popularMoviesMoreRequested} from '../../actions/actions';
+import {popularMoviesRequested, popularMoviesLoaded, popularMoviesError, popularMoviesMoreLoaded, popularMoviesMoreRequested} from '../../actions/actionsMoviesTVPage/actionMoviesTVPage';
 
 class PopularPage extends Component {
     componentWillMount() {

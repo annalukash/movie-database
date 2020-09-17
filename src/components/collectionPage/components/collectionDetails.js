@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Container, Row, Col } from 'react-bootstrap';
 import { ImgWrapper, Title, DetailsList, Vote, Overview } from '../../moviesPage/components/movieDetailsPage/components/details';
 import Rate from '../../shared/rate';
-import { BackgroundWrapper } from '../../moviesPage/components/movieDetailsPage/movieDetails';
+import { BackgroundWrapper } from '../../moviesPage/components/movieDetailsPage/components/details';
 import CollectionCast from './collectionCast';
 
 const DetailsTitleWrapper = styled.div`

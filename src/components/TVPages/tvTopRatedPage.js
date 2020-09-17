@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MovieList from '../moviesPage/components/movieList';
 import WithMoviesService from '../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {topRatedTvRequested, topRatedTvTvLoaded, popularTvError, topRatedTvTvMoreRequested, topRatedTvTvMoreLoaded} from '../../actions/actions';
+import {topRatedTvRequested, topRatedTvTvLoaded, popularTvError, topRatedTvTvMoreRequested, topRatedTvTvMoreLoaded} from '../../actions/actionsMoviesTVPage/actionMoviesTVPage';
 
 
 class TVTopRatedPage extends Component {

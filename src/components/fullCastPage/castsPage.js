@@ -6,7 +6,7 @@ import moment from 'moment';
 import {Actors, Crew} from './components/fullCastList';
 import WithMoviesService from '../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded} from '../../actions/actions';
+import {movieDetailsRequested, movieDetailsLoaded, movieDetailsError, castRequested, castLoaded} from '../../actions/actionsMovieDetailsPage/actionMovieDetailsPage';
 
 
 const HeaderWrapper = styled.div`

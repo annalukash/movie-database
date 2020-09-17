@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import WithMoviesService from '../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {inTrendRequested, inTrendLoaded, inTrendError} from '../../actions/actions';
+import {inTrendRequested, inTrendLoaded, inTrendError} from '../../actions/actionsHomePage/actionHomePage';
 import Spinner from '../shared/spinner/spinner';
 import {InTrend} from './components';
 import { Container, Row, Col } from 'react-bootstrap';

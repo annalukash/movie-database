@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MovieList from './components/movieList';
 import WithMoviesService from '../hoc/withMoviesService';
 import {connect} from 'react-redux';
-import {playingNowMoviesRequested, playingNowMoviesLoaded, popularMoviesError, playingNowMoviesMoreLoaded, playingNowMoviesMoreRequested} from '../../actions/actions';
+import {playingNowMoviesRequested, playingNowMoviesLoaded, popularMoviesError, playingNowMoviesMoreLoaded, playingNowMoviesMoreRequested} from '../../actions/actionsMoviesTVPage/actionMoviesTVPage';
 
 class PlayingNowPage extends Component {   
     componentWillMount() {
