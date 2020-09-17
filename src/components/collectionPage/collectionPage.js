@@ -22,16 +22,13 @@ class CollectionPage extends Component {
             collectionId,
             collectionRequested,
             collection,
-            genresRequested,
-            collectionMovieDetailsRequested,
-            collectionCastRequested,
+            genres,
+            genresRequested
         } = this.props;
 
-        if (!collection) {
+        if (!collection || !genres) {
             collectionRequested();
-            genresRequested();
-            collectionMovieDetailsRequested();
-            collectionCastRequested();
+            genresRequested();   
             this.getGenresName();
             this.loadCollection(collectionId);
         }
@@ -99,16 +96,14 @@ class CollectionPage extends Component {
             genres,
             genresLoading,
             revenue,
-            revenueLoading,
             cast,
             crew,
-            castLoading,
             width
         } = this.props;
 
 
         const globalLoading =
-            loading || genresLoading || revenueLoading || castLoading;
+            loading || genresLoading;
 
         if (globalLoading) {
             return <Spinner />;
@@ -145,10 +140,8 @@ const mapStateToProps = (state) => {
         genres,
         genresLoading,
         revenue,
-        revenueLoading,
         cast,
         crew,
-        castLoading,
     } = state.collectionPageReducer;
     return {
         collection,
@@ -156,10 +149,8 @@ const mapStateToProps = (state) => {
         genres,
         genresLoading,
         revenue,
-        revenueLoading,
         cast,
-        crew,
-        castLoading
+        crew
     };
 };
 
@@ -169,9 +160,7 @@ const mapDispatchToProps = {
     collectionError,
     genresRequested,
     genresLoaded,
-    collectionMovieDetailsRequested,
     collectionMovieDetailsLoaded,
-    collectionCastRequested,
     collectionCastLoaded
 };
 

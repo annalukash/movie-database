@@ -375,11 +375,6 @@ const genresLoaded = (payload) => {
     }
 }
 
-const collectionMovieDetailsRequested = () => {
-    return {
-        type: actionTypes.COLLECTION_MOVIE_DETAILS_REQUESTED
-    }
-}
 
 const collectionMovieDetailsLoaded = (payload) => {
     return {
@@ -388,12 +383,6 @@ const collectionMovieDetailsLoaded = (payload) => {
     }
 }
 
-
-const collectionCastRequested = () => {
-    return {
-        type: actionTypes.COLLECTION_CAST_REQUESTED
-    }
-}
 
 const collectionCastLoaded = (payload) => {
     return {
@@ -461,8 +450,6 @@ export {
     ratingLoaded,
     genresRequested,
     genresLoaded,
-    collectionMovieDetailsRequested,
     collectionMovieDetailsLoaded,
-    collectionCastRequested,
     collectionCastLoaded,
 }

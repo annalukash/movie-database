@@ -4,13 +4,11 @@ const initialState = {
     collection: null,
     loading: true,
     error: false,
-    genres: {},
+    genres: null,
     genresLoading: true,
     cast: [],
     crew: [],
-    castLoading: true,
     revenue: 0,
-    revenueLoading: true
 }
 
 const collectionPageReducer = (state = initialState, action) => {
@@ -43,33 +41,20 @@ const collectionPageReducer = (state = initialState, action) => {
                 genresLoading: false,
                 genres: action.payload
             }
-        case actionTypes.COLLECTION_MOVIE_DETAILS_REQUESTED: 
-            return {
-                ...state,
-                revenueLoading: true
-            }
         case actionTypes.COLLECTION_MOVIE_DETAILS_LOADED:
             return {
                 ...state,
-                revenueLoading: false,
                 revenue: action.payload.reduce((sum, current) => sum + current, 0)
-            }
-        case actionTypes.COLLECTION_CAST_REQUESTED:
-            return {
-                ...state,
-                castLoading: true
             }
         case actionTypes.COLLECTION_CAST_LOADED:
             return {
                 ...state,
-                castLoading: false,
                 cast: action.payload.cast,
                 crew: action.payload.crew
             }
         default:
             return state
-    }
-    
+    }  
 }
 
 export default collectionPageReducer;
