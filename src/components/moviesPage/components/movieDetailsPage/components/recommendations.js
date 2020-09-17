@@ -187,9 +187,7 @@ const Recommendation = ({
             <Carousel
                 renderArrow={myArrow}
                 itemsToScroll={size < 415 ? 1 : 2}
-                itemsToShow={
-                    size < 415 && size > 360 ? 1.4 : size < 360 ? 1 : 3
-                }
+                itemsToShow={size < 415  ? 1 : 3}
                 focusOnSelect={false}
                 ref={(ref) => (carousel = ref)}
                 renderPagination={myPagination}

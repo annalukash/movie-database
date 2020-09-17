@@ -200,19 +200,19 @@ const DetailsMobile = ({
         release_date || first_air_date
             ? moment(release_date || first_air_date).format("DD/MM/YYYY")
             : null;
-    const rate = rating.find((item) => item.iso_3166_1 === "US");
-    const creator = created_by.length ? created_by?.find((item, index) => index === 0).name : '-';
-    const creatorId = created_by.length ? created_by?.find((item, index) => index === 0).id : null;
-
+    const ageRate = rating.find((item) => item.iso_3166_1 === "US");
+    const creator = !created_by?.length ? '-' : created_by?.find((item, index) => index === 0).name;
+    const creatorId = !created_by?.length ? null : created_by?.find((item, index) => index === 0).id;
+ 
     const showRating = () => {
-        if (history.location.pathname.includes("tv")) {
-            const rateTV = rate.rating ? <Rating>{rate.rating}</Rating> : null;
+        if (history.location.pathname.includes("tv") && ageRate) {
+            const rateTV = ageRate.rating ? <Rating>{ageRate.rating}</Rating> : null;
             return rateTV;
-        } else {
-            const rateMovie = rate?.release_dates[0].certification ? (
-                <Rating>{rate?.release_dates[0].certification}</Rating>
+        } else if (history.location.pathname.includes("movie") && ageRate) {
+            const ageRateMovie = ageRate?.release_dates[0].certification ? (
+                <Rating>{ageRate?.release_dates[0].certification}</Rating>
             ) : null;
-            return rateMovie;
+            return ageRateMovie;
         }
     };
 
@@ -250,6 +250,7 @@ const DetailsMobile = ({
     const showTrailer = !video?.results.length ? null : trailerButton();
     const separator = releaseDate ? <>{releaseDate} <i className="fas fa-circle"></i></> : null;
     const showOverview = overview ? overview : '-';
+    const showCast = casts.length ? <Cast casts={casts} id={movieId} history={history} /> : null;
 
     return (
         <>
@@ -309,7 +310,7 @@ const DetailsMobile = ({
             <Container>
                 <Row className='mt-3'>
                     <Col>
-                        <Cast casts={casts} id={movieId} history={history} />
+                        {showCast}
                     </Col>
                 </Row>
                 <Row className='mt-3'>
