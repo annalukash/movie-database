@@ -250,7 +250,8 @@ const DetailsMobile = ({
     const showTrailer = !video?.results.length ? null : trailerButton();
     const separator = releaseDate ? <>{releaseDate} <i className="fas fa-circle"></i></> : null;
     const showOverview = overview ? overview : '-';
-    const showCast = casts.length ? <Cast casts={casts} id={movieId} history={history} /> : null;
+    console.log(casts.cast.length)
+    const showCast = casts.cast.length ? <Cast casts={casts} id={movieId} history={history} /> : null;
 
     return (
         <>
