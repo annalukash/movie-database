@@ -118,13 +118,6 @@ const OverviewWrapper = styled.div`
     padding: 20px;
 `;
 
-const Tagline = styled.div`
-    font-size: 1.1em;
-    font-weight: 400;
-    font-style: italic;
-    opacity: 0.7;
-`;
-
 const Overview = styled.div`
     font-size: 1em;
     text-align: justify;
@@ -181,7 +174,6 @@ const DetailsMobile = ({
         release_date,
         genres,
         runtime,
-        tagline,
         overview,
         first_air_date,
         episode_run_time,
@@ -209,8 +201,8 @@ const DetailsMobile = ({
             ? moment(release_date || first_air_date).format("DD/MM/YYYY")
             : null;
     const rate = rating.find((item) => item.iso_3166_1 === "US");
-    const creator = created_by?.find((item, index) => index === 0).name;
-    const creatorId = created_by?.find((item, index) => index === 0).id;
+    const creator = created_by.length ? created_by?.find((item, index) => index === 0).name : '-';
+    const creatorId = created_by.length ? created_by?.find((item, index) => index === 0).id : null;
 
     const showRating = () => {
         if (history.location.pathname.includes("tv")) {
@@ -304,7 +296,6 @@ const DetailsMobile = ({
                     <Row>
                         <Col className="px-0">
                             <OverviewWrapper>
-                                <Tagline>{tagline}</Tagline>
                                 <Overview>
                                     <div>Обзор</div>
                                     {showOverview}
