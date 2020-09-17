@@ -177,9 +177,9 @@ export default class App extends Component {
                             }
                         }/>
                         <Route exact path="/person/:id" render={
-                            ({match}) => {
+                            ({match, history}) => {
                                 const {id} = match.params;
-                                return <PersonBiography personId = {id}/>
+                                return <PersonBiography personId = {id} history={history} width={width}/>
                             }
                         }/> 
                     </Switch>

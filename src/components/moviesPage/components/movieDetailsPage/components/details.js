@@ -47,10 +47,6 @@ const DetailsList = styled.div`
     font-size: 16px;
 `;
 
-const IconWrapper = styled.div`
-    font-size: 5px;
-`;
-
 const Vote = styled.span`
     max-width: 150px;
     margin-left: 10px;
@@ -117,6 +113,7 @@ const Rating = styled.div`
     opacity: 0.8;
     padding: 0 7px;
     font-size: 1em;
+    margin-right: 7px;
 `;
 
 const Details = ({
@@ -203,6 +200,9 @@ const Details = ({
             return rateMovie;
         }
     };
+    const showOverview = overview ? overview : '-';
+    const dateGenreDurationArray = [releaseDate, genreToString, durations];
+    const dateGenreDurationString = dateGenreDurationArray.filter(item => item).join('  \u25CF  ');
 
     return (
         <>
@@ -219,26 +219,10 @@ const Details = ({
                             </Title>
                             <DetailsList>
                                 <Row>
-                                    <Col className="col-auto px-0 pl-3">
+                                    <Col className="col-auto d-flex align-items-center">
                                         {showRating()}
+                                        {dateGenreDurationString}
                                     </Col>
-                                    <Col className="col-auto px-0 pl-3">
-                                        {releaseDate}
-                                    </Col>
-                                    <Col className="col-auto d-flex align-items-center">
-                                        <IconWrapper>
-                                            <i className="fas fa-circle"></i>
-                                        </IconWrapper>
-                                    </Col>
-                                    <Col className="col-auto px-0">
-                                        {genreToString}
-                                    </Col>
-                                    <Col className="col-auto d-flex align-items-center">
-                                        <IconWrapper>
-                                            <i className="fas fa-circle"></i>
-                                        </IconWrapper>
-                                    </Col>
-                                    <Col className="col-auto px-0">{durations}</Col>
                                 </Row>
                                 <Row className="font-weight-bold py-3">
                                     <Col className="col-auto d-flex">
@@ -274,7 +258,7 @@ const Details = ({
                                     <Col>
                                         <Overview>Обзор</Overview>
                                     </Col>
-                                    <Col>{overview}</Col>
+                                    <Col>{showOverview}</Col>
                                 </Row>
                                 {creator}
                             </DetailsList>

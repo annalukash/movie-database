@@ -24,20 +24,26 @@ const ReleaseDate = styled.div`
     text-align: center;
 `;
 
-const MovieTitle = styled.div`
-    font-weight: 600;
+const MovieTitleWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    white-space: pre-wrap;
     padding: 8px 0 8px 16px;
+`;
+
+const MovieTitle = styled.span`
+    font-weight: 600;
     cursor: pointer;
+    
 `;
 
-const LikeCharacter = styled.div`
+const LikeCharacter = styled.span`
     opacity: 0.5;
-    padding: 0 8px;
 `;
 
-const Character = styled.div`
+const Character = styled.span`
     opacity: 0.8;
-    padding: 8px 16px 8px 0;
 `;
 
 const MoviePreviewButton = styled.div`
@@ -47,6 +53,7 @@ const MoviePreviewButton = styled.div`
     border: 1px solid #000;
     cursor: pointer;
     position: relative;
+    display: ${props => props.width < 415 ? 'none' : 'block'};
 
     .popover-body {
         width: 535px;
@@ -130,11 +137,12 @@ const PopoverRate = styled.div`
 const MovieListWrapper = styled.div``;
 
 const DepartmentListTitle = styled.div`
-    font-size:20.8px;
+    font-size: 1.2em;
     font-weight:600;
     margin: 10px 0;
     display: flex;
     justify-content: space-between;
+    padding: ${props => props.width < 415 ? '0 15px' : '0'};
 `;
 
 const MovieListContent = styled.div`
@@ -144,6 +152,7 @@ const MovieListContent = styled.div`
 
 const FilterWrapper = styled.div`
     display: flex;
+    align-items: center;
 `;
 
 const ClearButton = styled.button`
@@ -162,7 +171,7 @@ const ClearButton = styled.button`
     }
 `;
 
-const PersonDetailsCasts = ({cast}) => {
+const PersonDetailsCasts = ({cast, width}) => {
     const [castItem, setCastItem] = useState([]);
     const [filterSelected, setFilterSelected] = useState(false);
     const noDateCasts = cast.filter((item) => !item.release_date && !item.first_air_date);
@@ -192,7 +201,7 @@ const PersonDetailsCasts = ({cast}) => {
                     next = arr[index + 1]?.release_date ? yearFormatter(arr[index + 1]?.release_date) : yearFormatter(arr[index + 1]?.first_air_date);
                 }
                 return (
-                    <HistoryItem key={index} cast={item} date={date} hasBorder={next === current}/>  
+                    <HistoryItem key={index} cast={item} date={date} hasBorder={next === current} width={width}/>  
                 )
             }
         })
@@ -220,7 +229,7 @@ const PersonDetailsCasts = ({cast}) => {
     return (
         <>
             <MovieListWrapper>
-                <DepartmentListTitle>
+                <DepartmentListTitle width={width}>
                     Актёрское искусство
                     <FilterWrapper>
                         {clearButton}
@@ -238,7 +247,7 @@ const PersonDetailsCasts = ({cast}) => {
     ); 
 }
 
-const HistoryItem = ({cast, date, hasBorder}) => {
+const HistoryItem = ({cast, date, hasBorder, width}) => {
     const history = useHistory();
     const ref = React.useRef(null);
     const [show, setShow] = useState(false);
@@ -268,8 +277,11 @@ const HistoryItem = ({cast, date, hasBorder}) => {
     return (
         <MovieListItemWrapper hasBorder={hasBorder}>
             <ReleaseDate>{date}</ReleaseDate>
-            <MoviePreviewButton ref={ref}
-                onClick={handleClick}>
+            <MoviePreviewButton 
+                ref={ref}
+                onClick={handleClick}
+                width={width}
+            >
                     <CircleHover show={show}></CircleHover>  
             </MoviePreviewButton>
                 <Overlay 
@@ -302,11 +314,15 @@ const HistoryItem = ({cast, date, hasBorder}) => {
                         </Popover.Content>
                     </Popover>
                 </Overlay>
-            <MovieTitle
-                onClick={() => handleRouting(cast.id, cast.media_type)}
-            >{cast.title || cast.name}</MovieTitle>
-            <LikeCharacter> {tvEpisodes} как</LikeCharacter>
-            <Character>{cast.character}</Character>
+                <MovieTitleWrapper>
+                    <MovieTitle
+                        onClick={() => handleRouting(cast.id, cast.media_type)}
+                    >
+                        {cast.title || cast.name}
+                    </MovieTitle>
+                    <LikeCharacter> {tvEpisodes} как </LikeCharacter>
+                    <Character>{cast.character}</Character>
+                </MovieTitleWrapper>
         </MovieListItemWrapper>
     );
 }
@@ -316,4 +332,4 @@ const yearFormatter = (date) => {
 }
 
 export default PersonDetailsCasts;
-export {CircleHover, MoviePreviewButton, Character, LikeCharacter, MovieTitle, ReleaseDate, MovieListItemWrapper, PopoverImgWrapper, PopoverPoster, PopoverContentWrapper, PopoverTitleWrapper, PopoverTitle, PopoverDescription, PopoverRate};
+export {CircleHover, MovieTitleWrapper, MoviePreviewButton, Character, LikeCharacter, MovieTitle, ReleaseDate, MovieListItemWrapper, PopoverImgWrapper, PopoverPoster, PopoverContentWrapper, PopoverTitleWrapper, PopoverTitle, PopoverDescription, PopoverRate};

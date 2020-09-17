@@ -34,6 +34,8 @@ const PosterWrapper = styled.div`
     padding: 20px;
 
     & img {
+        max-width: 116px;
+        max-height: 174px;
         border-radius: 7px;
     }
 `;
@@ -254,6 +256,8 @@ const DetailsMobile = ({
         <ModalWindowMobile video={video} onCloseModal={onCloseModal} />
     ) : null;
     const showTrailer = !video?.results.length ? null : trailerButton();
+    const separator = releaseDate ? <>{releaseDate} <i className="fas fa-circle"></i></> : null;
+    const showOverview = overview ? overview : '-';
 
     return (
         <>
@@ -290,8 +294,7 @@ const DetailsMobile = ({
                             <GenreWrapper>
                                 <ReleaseWrapper>
                                     {showRating()}
-                                    {releaseDate}
-                                    <i className="fas fa-circle"></i>
+                                    {separator}
                                     {durations}
                                 </ReleaseWrapper>
                                 <GenreList>{genreToString}</GenreList>
@@ -304,7 +307,7 @@ const DetailsMobile = ({
                                 <Tagline>{tagline}</Tagline>
                                 <Overview>
                                     <div>Обзор</div>
-                                    {overview}
+                                    {showOverview}
                                 </Overview>
                                 {showCreator()}
                             </OverviewWrapper>

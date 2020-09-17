@@ -10,9 +10,7 @@ import {
     collectionError,
     genresRequested,
     genresLoaded,
-    collectionMovieDetailsRequested,
     collectionMovieDetailsLoaded,
-    collectionCastRequested,
     collectionCastLoaded
 } from "../../actions/actionsCollectionPage/actionCollectionPage";
 
@@ -21,17 +19,14 @@ class CollectionPage extends Component {
         const {
             collectionId,
             collectionRequested,
-            collection,
-            genres,
             genresRequested
         } = this.props;
 
-        if (!collection || !genres) {
-            collectionRequested();
-            genresRequested();   
-            this.getGenresName();
-            this.loadCollection(collectionId);
-        }
+
+        collectionRequested();
+        genresRequested();   
+        this.getGenresName();
+        this.loadCollection(collectionId);
     }
 
     loadCollection = (collectionId) => {

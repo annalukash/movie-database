@@ -4,12 +4,12 @@ import Popover from 'react-bootstrap/Popover';
 import moment from 'moment';
 import { useHistory } from "react-router-dom";
 import textEllipsis from 'text-ellipsis';
-import {CircleHover, MoviePreviewButton, Character, LikeCharacter, MovieTitle, ReleaseDate, MovieListItemWrapper, PopoverImgWrapper, PopoverPoster, PopoverContentWrapper, PopoverTitleWrapper, PopoverTitle, PopoverDescription, PopoverRate} from './personDetailsCasts';
+import {CircleHover, MovieTitleWrapper, MoviePreviewButton, Character, LikeCharacter, MovieTitle, ReleaseDate, MovieListItemWrapper, PopoverImgWrapper, PopoverPoster, PopoverContentWrapper, PopoverTitleWrapper, PopoverTitle, PopoverDescription, PopoverRate} from './personDetailsCasts';
 import MoviesServices from '../../../services/services';
 
 
 
-const PersonDetailsCrew = ({crew}) => {
+const PersonDetailsCrew = ({crew, width}) => {
     const noDateCrew = crew.filter((item) => !item.release_date && !item.first_air_date);
     const releaseDateCrew = crew.filter((item) => item.release_date || item.first_air_date);
     const sortedCrew = releaseDateCrew.sort((a, b) => {
@@ -32,7 +32,7 @@ const PersonDetailsCrew = ({crew}) => {
                 next = arr[index + 1]?.release_date ? yearFormatter(arr[index + 1]?.release_date) : yearFormatter(arr[index + 1]?.first_air_date);
             }
             return (
-                <HistoryItem key={index} item={item} date={date} hasBorder={next === current}/>
+                <HistoryItem key={index} item={item} date={date} hasBorder={next === current} width={width}/>
             )
         }
     })
@@ -41,7 +41,7 @@ const PersonDetailsCrew = ({crew}) => {
 }
 
 
-const HistoryItem = ({item, date, hasBorder}) => {
+const HistoryItem = ({item, date, hasBorder, width}) => {
     const history = useHistory();
     const ref = React.useRef(null);
     const [show, setShow] = useState(false);
@@ -72,9 +72,12 @@ const HistoryItem = ({item, date, hasBorder}) => {
     return (
         <MovieListItemWrapper hasBorder={hasBorder}>
                 <ReleaseDate>{date}</ReleaseDate>
-                <MoviePreviewButton ref={ref}
-                 onClick={handleClick}>
-                        <CircleHover show={show}></CircleHover>  
+                <MoviePreviewButton 
+                    ref={ref}
+                    onClick={handleClick}
+                    width={width}
+                >
+                    <CircleHover show={show}></CircleHover>  
                 </MoviePreviewButton>
                     <Overlay 
                         show={show}
@@ -106,11 +109,13 @@ const HistoryItem = ({item, date, hasBorder}) => {
                             </Popover.Content>
                         </Popover>
                     </Overlay>
-                <MovieTitle
-                    onClick={() => handleRouting(item.id, item.media_type)}
-                >{item.title || item.name}</MovieTitle>
-                <LikeCharacter> {tvEpisodes} ...</LikeCharacter>
-                <Character>{item.job}</Character>
+                    <MovieTitleWrapper>
+                        <MovieTitle
+                            onClick={() => handleRouting(item.id, item.media_type)}
+                        >{item.title || item.name}</MovieTitle>
+                        <LikeCharacter> {tvEpisodes} ... </LikeCharacter>
+                        <Character>{item.job}</Character>
+                    </MovieTitleWrapper>
             </MovieListItemWrapper>
     );
 }
