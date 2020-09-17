@@ -19,14 +19,14 @@ const RateWrapper = styled.div`
 `;
 
 const Rate = ({vote, small, isStatic}) => {
-
+    const voteRound = Math.round(vote) * 10 + '%';
     return (
         <RateWrapper small={small} static={isStatic}>
             <CircularProgressbar
                 value={vote * 10}
                 background = {true}
                 backgroundPadding = {5}
-                text={`${vote === 0 ? 'NR' : (vote * 10 + '%')}`}
+                text={`${!vote ? 'NR' : voteRound}`}
                 styles={buildStyles({
                     rotation: 0,
                     strokeLinecap: 'butt',
