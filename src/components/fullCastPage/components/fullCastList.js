@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const CastTitle = styled.div`
-    font-size: 22.4px;
+    font-size: 1.15em;
     font-family: Arial;
     font-weight: 600;
 `;
@@ -31,17 +31,20 @@ const CastNameWrapper = styled.div`
 `;
 
 const CastName = styled.div`
-    font-size: 16px;
+    font-size: 1em;
     font-weight: 700;
     cursor: pointer;
 `;
 
 const CastCharacter = styled.div`
-    font-size: 16px;
+    font-size: 0.9em;
     cursor: pointer;
 `;
 
-const CastContent = styled.div``;
+const CastContent = styled.div`
+    border-bottom: ${props => props.width < 415 ? '1px solid #d7d7d7;' : 'none'};
+    padding-bottom: ${props => props.width < 415 ? '20px' : '0'};
+`;
 
 const DepartmentTitle = styled.div`
     margin: 20px 0 8px;
@@ -49,7 +52,7 @@ const DepartmentTitle = styled.div`
     font-size: 16px;
 `;
 
-const Actors = ({casts, history}) => {
+const Actors = ({casts, history, width}) => {
 
     const {cast} = casts;
 
@@ -84,14 +87,14 @@ const Actors = ({casts, history}) => {
             <CastTitle>
                 Актёрский состав <CastNumber>{cast.length}</CastNumber>
             </CastTitle>
-            <CastContent>
+            <CastContent width={width}>
                 {castItem}
             </CastContent>
         </>
     )
 }
 
-const Crew = ({casts, history}) => {
+const Crew = ({casts, history, width}) => {
 
     const {crew} = casts;
 

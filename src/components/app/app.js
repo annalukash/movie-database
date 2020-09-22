@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-do
 import MovieDetails from '../moviesPage/components/movieDetailsPage/movieDetails';
 import ScrollToTop from '../shared/scrollToTop/scrollToTop';
 import MoviesByKeyword from '../moviesByKeywordsPage/moviesByKeyword';
-import FullCast from '../fullCastPage/castsPage';
+import FullCast from '../fullCastPage/fullCastPage';
 import PersonBiography from '../personDetailsPage/personBiography';
 import {TVPopularPage, OnTheAirPage, TVTopRatedPage, AiringTodayPage} from '../TVPages';
 import PersonPage from '../popularPersonPage/popularPersonPage';
@@ -149,13 +149,13 @@ export default class App extends Component {
                         <Route exact path="/movie/:id/casts" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <FullCast movieId = {id} history={history}/>
+                                return <FullCast movieId = {id} history={history} width={width}/>
                             }
                         }/>
                         <Route exact path="/tv/:id/casts" render={
                             ({match, history}) => {
                                 const {id} = match.params;
-                                return <FullCast movieId = {id} history={history}/>
+                                return <FullCast movieId = {id} history={history} width={width}/>
                             }
                         }/>
                         <Route path="/keywords/:id" render={

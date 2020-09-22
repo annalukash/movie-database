@@ -104,8 +104,7 @@ const BioWrapper = styled.div`
 const BioContent = styled.div`
     font-size: 16px;
     font-weight: 400;
-    height: ${(props) =>
-        props.mainHeight && props.childRef > 200 ? "200px" : "auto"};
+    height: ${(props) => (props.mainHeight && props.childRef > 200 ? "200px" : "auto")};
     overflow: hidden;
     transition: height 200ms;
     text-align: justify;
@@ -145,8 +144,7 @@ const ReadMoreButton = styled.button`
     font-weight: 600;
     position: absolute;
     right: 0;
-    display: ${(props) =>
-        props.mainHeight && props.childRef > 200 ? "flex" : "none"};
+    display: ${(props) => (props.mainHeight && props.childRef > 200 ? "flex" : "none")};
     align-items: baseline;
     justify-content: space-between;
 
@@ -182,14 +180,11 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
     const classNames = isOpen ? "open" : "";
     const src = !person.profile_path
         ? process.env.PUBLIC_URL + "/assets/avatar.png"
-        : "https://image.tmdb.org/t/p/w300_and_h450_bestv2" +
-          person.profile_path;
+        : "https://image.tmdb.org/t/p/w300_and_h450_bestv2" + person.profile_path;
     const biography = !person.biography ? (
         `У нас нет биографии для ${person.name}`
     ) : (
-        <div ref={(element) => getElementHeight(element)}>
-            {person.biography}
-        </div>
+        <div ref={(element) => getElementHeight(element)}>{person.biography}</div>
     );
     const gender = person.gender === 1 ? "Женский" : "Мужской";
     const alsoKnow = person.also_known_as.map((item, index) => {
@@ -201,10 +196,7 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
         : person.deathday
         ? null
         : `(${moment().diff(`${person.birthday}`, "years")} лет)`;
-    const ageDead = moment([person.deathday]).diff(
-        moment([person.birthday]),
-        "years"
-    );
+    const ageDead = moment([person.deathday]).diff(moment([person.birthday]), "years");
     const dateOfDeath = !person.deathday ? null : (
         <PersonalInfoItemTitle>
             Дата смерти
@@ -215,49 +207,29 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
     );
     const acting = cast.length ? <PersonDetailsCasts cast={cast} /> : null;
     const filmCrew = crew.length ? <CrewByDepartments crew={crew} /> : null;
-    const famousCast = cast.length ? (
-        <FamousCast cast={cast} history={history} />
-    ) : null;
+    const famousCast = cast.length ? <FamousCast cast={cast} history={history} /> : null;
 
     const facebook = (
-        <Link
-            href={`https://www.facebook.com/${facebook_id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-        >
+        <Link href={`https://www.facebook.com/${facebook_id}`} target="_blank" rel="noopener noreferrer">
             <i className="fab fa-facebook-f"></i>
         </Link>
     );
 
     const twitter = (
-        <Link
-            href={`https://twitter.com/${twitter_id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-        >
+        <Link href={`https://twitter.com/${twitter_id}`} target="_blank" rel="noopener noreferrer">
             <i className="fab fa-twitter"></i>
         </Link>
     );
 
     const instagram = (
-        <Link
-            href={`https://www.instagram.com/${instagram_id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-        >
+        <Link href={`https://www.instagram.com/${instagram_id}`} target="_blank" rel="noopener noreferrer">
             <i className="fab fa-instagram"></i>
         </Link>
     );
 
-    const overlayFacebook = facebook_id ? (
-        <Overlay logo={facebook} page={"Facebook"} />
-    ) : null;
-    const overlayTwitter = twitter_id ? (
-        <Overlay logo={twitter} page={"Twitter"} />
-    ) : null;
-    const overlayInstagram = instagram_id ? (
-        <Overlay logo={instagram} page={"Instagram"} />
-    ) : null;
+    const overlayFacebook = facebook_id ? <Overlay logo={facebook} page={"Facebook"} /> : null;
+    const overlayTwitter = twitter_id ? <Overlay logo={twitter} page={"Twitter"} /> : null;
+    const overlayInstagram = instagram_id ? <Overlay logo={instagram} page={"Instagram"} /> : null;
 
     return (
         <Container className="mt-4">
@@ -272,15 +244,11 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
                     <PersonalInfo>Персональная информация</PersonalInfo>
                     <PersonalInfoItemTitle>
                         Известность за
-                        <PersonalInfoItemSubtitle>
-                            {person.known_for_department}
-                        </PersonalInfoItemSubtitle>
+                        <PersonalInfoItemSubtitle>{person.known_for_department}</PersonalInfoItemSubtitle>
                     </PersonalInfoItemTitle>
                     <PersonalInfoItemTitle>
                         Пол
-                        <PersonalInfoItemSubtitle>
-                            {gender}
-                        </PersonalInfoItemSubtitle>
+                        <PersonalInfoItemSubtitle>{gender}</PersonalInfoItemSubtitle>
                     </PersonalInfoItemTitle>
                     <PersonalInfoItemTitle>
                         Дата рождения
@@ -291,15 +259,11 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
                     {dateOfDeath}
                     <PersonalInfoItemTitle>
                         Место рождения
-                        <PersonalInfoItemSubtitle>
-                            {person.place_of_birth}
-                        </PersonalInfoItemSubtitle>
+                        <PersonalInfoItemSubtitle>{person.place_of_birth}</PersonalInfoItemSubtitle>
                     </PersonalInfoItemTitle>
                     <PersonalInfoItemTitle>
                         Также известность как
-                        <PersonalInfoItemSubtitle>
-                            {alsoKnow}
-                        </PersonalInfoItemSubtitle>
+                        <PersonalInfoItemSubtitle>{alsoKnow}</PersonalInfoItemSubtitle>
                     </PersonalInfoItemTitle>
                 </Col>
                 <Col className="col-8">
@@ -307,20 +271,11 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
                         <TitleWrapper>{person.name}</TitleWrapper>
                         <BioWrapper>
                             Биография
-                            <BioContent
-                                className={classNames}
-                                childRef={elementHeight}
-                                mainHeight={person.biography}
-                            >
+                            <BioContent className={classNames} childRef={elementHeight} mainHeight={person.biography}>
                                 {biography}
                             </BioContent>
-                            <ReadMoreButton
-                                childRef={elementHeight}
-                                mainHeight={person.biography}
-                                onClick={onOpen}
-                            >
-                                Читать ещё{" "}
-                                <i className="fas fa-chevron-right"></i>
+                            <ReadMoreButton childRef={elementHeight} mainHeight={person.biography} onClick={onOpen}>
+                                Читать ещё <i className="fas fa-chevron-right"></i>
                             </ReadMoreButton>
                         </BioWrapper>
                     </DescriptionWrapper>
@@ -361,8 +316,7 @@ const FamousCast = ({ cast, history }) => {
 
     const castItem = castSortedByPopularity.map((item, index) => {
         let src = item.poster_path
-            ? "https://image.tmdb.org/t/p/w150_and_h225_bestv2" +
-              item.poster_path
+            ? "https://image.tmdb.org/t/p/w150_and_h225_bestv2" + item.poster_path
             : process.env.PUBLIC_URL + "/assets/poster.png";
         return (
             <CastItemWrapper key={index}>
@@ -371,9 +325,7 @@ const FamousCast = ({ cast, history }) => {
                     alt={item.name || item.title}
                     onClick={() => handleRouting(item.id, item.media_type)}
                 />
-                <CastName
-                    onClick={() => handleRouting(item.id, item.media_type)}
-                >
+                <CastName onClick={() => handleRouting(item.id, item.media_type)}>
                     <EllipsisText text={item.name || item.title} length={13} />
                 </CastName>
             </CastItemWrapper>

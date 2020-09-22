@@ -16,7 +16,6 @@ const HeaderWrapper = styled.div`
     display: flex;
     align-items: center;
     padding: 15px 0;
-    margin: 0 0 30px;
 `;
 
 const Header = styled.div`
@@ -25,17 +24,18 @@ const Header = styled.div`
     margin: 0 auto;
     display: flex;
     align-items: center;
+    padding: ${props => props.width < 415 ? '0 20px' : '0'};
 `;
 
 const MovieName = styled.div`
-    font-size: 35.2px;
+    font-size: 1.6em;
     font-weight: 700;
     color: #fff;
     cursor: pointer;
 `;
 
 const MovieReleaseYear = styled.span`
-    font-size: 35.2px;
+    font-size: 0.8em;
     font-weight: 400;
     opacity: 0.8;
     color: #fff;
@@ -54,30 +54,36 @@ const MovieContent = styled.div`
 
 const ButtonBack = styled.div`
     cursor: pointer;
-    font-size: 17.6px;
+    font-size: 1.1em;
     font-weight: 600;
     opacity: 0.6;
     color: #fff;
+    display: flex;
+    align-items: center;
+
+    & i {
+        padding-right: 6px;
+    }
 `;
 
 class FullCast extends Component {
     componentWillMount() {
-        const {movieId, history, details, MoviesService, movieDetailsRequested, castRequested} = this.props;
+        const {movieId, history, MoviesService, movieDetailsRequested, castRequested} = this.props;
         const {pathname} = history.location;
 
-        if (!details.length) {
-            if (pathname.includes('tv')) {
-                movieDetailsRequested()
-                castRequested()
-                this.getCast(movieId, MoviesService.getTVCasts);
-                this.getDetails(movieId, MoviesService.getTVDetails);
-            } else {
-                movieDetailsRequested()
-                castRequested()
-                this.getCast(movieId, MoviesService.getCast);
-                this.getDetails(movieId, MoviesService.getMovieDetails);
-            }
+  
+        if (pathname.includes('tv')) {
+            movieDetailsRequested()
+            castRequested()
+            this.getCast(movieId, MoviesService.getTVCasts);
+            this.getDetails(movieId, MoviesService.getTVDetails);
+        } else {
+            movieDetailsRequested()
+            castRequested()
+            this.getCast(movieId, MoviesService.getCast);
+            this.getDetails(movieId, MoviesService.getMovieDetails);
         }
+        
     }
  
     getCast = (movieId, request) => {
@@ -101,40 +107,42 @@ class FullCast extends Component {
     }
 
     render() {
-        const {casts, loadingCast, history, details} = this.props;
-        const spinnerActors = loadingCast ? <Spinner/> : <Actors casts={casts} history={history}/>;
-        const spinnerCrew = loadingCast ? <Spinner/> : <Crew casts={casts} history={history}/>;
 
+        const {casts, loadingCast, history, details, width} = this.props;
         const releaseYear = moment(details.first_air_date || details.release_date).format('YYYY');
         const src = !details.poster_path ? (process.env.PUBLIC_URL + '/assets/poster.png') : ('https://image.tmdb.org/t/p/w58_and_h87_face' + details.poster_path);
         
-        return (
-            <>
-                <HeaderWrapper>
-                    <Header>
-                        <MoviePosterImg src={src} alt={details.name || details.title} onClick={this.onGoBack}/>
-                        <MovieContent>
-                            <MovieName onClick={this.onGoBack}>{details.name || details.title}
-                                <MovieReleaseYear> ({releaseYear})</MovieReleaseYear>
-                            </MovieName>  
-                            <ButtonBack
-                                onClick={this.onGoBack}
-                            > <i className="fas fa-arrow-left"></i> Назад на главную</ButtonBack>
-                        </MovieContent>
-                    </Header>
-                </HeaderWrapper>
-                <Container>
-                    <Row>
-                        <Col>
-                            {spinnerActors}
-                        </Col>
-                        <Col>
-                            {spinnerCrew}
-                        </Col>
-                    </Row>
-                </Container>
-            </>
-        )
+        if (loadingCast) {
+            return <Spinner/>
+        } else {
+            return (
+                <>
+                    <HeaderWrapper>
+                        <Header width={width}>
+                            <MoviePosterImg src={src} alt={details.name || details.title} onClick={this.onGoBack}/>
+                            <MovieContent>
+                                <MovieName onClick={this.onGoBack}>{details.name || details.title}
+                                    <MovieReleaseYear> ({releaseYear})</MovieReleaseYear>
+                                </MovieName>  
+                                <ButtonBack
+                                    onClick={this.onGoBack}
+                                > <i className="fas fa-arrow-left"></i> Назад на главную</ButtonBack>
+                            </MovieContent>
+                        </Header>
+                    </HeaderWrapper>
+                    <Container>
+                        <Row className='flex-xl-row flex-lg-row flex-column '>
+                            <Col className='py-3'>
+                                <Actors casts={casts} history={history} width={width}/>
+                            </Col>
+                            <Col className='py-3'>
+                                <Crew casts={casts} history={history} width={width}/>
+                            </Col>
+                        </Row>
+                    </Container>
+                </>
+            )
+        }
     }
 }
 

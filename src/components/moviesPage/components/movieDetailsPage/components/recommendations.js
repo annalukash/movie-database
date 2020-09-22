@@ -50,16 +50,15 @@ const CarouselWrapper = styled.div`
     position: relative;
     background-repeat: repeat-x;
     background-position: bottom;
-    border-bottom: ${(props) =>
-        props.size < 415 ? "none" : "1px solid rgb(215,215,215)"};
+    border-bottom: ${(props) => (props.size < 415 ? "none" : "1px solid rgb(215,215,215)")};
     .rec.rec-slider-container {
         margin: 0;
-        height: ${(props) => props.size < 415 ? "190px" : "210px"};
+        height: ${(props) => (props.size < 415 ? "190px" : "210px")};
         * {
             outline: none;
         }
         .rec-item-wrapper {
-            height: ${(props) => props.size < 415 ? "185px" : "205px"};;
+            height: ${(props) => (props.size < 415 ? "185px" : "205px")};
         }
     }
 `;
@@ -132,41 +131,24 @@ const Recommendation = ({
     const recommendationItems = recommendations
         .filter((item, index) => index < 8)
         .map((item, index) => {
-            const {
-                id,
-                vote_average,
-                title,
-                release_date,
-                name,
-                first_air_date,
-                backdrop_path,
-            } = item;
+            const { id, vote_average, title, release_date, name, first_air_date, backdrop_path } = item;
             const src = backdrop_path
                 ? "//image.tmdb.org/t/p/w250_and_h141_face" + backdrop_path
                 : process.env.PUBLIC_URL + "/assets/poster.png";
-            const releaseDate = moment(release_date || first_air_date).format(
-                "DD/MM/YYYY"
-            );
+            const releaseDate = moment(release_date || first_air_date).format("DD/MM/YYYY");
             return (
                 <RecommendationCardWrapper key={index}>
                     <RecommendationCardImgWrapper>
-                        <RecommendationCardImg
-                            src={src}
-                            alt={title || name}
-                            onClick={() => handleRouting(id)}
-                        />
+                        <RecommendationCardImg src={src} alt={title || name} onClick={() => handleRouting(id)} />
                         <RecommendationCardRelease className={"visible"}>
-                            <i className="far fa-calendar-alt"></i>{" "}
-                            {releaseDate}
+                            <i className="far fa-calendar-alt"></i> {releaseDate}
                         </RecommendationCardRelease>
                     </RecommendationCardImgWrapper>
                     <RecommendationCardTitleWrapper>
                         <RecommendationCardTitle>
                             <EllipsisText text={title || name} length={24} />
                         </RecommendationCardTitle>
-                        <RecommendationCardRate>
-                            {vote_average * 10}%
-                        </RecommendationCardRate>
+                        <RecommendationCardRate>{vote_average * 10}%</RecommendationCardRate>
                     </RecommendationCardTitleWrapper>
                 </RecommendationCardWrapper>
             );
@@ -187,7 +169,7 @@ const Recommendation = ({
             <Carousel
                 renderArrow={myArrow}
                 itemsToScroll={size < 415 ? 1 : 2}
-                itemsToShow={size < 415  ? 1 : 3}
+                itemsToShow={size < 415 ? 1 : 3}
                 focusOnSelect={false}
                 ref={(ref) => (carousel = ref)}
                 renderPagination={myPagination}
