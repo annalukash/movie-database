@@ -60,7 +60,6 @@ const HistoryItem = ({item, date, hasBorder, width}) => {
         const moviesServices = new MoviesServices();
         moviesServices.getMovieDetails(id)
             .then((res) => {
-                debugger
                 if (res && res.status_code === 34) {
                     history.push(`/collection/${id}`)
                 } else {

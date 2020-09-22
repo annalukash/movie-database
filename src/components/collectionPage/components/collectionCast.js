@@ -6,7 +6,7 @@ import moment from "moment";
 import useWindowSize from "../../shared/useWindowSize/useWindowSize";
 
 const CastItemWrapper = styled.div`
-    max-width: ${props => props.large ? "1218px" : props.size < 415 ? props.size + 'px' : "290px"};
+    max-width: ${(props) => (props.large ? "1218px" : props.size < 415 ? props.size + "px" : "290px")};
     width: 100%;
     display: flex;
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
@@ -52,7 +52,7 @@ const HeaderWrapper = styled.div`
 const ReleaseDate = styled.div`
     color: rgb(153, 153, 153);
     font-size: 0.7em;
-    margin-bottom: ${props => props.size < 415 ? '5px' : '20px'};
+    margin-bottom: ${(props) => (props.size < 415 ? "5px" : "20px")};
 `;
 
 const Section = styled.div`
@@ -75,29 +75,17 @@ const CollectionCast = ({ cast, crew, parts, history }) => {
         .filter((item, index) => index < 12)
         .map((item, index) => {
             const src = item.profile_path
-                ? "https://image.tmdb.org/t/p/w64_and_h64_face" +
-                  item.profile_path
+                ? "https://image.tmdb.org/t/p/w64_and_h64_face" + item.profile_path
                 : process.env.PUBLIC_URL + "/assets/avatar.png";
 
             return (
                 <Col sm={3} key={index}>
                     <CastItemWrapper size={size}>
-                        <CastImgWrapper
-                            src={src}
-                            alt={item.name}
-                            onClick={() => onGoToPersonDetails(item.id)}
-                        />
+                        <CastImgWrapper src={src} alt={item.name} onClick={() => onGoToPersonDetails(item.id)} />
                         <CastNameWrapper>
-                            <CastName
-                                onClick={() => onGoToPersonDetails(item.id)}
-                            >
-                                {item.name}
-                            </CastName>
+                            <CastName onClick={() => onGoToPersonDetails(item.id)}>{item.name}</CastName>
                             <CastCharacter>
-                                <EllipsisText
-                                    text={item.character}
-                                    length={size < 415 ? 30 : 20}
-                                />
+                                <EllipsisText text={item.character} length={size < 415 ? 30 : 20} />
                             </CastCharacter>
                         </CastNameWrapper>
                     </CastItemWrapper>
@@ -109,24 +97,15 @@ const CollectionCast = ({ cast, crew, parts, history }) => {
         .filter((item, index) => index < 8)
         .map((item, index) => {
             const src = item.profile_path
-                ? "https://image.tmdb.org/t/p/w64_and_h64_face" +
-                  item.profile_path
+                ? "https://image.tmdb.org/t/p/w64_and_h64_face" + item.profile_path
                 : process.env.PUBLIC_URL + "/assets/avatar.png";
 
             return (
                 <Col sm={3} key={index}>
                     <CastItemWrapper size={size}>
-                        <CastImgWrapper
-                            src={src}
-                            alt={item.name}
-                            onClick={() => onGoToPersonDetails(item.id)}
-                        />
+                        <CastImgWrapper src={src} alt={item.name} onClick={() => onGoToPersonDetails(item.id)} />
                         <CastNameWrapper>
-                            <CastName
-                                onClick={() => onGoToPersonDetails(item.id)}
-                            >
-                                {item.name}
-                            </CastName>
+                            <CastName onClick={() => onGoToPersonDetails(item.id)}>{item.name}</CastName>
                             <CastCharacter>{item.department}</CastCharacter>
                         </CastNameWrapper>
                     </CastItemWrapper>
@@ -136,28 +115,18 @@ const CollectionCast = ({ cast, crew, parts, history }) => {
 
     const partItem = parts.map((part, index) => {
         const src = part.poster_path
-            ? "https://image.tmdb.org/t/p/w94_and_h141_bestv2" +
-              part.poster_path
+            ? "https://image.tmdb.org/t/p/w94_and_h141_bestv2" + part.poster_path
             : process.env.PUBLIC_URL + "/assets/poster.png";
+        const releaseDate = part.release_date ? moment(part.release_date).format("DD/MM/YYYY") : null;
 
         return (
             <Col sm={12} key={index}>
                 <CastItemWrapper large>
-                    <CastImgWrapper
-                        src={src}
-                        alt={part.title}
-                        large
-                        onClick={() => onGoToMovieDetails(part.id)}
-                    />
+                    <CastImgWrapper src={src} alt={part.title} large onClick={() => onGoToMovieDetails(part.id)} />
                     <CastNameWrapper>
-                        <CastName
-                            large
-                            onClick={() => onGoToMovieDetails(part.id)}
-                        >
+                        <CastName large onClick={() => onGoToMovieDetails(part.id)}>
                             {part.title}
-                            <ReleaseDate size={size}>
-                                {moment(part.release_date).format("DD/MM/YYYY")}
-                            </ReleaseDate>
+                            <ReleaseDate size={size}>{releaseDate}</ReleaseDate>
                         </CastName>
                         <CastCharacter>
                             <EllipsisText text={part.overview} length={size < 415 ? 50 : 268} />

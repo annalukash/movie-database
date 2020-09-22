@@ -183,6 +183,7 @@ const PersonDetailsMobile = ({ person, cast, crew, socialLink, MoviesService, hi
     } = person;
 
     const src = profile_path ? `//image.tmdb.org/t/p/w235_and_h235_face${profile_path}` : process.env.PUBLIC_URL + "/assets/avatar.png";
+    const placeOfBirth = place_of_birth ? place_of_birth : "-";
     const personGender = gender === 1 ? "Женский" : "Мужской";
     const personBirthday = birthday ? birthday : "-";
     const ageAlive = !birthday ? " " : deathday ? null
@@ -288,7 +289,7 @@ const PersonDetailsMobile = ({ person, cast, crew, socialLink, MoviesService, hi
                     {dateOfDeath}
                     <SectionSubTitle>
                         Место рождения
-                        <div>{place_of_birth}</div>
+                        <div>{placeOfBirth}</div>
                     </SectionSubTitle>
                 </Col>
             </Row>

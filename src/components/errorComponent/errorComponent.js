@@ -1,46 +1,63 @@
-import React, {Component} from 'react';
-import {popularMoviesError} from '../../actions/actionsMoviesTVPage/actionMoviesTVPage';
-import {connect} from 'react-redux';
-import WithMoviesService from '../hoc/withMoviesService';
+import React, { Component } from "react";
+import styled from "styled-components";
+import { createBrowserHistory } from "history";
 
-class ErrorBoundry extends Component {
-    
+const ErrorWrapper = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+`;
+
+const ErrorMessage = styled.div`
+    font-size: 2em;
+    margin-bottom: 15px;
+`;
+
+const ErrorButton = styled.button`
+    font-size: 1.5em;
+    border: none;
+    background: none;  
+
+    &:focus {
+        outline: none;
+    }
+
+    & img {
+        width: 50px;
+        height: 50px;
+    }
+`;
+
+export default class ErrorBoundry extends Component {
     constructor(props) {
         super(props);
         this.state = { hasError: false };
-      }
-    
-    //   static getDerivedStateFromError(error) {
-    //     // Update state so the next render will show the fallback UI.
-    //     return { hasError: true };
-    //   }
-    
-      componentDidCatch() {
-        // You can also log the error to an error reporting service
+    }
+    componentDidCatch() {
         this.setState({
             hasError: true
         })
-      }
-    
-      render() {
-        if (this.state.hasError) {
-          // You can render any custom fallback UI
-          return <h1>Something went wrong.</h1>;
+    }
+
+    render() {
+        const history = createBrowserHistory();
+        const { hasError } = this.state;
+
+        if (hasError) {
+            return (
+                <ErrorWrapper>
+                    <ErrorMessage>Что-то пошло не так...</ErrorMessage>
+                    <ErrorButton onClick={() => history.go(0)}>
+                        <img src={process.env.PUBLIC_URL + "/assets/loading.png"} alt='re-fresh'/>
+                    </ErrorButton>
+                </ErrorWrapper>
+            );
+        } else {
+            return this.props.children;
         }
-
-        return this.props.children; 
-      }
-    
-}
-
-const mapStateToProps = (state) => {
-    return {
-        error: state.error
     }
 }
-
-const mapDispatchToProps = {
-    popularMoviesError
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ErrorBoundry);

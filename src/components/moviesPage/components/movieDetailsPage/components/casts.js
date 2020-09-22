@@ -69,6 +69,7 @@ const PrevButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    display: ${props => props.size < 415 ? 'none' : 'flex'};
 
     &:focus {
         outline: none;

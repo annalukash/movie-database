@@ -79,7 +79,6 @@ const CastName = styled.div`
 
 const ImgWrapper = styled.img`
     width: 300px;
-    height: 450px;
     border-radius: 10px;
 `;
 
@@ -117,6 +116,7 @@ const BioContent = styled.div`
 const PersonalInfo = styled.div`
     font-size: 20.8px;
     font-weight: 600;
+    margin-top: 15px;
 `;
 
 const PersonalInfoItemTitle = styled.div`
@@ -169,6 +169,17 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
     const { facebook_id, instagram_id, twitter_id } = socialLink;
     const [isOpen, setOpen] = useState(false);
     const [elementHeight, setElementHeight] = useState(0);
+    const {
+        profile_path,
+        biography,
+        name,
+        gender,
+        also_known_as,
+        birthday,
+        deathday,
+        known_for_department,
+        place_of_birth,
+    } = person;
 
     const onOpen = () => {
         setOpen(!isOpen);
@@ -178,30 +189,27 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
         setElementHeight(element?.clientHeight);
     };
     const classNames = isOpen ? "open" : "";
-    const src = !person.profile_path
+    const src = !profile_path
         ? process.env.PUBLIC_URL + "/assets/avatar.png"
-        : "https://image.tmdb.org/t/p/w300_and_h450_bestv2" + person.profile_path;
-    const biography = !person.biography ? (
-        `У нас нет биографии для ${person.name}`
+        : "https://image.tmdb.org/t/p/w300_and_h450_bestv2" + profile_path;
+    const personBiography = !biography ? (
+        `У нас нет биографии для ${name}`
     ) : (
-        <div ref={(element) => getElementHeight(element)}>{person.biography}</div>
+        <div ref={(element) => getElementHeight(element)}>{biography}</div>
     );
-    const gender = person.gender === 1 ? "Женский" : "Мужской";
-    const alsoKnow = person.also_known_as.map((item, index) => {
+    const placeOfBirth = place_of_birth ? place_of_birth : "-";
+    const personGender = gender === 1 ? "Женский" : "Мужской";
+    const alsoKnow = also_known_as.length ? also_known_as.map((item, index) => {
         return <AlsoKnowWrapper key={index}>{item}</AlsoKnowWrapper>;
-    });
-    const birthday = person.birthday ? person.birthday : "-";
-    const ageAlive = !person.birthday
-        ? " "
-        : person.deathday
-        ? null
-        : `(${moment().diff(`${person.birthday}`, "years")} лет)`;
-    const ageDead = moment([person.deathday]).diff(moment([person.birthday]), "years");
-    const dateOfDeath = !person.deathday ? null : (
+    }) : <AlsoKnowWrapper>-</AlsoKnowWrapper>;
+    const personBirthday = birthday ? birthday : "-";
+    const ageAlive = !birthday ? " " : deathday ? null : `(${moment().diff(`${birthday}`, "years")} лет)`;
+    const ageDead = moment([deathday]).diff(moment([birthday]), "years");
+    const dateOfDeath = !deathday ? null : (
         <PersonalInfoItemTitle>
             Дата смерти
             <PersonalInfoItemSubtitle>
-                {person.deathday} ({ageDead} лет)
+                {deathday} ({ageDead} лет)
             </PersonalInfoItemSubtitle>
         </PersonalInfoItemTitle>
     );
@@ -234,8 +242,8 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
     return (
         <Container className="mt-4">
             <Row>
-                <Col className="col-4">
-                    <ImgWrapper src={src} alt={person.name} />
+                <Col className="col-4 pb-4">
+                    <ImgWrapper src={src} alt={name} />
                     <LinkIconWrapper>
                         {overlayFacebook}
                         {overlayTwitter}
@@ -244,22 +252,22 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
                     <PersonalInfo>Персональная информация</PersonalInfo>
                     <PersonalInfoItemTitle>
                         Известность за
-                        <PersonalInfoItemSubtitle>{person.known_for_department}</PersonalInfoItemSubtitle>
+                        <PersonalInfoItemSubtitle>{known_for_department}</PersonalInfoItemSubtitle>
                     </PersonalInfoItemTitle>
                     <PersonalInfoItemTitle>
                         Пол
-                        <PersonalInfoItemSubtitle>{gender}</PersonalInfoItemSubtitle>
+                        <PersonalInfoItemSubtitle>{personGender}</PersonalInfoItemSubtitle>
                     </PersonalInfoItemTitle>
                     <PersonalInfoItemTitle>
                         Дата рождения
                         <PersonalInfoItemSubtitle>
-                            {birthday} {ageAlive}
+                            {personBirthday} {ageAlive}
                         </PersonalInfoItemSubtitle>
                     </PersonalInfoItemTitle>
                     {dateOfDeath}
                     <PersonalInfoItemTitle>
                         Место рождения
-                        <PersonalInfoItemSubtitle>{person.place_of_birth}</PersonalInfoItemSubtitle>
+                        <PersonalInfoItemSubtitle>{placeOfBirth}</PersonalInfoItemSubtitle>
                     </PersonalInfoItemTitle>
                     <PersonalInfoItemTitle>
                         Также известность как
@@ -268,13 +276,13 @@ const PersonDetails = ({ person, cast, crew, socialLink, history }) => {
                 </Col>
                 <Col className="col-8">
                     <DescriptionWrapper>
-                        <TitleWrapper>{person.name}</TitleWrapper>
+                        <TitleWrapper>{name}</TitleWrapper>
                         <BioWrapper>
                             Биография
                             <BioContent className={classNames} childRef={elementHeight} mainHeight={person.biography}>
-                                {biography}
+                                {personBiography}
                             </BioContent>
-                            <ReadMoreButton childRef={elementHeight} mainHeight={person.biography} onClick={onOpen}>
+                            <ReadMoreButton childRef={elementHeight} mainHeight={biography} onClick={onOpen}>
                                 Читать ещё <i className="fas fa-chevron-right"></i>
                             </ReadMoreButton>
                         </BioWrapper>
