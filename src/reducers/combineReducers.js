@@ -6,6 +6,7 @@ import movieDetailsReducer from './reducers/movieDetailsReducer';
 import homePageReducer from './reducers/homePageReducer';
 import collectionPageReducer from './reducers/collectionPageReducer';
 import personDetailsPageReducer from './reducers/personDetailsPageReducer';
+import searchPageReducer from './reducers/searchPageReducer';
 
 export default combineReducers({
     moviePageReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
     movieDetailsReducer,
     homePageReducer,
     collectionPageReducer,
-    personDetailsPageReducer
+    personDetailsPageReducer,
+    searchPageReducer
 })

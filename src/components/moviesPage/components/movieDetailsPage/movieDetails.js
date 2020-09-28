@@ -27,7 +27,6 @@ class MovieDetails extends Component {
             movieDetailsRequested,
             castRequested,
             MoviesService,
-            ratingRequested,
             keywordsRequested,
         } = this.props;
         const { pathname } = history.location;

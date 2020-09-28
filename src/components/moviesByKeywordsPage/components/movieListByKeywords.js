@@ -81,6 +81,10 @@ const MovieQuantity = styled.div`
     color: #fff;
 `;
 
+const NoFilmTemplate = styled.div`
+    margin-top: 20px;
+`;
+
 const MovieListByKeywords = ({movies, totalResults, keywordName, history}) => {
     const size = useWindowSize();
     const moviesItem = movies.map((item, index) => {
@@ -110,9 +114,10 @@ const MovieListByKeywords = ({movies, totalResults, keywordName, history}) => {
                 </MovieCardContent>
             </MovieCardWrapper>
         )
-    })
+    });
 
-    const film = totalResults === 1 ? 'фильм' : totalResults < 5 ? 'фильма' : 'фильмов'
+    const film = totalResults === 1 ? 'фильм' : totalResults < 5 ? 'фильма' : 'фильмов';
+    const showMovieList = movies.length ? moviesItem : <NoFilmTemplate>Фильмы не найдены.</NoFilmTemplate>
 
     return (
         <>
@@ -122,7 +127,7 @@ const MovieListByKeywords = ({movies, totalResults, keywordName, history}) => {
                     <MovieQuantity>{totalResults} {film}</MovieQuantity>
                 </Header>
             </HeaderWrapper>
-            {moviesItem}
+            {showMovieList}
         </>
     )
 }

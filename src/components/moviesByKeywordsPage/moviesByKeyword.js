@@ -100,7 +100,7 @@ export default class MoviesByKeyword extends Component {
     showButton = () => {
         const {loadingMore, totalPages} = this.state;
         const loadSpinner = loadingMore ? <LoadMoreSpinner/> : 'Загрузить еще';
-        if (totalPages !== 1) {
+        if (totalPages > 1) {
             return (
                 <ButtonWrapper>
                     <LoadMoreButton onClick={ () => this.getMovies()}>
@@ -117,7 +117,7 @@ export default class MoviesByKeyword extends Component {
 
         if (loading) {
             return <Spinner/>
-        } else {
+        } else  {
             return (
                 <>               
                     <MovieListWrapper>

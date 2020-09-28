@@ -165,4 +165,9 @@ export default class MoviesServices {
         const response = await this.getResource(`/tv/${id}/content_ratings?`);
         return response;
     }
+
+    getSearchByName = async (type, name, page) => {
+        const response = await this.getResource(`/search/${type}?query=${name}&page=${page}&include_adult=false&`);
+        return response;  
+    }
 }
