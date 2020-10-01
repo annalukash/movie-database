@@ -4,7 +4,14 @@ import styled from "styled-components";
 import { createBrowserHistory } from "history";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import { TVResults, PersonResults, MovieResults, CompanyResults, KeywordResults } from "./components";
+import {
+    TVResults,
+    PersonResults,
+    MovieResults,
+    CompanyResults,
+    KeywordResults,
+    CollectionResults,
+} from "./components";
 import { Container, Row, Col } from "react-bootstrap";
 import WithMoviesService from "../hoc/withMoviesService";
 import {
@@ -25,7 +32,8 @@ import {
     keywordSearchError,
     collectionSearchRequested,
     collectionSearchLoaded,
-    collectionSearchError
+    collectionSearchError,
+    isSearch
 } from "../../actions/actionsSearchPage/actionSearchPage";
 
 const SearchBarWrapper = styled.div`
@@ -54,6 +62,10 @@ const SearchBarItem = styled.div`
     cursor: pointer;
     transition: background 200ms;
 
+    &.active {
+        background: rgba(0, 0, 0, 0.08);
+    }
+
     &:hover {
         background: rgba(0, 0, 0, 0.08);
     }
@@ -81,7 +93,6 @@ class SearchResultsPage extends Component {
             personPage,
             moviePage,
             companyPage,
-            MoviesService,
             tvSearchRequested,
             tvSearchLoaded,
             tvSearchError,
@@ -89,7 +100,7 @@ class SearchResultsPage extends Component {
             personSearchLoaded,
             personSearchError,
             movieSearchRequested,
-            movieSearchLoaded, 
+            movieSearchLoaded,
             movieSearchError,
             companySearchRequested,
             companySearchLoaded,
@@ -98,13 +109,22 @@ class SearchResultsPage extends Component {
             keywordSearchRequested,
             keywordSearchLoaded,
             keywordSearchError,
-
+            collectionPage,
+            collectionSearchRequested,
+            collectionSearchLoaded,
+            collectionSearchError,
+            searchValue,
+            isSearch
         } = this.props;
         const history = createBrowserHistory();
 
+        const value = searchValue || localStorage.getItem('searchValue');
+        const valueWithoutSpaces = value.replace(/ /g,"%20");
+        isSearch(value);
+
         history.push({
             pathname: "/search",
-            search: `?page=${tvPage}&query=tom`,
+            search: `?page=${tvPage}&query=${valueWithoutSpaces}`,
         });
 
         tvSearchRequested();
@@ -112,15 +132,25 @@ class SearchResultsPage extends Component {
         movieSearchRequested();
         companySearchRequested();
         keywordSearchRequested();
-        this.getSearch('tv', tvPage, MoviesService.getSearchByName, tvSearchLoaded, tvSearchError);
-        this.getSearch('person', personPage, MoviesService.getSearchByName, personSearchLoaded, personSearchError);
-        this.getSearch('movie', moviePage, MoviesService.getSearchByName, movieSearchLoaded, movieSearchError);
-        this.getSearch('company', companyPage, MoviesService.getSearchByName, companySearchLoaded, companySearchError);
-        this.getSearch('keyword', keywordPage, MoviesService.getSearchByName, keywordSearchLoaded, keywordSearchError);
+        collectionSearchRequested();
+
+        
+        this.getSearch("tv", valueWithoutSpaces, tvPage, tvSearchLoaded, tvSearchError);
+        this.getSearch("person", valueWithoutSpaces, personPage, personSearchLoaded, personSearchError);
+        this.getSearch("movie", valueWithoutSpaces, moviePage, movieSearchLoaded, movieSearchError);
+        this.getSearch("company", valueWithoutSpaces, companyPage, companySearchLoaded, companySearchError);
+        this.getSearch("keyword", valueWithoutSpaces, keywordPage, keywordSearchLoaded, keywordSearchError);
+        this.getSearch("collection", valueWithoutSpaces, collectionPage, collectionSearchLoaded, collectionSearchError);
     }
 
-    getSearch = (type, page, request, handleSuccess, handleError) => {
-        request(type, "tom", page)
+    componentWillUnmount() {
+        const {isSearch} = this.props;
+        isSearch('');
+    }
+
+    getSearch = (type, searchValue,  page, handleSuccess, handleError) => {
+        const { MoviesService } = this.props;
+        MoviesService.getSearchByName(type, searchValue, page)
             .then((res) => {
                 const payload = {
                     results: res.results,
@@ -134,31 +164,54 @@ class SearchResultsPage extends Component {
     };
 
     loadMoreTVResults = (page) => {
-        const { MoviesService, tvSearchLoaded, tvSearchError } = this.props;
-        this.getSearch('tv', page, MoviesService.getSearchByName, tvSearchLoaded, tvSearchError);
+        const { searchValue, tvSearchLoaded, tvSearchError } = this.props;
+        const value = searchValue || localStorage.getItem('searchValue');
+        const valueWithoutSpaces = value.replace(/ /g,"%20");
+        
+        this.getSearch("tv", valueWithoutSpaces, page, tvSearchLoaded, tvSearchError);
     };
 
     loadMorePersonResults = (page) => {
-        const { MoviesService, personSearchLoaded, personSearchError } = this.props;
-        this.getSearch('person', page, MoviesService.getSearchByName, personSearchLoaded, personSearchError);
+        const { searchValue, personSearchLoaded, personSearchError } = this.props;
+        const value = searchValue || localStorage.getItem('searchValue');
+        const valueWithoutSpaces = value.replace(/ /g,"%20");
+        
+        this.getSearch("person", valueWithoutSpaces, page, personSearchLoaded, personSearchError);
     };
 
     loadMoreMovieResults = (page) => {
-        const { MoviesService, movieSearchLoaded, movieSearchError } = this.props;
-        this.getSearch('movie', page, MoviesService.getSearchByName, movieSearchLoaded, movieSearchError);
+        const { searchValue, movieSearchLoaded, movieSearchError } = this.props;
+        const value = searchValue || localStorage.getItem('searchValue');
+        const valueWithoutSpaces = value.replace(/ /g,"%20");
+        
+        this.getSearch("movie", valueWithoutSpaces, page, movieSearchLoaded, movieSearchError);
     };
 
     loadMoreCompanyResults = (page) => {
-        const { MoviesService, companySearchLoaded, companySearchError } = this.props;
-        this.getSearch('company', page, MoviesService.getSearchByName, companySearchLoaded, companySearchError);
+        const { searchValue, companySearchLoaded, companySearchError } = this.props;
+        const value = searchValue || localStorage.getItem('searchValue');
+        const valueWithoutSpaces = value.replace(/ /g,"%20");
+        
+        this.getSearch("company", valueWithoutSpaces, page, companySearchLoaded, companySearchError);
     };
 
     loadMoreKeywordResults = (page) => {
-        const { MoviesService, keywordSearchLoaded, keywordSearchError } = this.props;
-        this.getSearch('keyword', page, MoviesService.getSearchByName, keywordSearchLoaded, keywordSearchError);
+        const { searchValue, keywordSearchLoaded, keywordSearchError } = this.props;
+        const value = searchValue || localStorage.getItem('searchValue');
+        const valueWithoutSpaces = value.replace(/ /g,"%20");
+        
+        this.getSearch("keyword", valueWithoutSpaces, page, keywordSearchLoaded, keywordSearchError);
     };
 
-    numberWithCommas(x) {
+    loadMoreCollectionResults = (page) => {
+        const { searchValue, collectionSearchLoaded, collectionSearchError } = this.props;
+        const value = searchValue || localStorage.getItem('searchValue');
+        const valueWithoutSpaces = value.replace(/ /g,"%20");
+        
+        this.getSearch("collection", valueWithoutSpaces, page, collectionSearchLoaded, collectionSearchError);
+    }
+
+    numberWithCommas = (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
@@ -189,9 +242,16 @@ class SearchResultsPage extends Component {
             keywordResults,
             keywordPage,
             keywordTotalPages,
+            collectionLoading,
+            collectionPage,
+            collectionResults,
+            collectionTotalPages,
+            collectionTotalResults,
+            searchValue
         } = this.props;
 
-        console.log(tvTotalResults, tvResults)
+        const value = searchValue || localStorage.getItem('searchValue');
+        const valueWithoutSpaces = value.replace(/ /g,"%20");
 
         return (
             <Container className="my-4">
@@ -200,7 +260,7 @@ class SearchResultsPage extends Component {
                         <SearchBarWrapper>
                             <SearchBarHeader>Результаты поиска</SearchBarHeader>
                             <SearchBarBody>
-                                <SearchBarItem>
+                                <SearchBarItem >
                                     <Link to="/search/tv">Сериалы</Link>
                                     <SearchBarItemSum>{this.numberWithCommas(tvTotalResults)}</SearchBarItemSum>
                                 </SearchBarItem>
@@ -222,11 +282,7 @@ class SearchResultsPage extends Component {
                                 </SearchBarItem>
                                 <SearchBarItem>
                                     <Link to="/search/collection">Коллекции</Link>
-                                    <SearchBarItemSum>0</SearchBarItemSum>
-                                </SearchBarItem>
-                                <SearchBarItem>
-                                    <Link to="/search/network">Телесети</Link>
-                                    <SearchBarItemSum>0</SearchBarItemSum>
+                                    <SearchBarItemSum>{this.numberWithCommas(collectionTotalResults)}</SearchBarItemSum>
                                 </SearchBarItem>
                             </SearchBarBody>
                         </SearchBarWrapper>
@@ -245,6 +301,7 @@ class SearchResultsPage extends Component {
                                             totalPages={tvTotalPages}
                                             loading={tvLoading}
                                             loadMoreResults={this.loadMoreTVResults}
+                                            searchValue={valueWithoutSpaces}
                                         />
                                     );
                                 }}
@@ -261,6 +318,7 @@ class SearchResultsPage extends Component {
                                             totalPages={personTotalPages}
                                             loading={personLoading}
                                             loadMoreResults={this.loadMorePersonResults}
+                                            searchValue={valueWithoutSpaces}
                                         />
                                     );
                                 }}
@@ -277,6 +335,7 @@ class SearchResultsPage extends Component {
                                             totalPages={movieTotalPages}
                                             loading={movieLoading}
                                             loadMoreResults={this.loadMoreMovieResults}
+                                            searchValue={valueWithoutSpaces}
                                         />
                                     );
                                 }}
@@ -293,6 +352,7 @@ class SearchResultsPage extends Component {
                                             totalPages={companyTotalPages}
                                             loading={companyLoading}
                                             loadMoreResults={this.loadMoreCompanyResults}
+                                            searchValue={valueWithoutSpaces}
                                         />
                                     );
                                 }}
@@ -309,6 +369,24 @@ class SearchResultsPage extends Component {
                                             totalPages={keywordTotalPages}
                                             loading={keywordLoading}
                                             loadMoreResults={this.loadMoreKeywordResults}
+                                            searchValue={valueWithoutSpaces}
+                                        />
+                                    );
+                                }}
+                            />
+                            <Route
+                                exact
+                                path="/search/collection"
+                                render={({ history }) => {
+                                    return (
+                                        <CollectionResults
+                                            history={history}
+                                            results={collectionResults}
+                                            page={collectionPage}
+                                            totalPages={collectionTotalPages}
+                                            loading={collectionLoading}
+                                            loadMoreResults={this.loadMoreCollectionResults}
+                                            searchValue={valueWithoutSpaces}
                                         />
                                     );
                                 }}
@@ -348,6 +426,12 @@ const mapStateToProps = (state) => {
         keywordPage,
         keywordTotalPages,
         keywordTotalResults,
+        collectionLoading,
+        collectionResults,
+        collectionPage,
+        collectionTotalPages,
+        collectionTotalResults,
+        searchValue
     } = state.searchPageReducer;
     return {
         tvResults,
@@ -375,6 +459,12 @@ const mapStateToProps = (state) => {
         keywordPage,
         keywordTotalPages,
         keywordTotalResults,
+        collectionLoading,
+        collectionResults,
+        collectionPage,
+        collectionTotalPages,
+        collectionTotalResults,
+        searchValue
     };
 };
 
@@ -396,7 +486,8 @@ const mapDispatchToProps = {
     keywordSearchError,
     collectionSearchRequested,
     collectionSearchLoaded,
-    collectionSearchError
+    collectionSearchError,
+    isSearch
 };
 
 export default WithMoviesService()(connect(mapStateToProps, mapDispatchToProps)(SearchResultsPage));

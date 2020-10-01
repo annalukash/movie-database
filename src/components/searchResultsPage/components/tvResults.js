@@ -42,7 +42,13 @@ const ItemDetailsWrapper = styled.div`
     justify-content: space-between;
 `;
 
-const ItemTitleWrapper = styled.div``;
+const ItemTitleWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 141px;
+    height: 100%;
+`;
 
 const ItemTitle = styled.div`
     font-size: 1.2em;
@@ -63,21 +69,24 @@ const TVResults = ({
     page,
     totalPages,
     loading,
-    loadMoreResults
+    loadMoreResults,
+    searchValue
 }) => {
 
     useEffect(() => {
         const handleRoute = () => {
             history.push({
                 pathname: "/search/tv",
-                search: `?page=${page}&query=tom`,
+                search: `?page=${page}&query=${searchValue}`,
             });
         }
         handleRoute()
-    }, [page, history]);
+    }, [page, history, searchValue]);
 
     if (loading) {
         return <Spinner />;
+    } else if (!results.length) {
+        return <div>Нет сериалов, соответствующих вашему запросу.</div>
     } else {
         return (
             <>

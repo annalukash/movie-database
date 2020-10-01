@@ -36,7 +36,7 @@ const SocialLinkWrrapper = styled.div`
 const OriginalDetails = ({details, history, socialLink}) => {
     const {original_title, status, budget, revenue, original_language, original_name, networks, homepage} = details;
     const {facebook_id, instagram_id, twitter_id} = socialLink;
-    console.log(networks);
+
     let nf = new Intl.NumberFormat();
     const movieBudget= budget ? nf.format(budget).replace(/\s/g, ',') : '0';
     const movieRevenue = revenue ? nf.format(revenue).replace(/\s/g, ',') : '0';

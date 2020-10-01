@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Spinner from "../../shared/spinner/spinner";
-import moment from "moment";
 import EllipsisText from "react-ellipsis-text";
 import {
     ItemWrapper,
@@ -8,12 +7,11 @@ import {
     ItemDetailsWrapper,
     ItemTitleWrapper,
     ItemTitle,
-    ItemReleaseDate,
     ItemDescription,
     PaginationTemplate,
 } from "./tvResults";
 
-const MovieResults = ({
+const CollectionResults = ({
     loading, 
     results, 
     page, 
@@ -26,7 +24,7 @@ const MovieResults = ({
     useEffect(() => {
         const handleRoute = () => {
             history.push({
-                pathname: "/search/movie",
+                pathname: "/search/collection",
                 search: `?page=${page}&query=${searchValue}`,
             });
         };
@@ -38,7 +36,7 @@ const MovieResults = ({
     if (loading) {
         return <Spinner/>
     } else if (!results.length) {
-        return <div>Нет фильмов, соответствующих вашему запросу.</div>
+        return <div>Нет коллекций, соответствующих вашему запросу.</div>
     } else {
         return (
             <>
@@ -51,29 +49,27 @@ const MovieResults = ({
 
 const Items = ({results, history}) => {
     const handleRoute = (id) => {
-        history.push(`/movie/${id}`);
+        history.push(`/collection/${id}`);
     };
 
     const resultItems = results.map((item, index) => {
-        const { id, title, poster_path, overview, release_date } = item;
+        const { id, name, poster_path, overview } = item;
         const src = poster_path
             ? `//image.tmdb.org/t/p/w94_and_h141_bestv2${poster_path}`
             : process.env.PUBLIC_URL + "/assets/poster.png";
-        const releaseDate = release_date ? moment(release_date).format("DD/MM/YYYY") : null;
         const shortOverview = overview ? <EllipsisText text={overview} length={170} /> : null;
         return (
             <ItemWrapper key={index}>
                 <ItemImgWrapper onClick={() => handleRoute(id)}>
-                    <img src={src} alt={title} />
+                    <img src={src} alt={name} />
                 </ItemImgWrapper>
                 <ItemDetailsWrapper>
                     <ItemTitleWrapper>
-                        <ItemTitle onClick={() => handleRoute(id)}>{title}</ItemTitle>
-                        <ItemReleaseDate>{releaseDate}</ItemReleaseDate>
+                        <ItemTitle onClick={() => handleRoute(id)}>{name}</ItemTitle>
+                        <ItemDescription>
+                            {shortOverview}
+                        </ItemDescription>
                     </ItemTitleWrapper>
-                    <ItemDescription>
-                        {shortOverview}
-                    </ItemDescription>
                 </ItemDetailsWrapper>
             </ItemWrapper>
         );
@@ -82,4 +78,4 @@ const Items = ({results, history}) => {
     return resultItems;
 }
 
-export default MovieResults;
+export default CollectionResults;

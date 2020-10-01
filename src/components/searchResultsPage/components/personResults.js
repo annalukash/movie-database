@@ -63,23 +63,25 @@ const PersonResults = ({
     page,
     totalPages,
     loading,
-    loadMoreResults
-    
+    loadMoreResults,
+    searchValue
 }) => {
 
     useEffect(() => {
         const handleRoute = () => {
             history.push({
                 pathname: "/search/person",
-                search: `?page=${page}&query=tom`,
+                search: `?page=${page}&query=${searchValue}`,
             });
         }
         handleRoute()
-    }, [page, history]);
+    }, [page, history, searchValue]);
 
 
     if (loading) {
-        return <Spinner />;
+        return <Spinner/>
+    } else if (!results.length) {
+        return <div>Нет людей, соответствующих вашему запросу.</div>
     } else {
         return (
             <>
@@ -97,7 +99,7 @@ const Items = ({ results, history }) => {
 
     const resultItems = results.map((item, index) => {
         const { name, id, known_for_department, known_for, profile_path } = item;
-        console.log(name, id, known_for_department, known_for, profile_path)
+
         const src = profile_path
             ? `//image.tmdb.org/t/p/w90_and_h90_face${profile_path}`
             : process.env.PUBLIC_URL + "/assets/avatar.png";

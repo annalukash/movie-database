@@ -114,6 +114,13 @@ const collectionSearchError = () => {
     };
 };
 
+const isSearch = (payload) => {
+    return {
+        type: actionTypes.IS_SEARCH,
+        payload
+    }
+}
+
 export {
     tvSearchError,
     tvSearchRequested,
@@ -132,5 +139,6 @@ export {
     keywordSearchError,
     collectionSearchRequested,
     collectionSearchLoaded,
-    collectionSearchError
+    collectionSearchError,
+    isSearch
 };

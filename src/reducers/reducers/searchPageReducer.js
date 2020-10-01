@@ -37,6 +37,7 @@ const initialState = {
     collectionPage: 1,
     collectionTotalPages: 0,
     collectionTotalResults: 0,
+    searchValue: ''
 }
 
 const searchPageReducer = (state = initialState, action) => {
@@ -136,8 +137,34 @@ const searchPageReducer = (state = initialState, action) => {
                 ...state,
                 keywordError: false
             }
+        case actionTypes.COLLECTION_SEARCH_REQUESTED:
+            return {
+                ...state,
+                collectionLoading: true
+            }
+        case actionTypes.COLLECTION_SEARCH_LOADED:
+            return {
+                ...state,
+                collectionLoading: false,
+                collectionResults: action.payload.results,
+                collectionPage: action.payload.page,
+                collectionTotalPages: action.payload.totalPages,
+                collectionTotalResults: action.payload.totalResults
+            }
+        case actionTypes.COLLECTION_SEARCH_ERROR: 
+            return {
+                ...state,
+                collectionError: true
+            }
+        case actionTypes.IS_SEARCH:
+            localStorage.setItem('searchValue', action.payload);
+            return {
+                ...state,
+                searchValue: action.payload
+            }
         default:
             return state
+
     }
 }
 

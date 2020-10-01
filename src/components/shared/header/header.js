@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {isSearch} from '../../../actions/actionsSearchPage/actionSearchPage';
 
 const NavBarWrapper = styled.div`
     background-color: #bdcad9;
@@ -29,7 +31,8 @@ const NavCollapseWrapper = styled.div`
     }
 `;
 
-const Header = () => {
+const Header = ({searchValue, isSearch}) => {
+
     return(
         <NavBarWrapper> 
             <Navbar expand="lg">
@@ -90,9 +93,26 @@ const Header = () => {
                         </Nav>
                     </Navbar.Collapse>
                 </NavCollapseWrapper>
+                <form>
+                    <input type='search' value={searchValue} onChange={(event) => isSearch(event.target.value)}/>
+                    <button>
+                        <Link to='/search'>Search</Link>
+                    </button>
+                </form>
             </Navbar> 
         </NavBarWrapper>
     )
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+    const {searchValue} = state.searchPageReducer;
+    return {
+        searchValue
+    }
+}
+
+const mapDispatchToProps = {
+    isSearch
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

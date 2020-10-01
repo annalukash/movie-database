@@ -15,30 +15,33 @@ const KeywordResults = ({
     page, 
     totalPages,
     history,
-    loadMoreResults
+    loadMoreResults,
+    searchValue
 }) => {
 
     useEffect(() => {
         const handleRoute = () => {
             history.push({
                 pathname: "/search/keywords",
-                search: `?page=${page}&query=tom`,
+                search: `?page=${page}&query=${searchValue}`,
             });
         };
         handleRoute();
-    }, [history, page]);
+    }, [history, page, searchValue]);
 
 
 
     if (loading) {
         return <Spinner/>
+    } else if (!results.length) {
+        return <div>Нет ключевых слов, соответствующих вашему запросу.</div>
     } else {
         return (
             <>
-                <Items results={results} history={history}/>
-                <PaginationTemplate totalPages={totalPages} getResults={loadMoreResults} page={page}/>
+                <Items results={results} history={history} />
+                <PaginationTemplate totalPages={totalPages} getResults={loadMoreResults} page={page} />
             </>
-        )
+        );
     }
 };
 
