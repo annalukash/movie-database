@@ -231,7 +231,6 @@ export default class App extends Component {
                                 return <PersonBiography personId={id} history={history} width={width} />;
                             }}
                         />
-                        <Redirect exact from="/search" to="/search/tv" />
                         <SearchResultsPage />
                     </Switch>
                 </ScrollToTop>
