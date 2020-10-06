@@ -14,7 +14,7 @@ const SearchBarHeader = styled.div`
 
 const SearchBarBody = styled.div`
     margin: 5px 0;
-    overflow: scroll;
+    /* overflow: scroll; */
     padding-bottom: 10px;
 
     & div {

@@ -13,7 +13,6 @@ const ItemWrapper = styled.div`
     margin-top: 20px;
     max-width: 825px;
     width: 100%;
-    height: 141px;
 
     &:first-child {
         margin-top: 0;
