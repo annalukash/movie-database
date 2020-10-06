@@ -11,7 +11,8 @@ const ItemWrapper = styled.div`
     border: 1px solid rgba(227, 227, 227, 1);
     border-radius: 8px;
     margin-top: 20px;
-    min-width: 825px;
+    max-width: 825px;
+    width: 100%;
 
     &:first-child {
         margin-top: 0;
@@ -63,6 +64,11 @@ const ItemReleaseDate = styled.div`
 
 const ItemDescription = styled.div``;
 
+const NoResults = styled.div`
+    margin-top: 15px;
+    text-align: center;
+`;
+
 const TVResults = ({
     history,
     results,
@@ -70,7 +76,8 @@ const TVResults = ({
     totalPages,
     loading,
     loadMoreResults,
-    searchValue
+    searchValue,
+    size
 }) => {
 
     useEffect(() => {
@@ -86,18 +93,18 @@ const TVResults = ({
     if (loading) {
         return <Spinner />;
     } else if (!results.length) {
-        return <div>Нет сериалов, соответствующих вашему запросу.</div>
+        return <NoResults>Нет сериалов, соответствующих вашему запросу.</NoResults>
     } else {
         return (
             <>
-                <Items results={results} history={history} />
+                <Items results={results} history={history} size={size}/>
                 <PaginationTemplate totalPages={totalPages} getResults={loadMoreResults} page={page} />
             </>
         );
     }
 };
 
-const Items = ({ results, history }) => {
+const Items = ({ results, history, size }) => {
     const handleRoute = (id) => {
         history.push(`/tv/${id}`);
     };
@@ -108,7 +115,7 @@ const Items = ({ results, history }) => {
             ? `//image.tmdb.org/t/p/w94_and_h141_bestv2${poster_path}`
             : process.env.PUBLIC_URL + "/assets/poster.png";
         const releaseDate = first_air_date ? moment(first_air_date).format("DD/MM/YYYY") : null;
-        const shortOverview = overview ? <EllipsisText text={overview} length={170} /> : null;
+        const shortOverview = overview ? <EllipsisText text={overview} length={size < 415 ? 50 : 170} /> : null;
         return (
             <ItemWrapper key={index}>
                 <ItemImgWrapper onClick={() => handleRoute(id)}>
@@ -158,5 +165,6 @@ export {
     ItemTitle,
     ItemReleaseDate,
     ItemDescription,
+    NoResults,
     PaginationTemplate,
 };

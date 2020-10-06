@@ -74,6 +74,7 @@ const Header = ({ searchValue, isSearch }) => {
     }
 
     const onHandleButton = () => {
+        console.log(1)
         history.push('/search/tv');
     }
 

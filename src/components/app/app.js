@@ -231,7 +231,7 @@ export default class App extends Component {
                                 return <PersonBiography personId={id} history={history} width={width} />;
                             }}
                         />
-                        <SearchResultsPage />
+                        <SearchResultsPage width={width}/>
                     </Switch>
                 </ScrollToTop>
             </Router>

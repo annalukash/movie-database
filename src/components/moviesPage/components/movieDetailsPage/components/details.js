@@ -108,14 +108,6 @@ const CreatorNameWrapper = styled.div`
     cursor: pointer;
 `;
 
-const Rating = styled.div`
-    border: 1px solid #fff;
-    opacity: 0.8;
-    padding: 0 7px;
-    font-size: 1em;
-    margin-right: 7px;
-`;
-
 const Details = ({
     details,
     movieId,

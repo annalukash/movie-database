@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
-
 import Spinner from "../../shared/spinner/spinner";
 import styled from "styled-components";
 import EllipsisText from "react-ellipsis-text";
-import { PaginationTemplate } from "./tvResults";
+import { PaginationTemplate, NoResults } from "./tvResults";
 
 const ItemWrapper = styled.div`
     display: flex;
     margin-top: 20px;
-    min-width: 825px;
+    max-width: 825px;
+    width: 100%;
+
     align-items: center;
 
     &:first-child {
@@ -64,7 +65,8 @@ const PersonResults = ({
     totalPages,
     loading,
     loadMoreResults,
-    searchValue
+    searchValue,
+    size
 }) => {
 
     useEffect(() => {
@@ -81,18 +83,18 @@ const PersonResults = ({
     if (loading) {
         return <Spinner/>
     } else if (!results.length) {
-        return <div>Нет людей, соответствующих вашему запросу.</div>
+        return <NoResults>Нет людей, соответствующих вашему запросу.</NoResults>
     } else {
         return (
             <>
-                <Items results={results} history={history} />
+                <Items results={results} history={history} size={size}/>
                 <PaginationTemplate totalPages={totalPages} getResults={loadMoreResults} page={page} />
             </>
         );
     }
 };
 
-const Items = ({ results, history }) => {
+const Items = ({ results, history, size }) => {
     const handleRoute = (id) => {
         history.push(`/person/${id}`);
     };
@@ -107,7 +109,7 @@ const Items = ({ results, history }) => {
 
         const castTemplate = !cast?.length ? null : (
             <ItemCast>
-                <EllipsisText text={cast} length={80} />
+                <EllipsisText text={cast} length={size < 415 ? 20 : 80} />
             </ItemCast>
         );
 

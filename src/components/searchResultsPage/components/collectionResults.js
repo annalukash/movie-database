@@ -9,6 +9,7 @@ import {
     ItemTitle,
     ItemDescription,
     PaginationTemplate,
+    NoResults
 } from "./tvResults";
 
 const CollectionResults = ({
@@ -36,7 +37,7 @@ const CollectionResults = ({
     if (loading) {
         return <Spinner/>
     } else if (!results.length) {
-        return <div>Нет коллекций, соответствующих вашему запросу.</div>
+        return <NoResults>Нет коллекций, соответствующих вашему запросу.</NoResults>
     } else {
         return (
             <>

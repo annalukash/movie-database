@@ -11,6 +11,7 @@ import {
     ItemReleaseDate,
     ItemDescription,
     PaginationTemplate,
+    NoResults
 } from "./tvResults";
 
 const MovieResults = ({
@@ -20,9 +21,10 @@ const MovieResults = ({
     totalPages,
     history,
     loadMoreResults,
-    searchValue
+    searchValue,
+    size
 }) => {
-
+    
     useEffect(() => {
         const handleRoute = () => {
             history.push({
@@ -38,18 +40,18 @@ const MovieResults = ({
     if (loading) {
         return <Spinner/>
     } else if (!results.length) {
-        return <div>Нет фильмов, соответствующих вашему запросу.</div>
+        return <NoResults>Нет фильмов, соответствующих вашему запросу.</NoResults>
     } else {
         return (
             <>
-                <Items results={results} history={history} />
+                <Items results={results} history={history} size={size}/>
                 <PaginationTemplate totalPages={totalPages} getResults={loadMoreResults} page={page} />
             </>
         );
     }
 };
 
-const Items = ({results, history}) => {
+const Items = ({results, history, size}) => {
     const handleRoute = (id) => {
         history.push(`/movie/${id}`);
     };
@@ -60,7 +62,7 @@ const Items = ({results, history}) => {
             ? `//image.tmdb.org/t/p/w94_and_h141_bestv2${poster_path}`
             : process.env.PUBLIC_URL + "/assets/poster.png";
         const releaseDate = release_date ? moment(release_date).format("DD/MM/YYYY") : null;
-        const shortOverview = overview ? <EllipsisText text={overview} length={170} /> : null;
+        const shortOverview = overview ? <EllipsisText text={overview} length={size < 415 ? 50 : 170} /> : null;
         return (
             <ItemWrapper key={index}>
                 <ItemImgWrapper onClick={() => handleRoute(id)}>

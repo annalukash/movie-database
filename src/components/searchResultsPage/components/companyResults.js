@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import Spinner from "../../shared/spinner/spinner";
-import { PaginationTemplate } from "./tvResults";
+import { PaginationTemplate, NoResults } from "./tvResults";
 import styled from "styled-components";
 
 const CompanyItemWrapper = styled.div`
     border-bottom: 1px solid #ccc;
     display: flex;
-    min-width: 825px;
+    max-width: 825px;
+    width: 100%;
     font-size: 1.2em;
     padding: 5px 0;
 
@@ -62,7 +63,7 @@ const CompanyResults = ({
     if (loading) {
         return <Spinner/>
     } else if (!results.length) {
-        return <div>Нет компаний, соответствующих вашему запросу.</div>
+        return <NoResults>Нет компаний, соответствующих вашему запросу.</NoResults>
     } else {
         return (
             <>

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import Spinner from "../../shared/spinner/spinner";
-import { PaginationTemplate } from "./tvResults";
+import { PaginationTemplate, NoResults } from "./tvResults";
 import styled from "styled-components";
 
 const CompanyItemName = styled.div`
     cursor: pointer;
-    min-width: 825px;
+    max-width: 825px;
+    width: 100%;
 `;
 
 
@@ -34,7 +35,7 @@ const KeywordResults = ({
     if (loading) {
         return <Spinner/>
     } else if (!results.length) {
-        return <div>Нет ключевых слов, соответствующих вашему запросу.</div>
+        return <NoResults>Нет ключевых слов, соответствующих вашему запросу.</NoResults>
     } else {
         return (
             <>

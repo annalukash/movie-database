@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { TVResults, PersonResults, MovieResults, CompanyResults, KeywordResults, CollectionResults } from "./index";
+import useWindowSize from '../../shared/useWindowSize/useWindowSize';
 
 const SearchRoutes = ({
     tvLoading,
@@ -37,6 +38,8 @@ const SearchRoutes = ({
 }) => {
     const value = searchValue || localStorage.getItem("searchValue");
     const valueWithoutSpaces = value.replace(/ /g, "%20");
+    const size = useWindowSize();
+
 
     return (
         <Switch>
@@ -53,6 +56,7 @@ const SearchRoutes = ({
                             loading={tvLoading}
                             loadMoreResults={loadMoreTVResults}
                             searchValue={valueWithoutSpaces}
+                            size={size}
                         />
                     );
                 }}
@@ -70,6 +74,7 @@ const SearchRoutes = ({
                             loading={personLoading}
                             loadMoreResults={loadMorePersonResults}
                             searchValue={valueWithoutSpaces}
+                            size={size}
                         />
                     );
                 }}
@@ -87,6 +92,7 @@ const SearchRoutes = ({
                             loading={movieLoading}
                             loadMoreResults={loadMoreMovieResults}
                             searchValue={valueWithoutSpaces}
+                            size={size}
                         />
                     );
                 }}
