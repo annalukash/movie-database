@@ -9,7 +9,6 @@ const SearchBarHeader = styled.div`
     font-size: 1.2em;
     padding: 10px 20px;
     max-width: 100vw;
-    width: 100%;
     text-align: center;
 `;
 
@@ -80,7 +79,7 @@ const SearchResultsLinkMobile = ({
     return (
         <>
             <SearchBarHeader>
-                <div>Результаты поиска</div>
+                <div>Результаты поискаf</div>
             </SearchBarHeader>
             <SearchBarBody>
                 <div ref={ref}>
