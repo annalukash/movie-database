@@ -30,12 +30,12 @@ const SearchBarItem = styled.div`
     transition: background 200ms;
     white-space: nowrap;
 
-    &.active {
+    &.selected {
         color: rgb(1, 180, 228);
         font-weight: 600;
     }
 
-    &.active span {
+    &.selected span {
         border: 1px solid rgb(1, 180, 228);
     }
 
@@ -64,17 +64,17 @@ const SearchResultsLinkMobile = ({
 }) => {
     const ref = useRef(null);
 
-    const onToggleActive = (event) => {
-        Array.from(ref.current.children).forEach((item, index) => {
-            if (event.target && item.className.includes("active")) {
-                console.log(event.target)
-            } else if (event.currentTarget && !(item.className.includes("active"))) {
-                // item.className = item.className.replace(" active", "");
-                // console.log(item)
-                console.log(event.currentTarget)
-            }
-        });
-    };
+    // const onToggleActive = (event) => {
+    //     Array.from(ref.current.children).forEach((item, index) => {
+    //         if (event.target && item.className.includes("active")) {
+    //             console.log(event.target)
+    //         } else if (event.currentTarget && !(item.className.includes("active"))) {
+    //             // item.className = item.className.replace(" active", "");
+    //             // console.log(item)
+    //             console.log(event.currentTarget)
+    //         }
+    //     });
+    // };
 
     return (
         <>
@@ -84,14 +84,12 @@ const SearchResultsLinkMobile = ({
             <SearchBarBody>
                 <div ref={ref}>
                     <SearchBarItem 
-                        className="active" 
-                        onClick={onToggleActive}
+                        className="selected" 
                     >
                         <Link to="/search/tv">Сериалы</Link>
                         <span>{numberWithCommas(tvTotalResults)}</span>
                     </SearchBarItem>
                     <SearchBarItem
-                        onClick={onToggleActive}
                     >
                         <Link to="/search/person">Люди</Link>
                         <span>{numberWithCommas(personTotalResults)}</span>
