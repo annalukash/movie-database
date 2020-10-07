@@ -10,17 +10,9 @@ const ItemWrapper = styled.div`
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(227, 227, 227, 1);
     border-radius: 8px;
-    margin-top: 20px;
+    margin-bottom: 20px;
     max-width: 825px;
     width: 100%;
-
-    &:first-child {
-        margin-top: 0;
-    }
-
-    &:last-of-type {
-        margin-bottom: 20px;
-    }
 `;
 
 const ItemImgWrapper = styled.div`

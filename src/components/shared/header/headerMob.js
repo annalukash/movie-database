@@ -119,16 +119,15 @@ const SectionWrapper = styled.div`
 
 const SearchInput = styled.div`
     position: absolute;
-    bottom: 0;
     z-index: 20;
-    transform: translate(0, 0);
+    transform: translate(0, -100%);
     transition: transform 300ms;
     text-align: center;
     font-size: 1.1em;
     border-bottom: 1px solid rgb(0, 0, 0, 0.3);
 
     &.open {
-        transform: translate(0, 100%);
+        transform: translate(0, 0);
     }
 
     & input {

@@ -14,7 +14,7 @@ const SearchBarHeader = styled.div`
 
 const SearchBarBody = styled.div`
     margin: 5px 0;
-    /* overflow: scroll; */
+    overflow: scroll;
     padding-bottom: 10px;
 
     & div {
@@ -79,7 +79,7 @@ const SearchResultsLinkMobile = ({
     return (
         <>
             <SearchBarHeader>
-                <div>Результаты поискаf</div>
+                <div>Результаты поиска</div>
             </SearchBarHeader>
             <SearchBarBody>
                 <div ref={ref}>
